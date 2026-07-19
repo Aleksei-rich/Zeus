@@ -1,0 +1,61 @@
+#faq_txt{
+    .wrap{ display: flex; justify-content: space-between; align-items: center;
+        @media all and (max-width: 768px) { display: block; }
+
+        .image_wrap{ padding-right: 30px;
+            @media all and (max-width: 1440px) {  }
+            @media all and (max-width: 1280px) {  }
+            @media all and (max-width: 1024px) { padding-right: 15px; }
+            @media all and (max-width: 768px) { max-width: 500px; margin: 0 auto 15px; padding-right: 0; display: flex; justify-content: center; }
+
+            img{ display: block; }
+        }
+        .txt_wrap{ font-size: 32px; width: 55%; min-width: 55%; max-width: 55%; color: #231f20; 
+            @media all and (max-width: 1440px) { font-size: 28px; }
+            @media all and (max-width: 1280px) { font-size: 24px; }
+            @media all and (max-width: 1024px) { font-size: 20px; }
+            @media all and (max-width: 768px) { font-size: 18px; width: 100%; min-width: auto; max-width: 500px; margin: 0 auto 15px; }
+        }
+    }
+}
+
+#faq{
+    .faq_item{ font-size: 32px; margin-bottom: 30px;
+        @media all and (max-width: 1440px) { font-size: 28px; }
+        @media all and (max-width: 1280px) { font-size: 24px; }
+        @media all and (max-width: 1024px) { font-size: 20px; }
+        @media all and (max-width: 768px) { font-size: 18px; margin-bottom: 20px; }
+
+        .title{ background: $blue; margin-bottom: 15px; color: #fff; text-transform: uppercase; display: flex; justify-content: flex-start; align-items: center; padding: 10px 10px 10px 40px; min-height: 70px; 
+            @media all and (max-width: 1440px) { padding: 10px 10px 10px 40px; min-height: 60px; }
+            @media all and (max-width: 1280px) { padding: 10px 10px 10px 35px; min-height: 50px; }
+            @media all and (max-width: 1024px) { padding: 10px 10px 10px 30px; min-height: 40px; }
+            @media all and (max-width: 768px) { padding: 10px 10px 10px 25px; min-height: 35px; }
+        }
+        .list{
+            .item{ border: 2px solid #efeeee; margin-bottom: 15px;
+                @media all and (max-width: 1440px) {  }
+                @media all and (max-width: 1280px) { margin-bottom: 10px; }
+                @media all and (max-width: 1024px) {  }
+                @media all and (max-width: 768px) { margin-bottom: 5px; }
+
+                .tit{ background: #efeeee; cursor: pointer; color: #231f20; text-transform: uppercase; display: flex; justify-content: flex-start; align-items: center; padding: 10px 10px 10px 55px; min-height: 70px; 
+                    @media all and (max-width: 1440px) { padding: 10px 10px 10px 50px; min-height: 60px;  }
+                    @media all and (max-width: 1280px) { padding: 10px 10px 10px 40px; min-height: 50px;  }
+                    @media all and (max-width: 1024px) { padding: 10px 10px 10px 25px; min-height: 40px;  }
+                    @media all and (max-width: 768px) { padding: 10px; min-height: 35px;  }
+                }
+                .txt{ color: #231f20; padding: 15px 10px 15px 55px; display: none; 
+                    @media all and (max-width: 1440px) { padding: 15px 10px 15px 50px; }
+                    @media all and (max-width: 1280px) { padding: 15px 10px 15px 45px; }
+                    @media all and (max-width: 1024px) { padding: 10px 10px 10px 40px; }
+                    @media all and (max-width: 768px) { padding: 10px 10px 10px 30px; }
+                }
+
+                &.open{
+                    .txt{ display: block; }
+                }
+            }
+        }
+    }
+}

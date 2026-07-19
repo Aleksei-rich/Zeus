@@ -1,0 +1,112 @@
+#catalog{ position: relative; 
+
+    .wrap{ position: relative;margin-bottom: 40px; padding-bottom: 20px;
+        // @media all and (max-width: 1440px) { margin-bottom: 30px; }
+        // @media all and (max-width: 1280px) { margin-bottom: 25px; }
+        // @media all and (max-width: 1024px) { margin-bottom: 25px; }
+        // @media all and (max-width: 768px) { margin-bottom: 0; }
+        
+        &:before{ content: ""; position: absolute; display: block; background: $blue; left: 0; right: 0; bottom: 0; height: 360px; 
+            @media all and (max-width: 1440px) { height: 320px; }
+            @media all and (max-width: 1280px) { height: 280px; }
+            @media all and (max-width: 1024px) { height: 240px; }
+            @media all and (max-width: 768px) { height: 300px; }
+        }
+
+        .tags{ font-size: 18px; color: #231f20; padding-top: 35px; text-align: right;
+            @media all and (max-width: 1440px) { font-size: 17px; padding-top: 30px; }
+            @media all and (max-width: 1280px) { font-size: 16px; padding-top: 25px; }
+            @media all and (max-width: 1024px) { font-size: 15px; padding-top: 20px; }
+            @media all and (max-width: 768px) { font-size: 14px; padding-top: 0px; }
+        }
+        .cont{ display: flex; justify-content: space-between; padding-top: 40px;
+            @media all and (max-width: 1440px) { padding-top: 35px; }
+            @media all and (max-width: 1280px) { padding-top: 30px; }
+            @media all and (max-width: 1024px) { padding-top: 25px; }
+            @media all and (max-width: 768px) { padding-top: 20px; }
+
+            .main_wrap{ width: 26%; min-width: 26%; max-width: 26%; display: flex; flex-direction: column; justify-content: space-between; z-index: 100; position: relative;
+                @media all and (max-width: 768px) { width: 100%; min-width: auto; max-width: 100%; }
+                
+                .image_wrap{ margin-bottom: 20px; position: relative; flex-grow: 1;
+                    @media all and (max-width: 768px) { display: none; }
+
+                    a,span{ display: block; border: 18px solid #fff; position: absolute; bottom: 0; left: 0; overflow: hidden;
+                        @media all and (max-width: 1440px) { border-width: 16px; }
+                        @media all and (max-width: 1280px) { border-width: 14px; }
+                        @media all and (max-width: 1024px) { border-width: 12px; }
+                        @media all and (max-width: 768px) { border-width: 10px; }
+
+                        img{ display: block; max-width: 430px; transition: all 0.4s; 
+                            @media all and (max-width: 1440px) { max-width: 400px; }
+                            @media all and (max-width: 1280px) { max-width: 350px; }
+                            @media all and (max-width: 1024px) { max-width: 300px; }
+                            @media all and (max-width: 768px) {  }
+                        }
+                    }
+                    a:hover{
+                        img{ transform: scale(1.1); }
+                    }
+                }
+
+                .mobile_slider_wrap{ display: none;
+                    @media all and (max-width: 768px) { display: block; margin: 0 auto 20px; width: 440px; max-width: 100%; }
+
+                    .item{
+                        a{ display: block; text-decoration: none; overflow: hidden; border: 7px solid #fff; 
+
+                            img{ display: block; transition: all 0.4s; }
+    
+                            &:hover{
+                                img{ transform: scale(1.1); }
+                            }
+                        }
+                    }
+                    .owl-stage-outer{ margin-bottom: 20px; }
+                }
+
+                .descr_wrap{ padding-left: 15px;
+                    @media all and (max-width: 768px) { padding-left: 0; }
+
+                    .name{ margin-bottom: 5px;
+                        a,span{ color: #fff; font-size: 28px; line-height: 1; font-weight: bold; text-transform: uppercase; text-decoration: none; 
+                            @media all and (max-width: 1440px) { font-size: 26px; }
+                            @media all and (max-width: 1280px) { font-size: 24px; }
+                            @media all and (max-width: 1024px) { font-size: 22px; }
+                            @media all and (max-width: 768px) { font-size: 20px; }
+                        }
+                    }
+                    .color{ font-size: 18px; color: #fff; margin-bottom: 10px; 
+                        @media all and (max-width: 1440px) { font-size: 17px; }
+                        @media all and (max-width: 1280px) { font-size: 16px; }
+                        @media all and (max-width: 1024px) { font-size: 14px; }
+                        @media all and (max-width: 768px) { font-size: 12px; }
+                    }
+                    .link{
+                        a{ text-decoration: none; line-height: 1; font-size: 15px; color: $blue; background: #fff; padding: 8px 10px 5px; display: inline-block; text-transform: uppercase; 
+                            @media all and (max-width: 1440px) { font-size: 14px; }
+                            @media all and (max-width: 1280px) { font-size: 13px; }
+                            @media all and (max-width: 1024px) { font-size: 12px; }
+                            @media all and (max-width: 768px) { font-size: 10px; }
+                        }
+                    }
+                }
+            }
+            .slider_wrap{ width: 74%; min-width: 74%; max-width: 74%;
+                @media all and (max-width: 768px) { display: none; }
+
+                .item{
+                    a{ display: block; text-decoration: none; overflow: hidden; border: 7px solid #fff; 
+
+                        img{ display: block; transition: all 0.4s; }
+
+                        &:hover{
+                            img{ transform: scale(1.1); }
+                        }
+                    }
+                }
+                .owl-stage-outer{ margin-bottom: 35px; }
+            }
+        }
+    }
+}

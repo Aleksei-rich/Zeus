@@ -1,0 +1,33 @@
+#mobile_sidebar{ display: none;
+    @media all and (max-width: 1024px) {
+        position: fixed; display: block; transition: all .4s; z-index: 1000000; left: -300%; top: 0; bottom: 0; width: 80%; max-width: 400px; background: rgba(0,96,154,.95); padding: 50px 20px 20px 20px;
+    }
+
+    body.show_menu &{ left: 0; }
+
+    .close_sidebar{ position: absolute; width: 35px; height: 35px; border-radius: 50%; right: 20px; top: 20px; background: url("../img/sidebar_close.png") no-repeat center $blue; }
+
+    .sidebar_content{overflow: auto; height: 100%;
+        .menu_wrap{ margin-bottom: 30px;
+            ul{ list-style: none; margin: 0; padding: 0;
+                li{ padding-bottom: 20px;
+                    a{ text-decoration: none; font-size: 18px; color: #fff; }
+                }
+            }
+        }
+
+        .phone_wrap{ margin-bottom: 30px;
+            a{ font-size: 24px; text-decoration: none; font-weight: 500; color: #fff; }
+        }
+
+        .socials{
+            ul{ display: flex; justify-content: flex-start; list-style: none; padding: 0; margin: 0;
+                li{ margin-right: 20px; padding-bottom: 0;
+                    a{ text-decoration: none; display: block; width: 24px; height: 24px;
+                        img{ max-width: 100%; }
+                    }
+                }
+            }
+        }
+    }
+}

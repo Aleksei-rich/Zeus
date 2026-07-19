@@ -1,0 +1,112 @@
+header{
+    .header_content{ padding: 15px 0; display: flex; justify-content: space-between; align-items: center;
+        @media all and (max-width: 1440px) { padding: 14px 0; }
+        @media all and (max-width: 1280px) { padding: 13px 0; }
+        @media all and (max-width: 1024px) { padding: 12px 0; }
+        @media all and (max-width: 768px) { padding: 10px 0; }
+        @media all and (max-width: 600px) { flex-wrap: wrap; }
+
+        .logo_wrap{ max-width: 240px;
+            @media all and (max-width: 1440px) { max-width: 220px; }
+            @media all and (max-width: 1280px) { max-width: 180px; }
+            @media all and (max-width: 1024px) { max-width: 160px; }
+            @media all and (max-width: 768px) { max-width: 130px; }
+
+            a{ display: block; text-decoration: none;
+                img{ display: block; }
+            }
+        }
+
+        .center{ display: flex; justify-content: center; align-items: center; flex-direction: column;
+            @media all and (max-width: 600px) { order: 3; width: 100%; }
+
+            .descr{ margin-bottom: 10px; padding-top: 10px;
+                @media all and (max-width: 1024px) { margin-bottom: 0; }
+                @media all and (max-width: 768px) { padding-top: 20px; display: inline-block; }
+
+                .big{ text-align: center; color: #000000; font-size: 44px; font-family: $font_Aquarelle; line-height: 0.5; padding: 0 80px;
+                    @media all and (max-width: 1440px) { font-size: 40px; }
+                    @media all and (max-width: 1280px) { font-size: 36px; }
+                    @media all and (max-width: 1024px) { font-size: 30px; padding: 0; line-height: 0.8; }
+                    @media all and (max-width: 768px) { font-size: 26px;   }
+                }
+                .small{ font-size: 16px; color: #d2d2d2; text-align: right; font-weight: 300; text-transform: uppercase; 
+                    @media all and (max-width: 1440px) { font-size: 15px; }
+                    @media all and (max-width: 1280px) { font-size: 14px; }
+                    @media all and (max-width: 1024px) { font-size: 13px; }
+                    @media all and (max-width: 768px) { font-size: 12px; }
+                }
+            }
+            .menu_wrap{
+                @media all and (max-width: 1024px) { display: none; }
+
+                ul{ margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; list-style: none;
+                    li{ padding: 0 14px; border-right: 2px solid #aaaaaa;
+                        @media all and (max-width: 1440px) { padding: 0 12px; }
+                        @media all and (max-width: 1280px) { padding: 0 10px; border-width: 1px; }
+
+                        a{ color: $blue; text-decoration: none; font-family: $font_Playfair; font-size: 20px; font-weight: 700; line-height: 1;
+                            &:hover{ text-decoration: underline; }
+
+                            @media all and (max-width: 1440px) { font-size: 18px; }
+                            @media all and (max-width: 1280px) { font-size: 16px; }
+                        }
+                        &:last-child{ border-right: none; }
+                    }
+                }
+            }
+        }
+
+        .right{
+            @media all and (max-width: 1024px) { width: 180px; min-width: 180px; max-width: 180px; }
+            @media all and (max-width: 768px) {  width: 130px; min-width: 130px; max-width: 130px; }
+            @media all and (max-width: 600px) { width: auto; min-width: auto; max-width: none; }
+
+            .phone_wrap{ margin-bottom: 5px;
+                @media all and (max-width: 1024px) { display: none; }
+
+                a{ text-decoration: none; font-size: 30px; color: #000000; font-weight: 700; line-height: 1;
+                    @media all and (max-width: 1440px) { font-size: 28px; }
+                    @media all and (max-width: 1280px) { font-size: 24px; }
+
+                    &:before{ content: ""; display: inline-block; width: 32px; height: 32px; background: url("../img/ic_phone.png") no-repeat center/contain; margin-right: 5px; 
+                        @media all and (max-width: 1440px) { width: 28px; height: 28px; }
+                        @media all and (max-width: 1280px) { width: 24px; height: 24px; }
+                    }
+                }
+            }
+            .call_wrap{ margin-bottom: 10px; text-align: right;
+                @media all and (max-width: 1024px) { display: none; }
+
+                a{ text-decoration: underline; font-size: 18px; color: #000000; font-weight: 300; line-height: 1;
+                    @media all and (max-width: 1440px) { font-size: 17px; }
+                    @media all and (max-width: 1280px) { font-size: 16px; }
+
+                    &:hover{ text-decoration: none; }
+                }
+            }
+            .socials{
+                @media all and (max-width: 1024px) { display: none; }
+
+                ul{ display: flex; justify-content: flex-end; list-style: none; padding-bottom: 0;
+                    li{ margin-left: 16px; padding-bottom: 0;
+                        a{ text-decoration: none; display: block; width: 24px; height: 24px;
+                            @media all and (max-width: 1440px) { width: 22px; height: 22px; }
+                            @media all and (max-width: 1280px) { width: 20px; height: 20px; }
+
+                            img{ max-width: 100%; }
+                        }
+                    }
+                }
+            }
+            .mob_menu_btn{ display: none;
+                @media all and (max-width: 1024px) { display: flex; justify-content: flex-end; align-items: center; }
+
+                a{ display: flex; flex-direction:  column; justify-content: space-between; width: 40px; height: 30px; text-decoration: none;
+                    span{ display: block; height: 5px; width: 100%; background: $blue; }
+                }
+            }
+        }
+    }
+    &:after{ content: ""; display: block; height: 8px; background: url("../img/color_line.jpg") no-repeat center/cover; }
+}

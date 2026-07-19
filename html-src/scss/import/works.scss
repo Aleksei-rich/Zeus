@@ -1,0 +1,71 @@
+#works{ background: #e2e2e3;
+    .wrap{ margin: 0 -50px;
+        @media all and (max-width: 1280px) { margin: 0; }
+
+        .slider_wrap{
+            .item{ width: 333px; border: 15px solid #fff; background: #fff; transition: all .4s;
+                @media all and (max-width: 1280px) { width: auto; }
+
+                .image_wrap{ margin-bottom: 30px; transition: all .4s;
+                    @media all and (max-width: 1440px) { margin-bottom: 25px; }
+                    @media all and (max-width: 1280px) { margin-bottom: 20px; }
+                    @media all and (max-width: 1024px) { margin-bottom: 15px; }
+                    @media all and (max-width: 768px) { margin-bottom: 10px; }
+
+                    a{ display: block; overflow: hidden; transition: all .4s;
+                        img{ display: block; transition: all .4s; }
+
+                        &:hover{
+                            img{ transform: scale(1.1); }
+                        }
+                    }
+                }
+                .cont_wrap{ display: flex; flex-wrap: wrap; justify-content: space-between;
+                    .name{ margin-bottom: 10px; width: 100%;
+                        a{ font-size: 28px; color: #231f20; font-weight: bold; text-transform: uppercase; text-decoration: none; line-height: 1;
+                            @media all and (max-width: 1440px) { font-size: 26px; }
+                            @media all and (max-width: 1280px) { font-size: 24px; }
+                            @media all and (max-width: 1024px) { font-size: 22px; }
+                            @media all and (max-width: 768px) { font-size: 20px; }
+                        }
+                    }
+                    .color{ font-size: 18px; 
+                        @media all and (max-width: 1440px) { font-size: 17px;  }
+                        @media all and (max-width: 1280px) { font-size: 16px;  }
+                        @media all and (max-width: 1024px) { font-size: 14px;  }
+                        @media all and (max-width: 768px) { font-size: 12px;  }
+                    }
+                    .link{
+                        a{ font-size: 15px; color: $blue; text-decoration: underline;
+                            &:hover{ text-decoration: none; }
+
+                            @media all and (max-width: 1440px) { font-size: 14px; }
+                            @media all and (max-width: 1280px) { font-size: 13px; }
+                            @media all and (max-width: 1024px) { font-size: 12px; }
+                            @media all and (max-width: 768px) { font-size: 10px; }
+                        }
+                    }
+                }
+            }
+            .owl-stage-outer{ margin-bottom: 30px; 
+                @media all and (max-width: 1440px) {   }
+                @media all and (max-width: 1280px) { margin-bottom: 25px;  }
+                @media all and (max-width: 1024px) { margin-bottom: 20px;  }
+                @media all and (max-width: 768px) { margin-bottom: 15px;  }
+            }
+            .owl-stage{ display: flex; }
+
+            .owl-item{ display: flex; justify-content: center; align-items: center;
+                &.center{
+                    .item{ width: 675px; 
+                        .image_wrap{ 
+                            a{ 
+                                img{ }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

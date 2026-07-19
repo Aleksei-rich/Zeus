@@ -1,0 +1,33 @@
+#consultform{ background: #c6c7c8; position: relative;
+    .wrap{ display: flex; justify-content: space-between; align-items: flex-start;
+        @media all and (max-width: 768px) { display: block; }
+
+        .cont{ width: 400px; max-width: 45%; 
+            @media all and (max-width: 768px) { width: 100%; max-width: 100%; margin-bottom: 25px; }
+
+            .section_title{ color: #fff; padding-bottom: 20px; }
+            .txt{ color: #fff; font-size: 18px; 
+                @media all and (max-width: 1440px) { font-size: 17px; }
+                @media all and (max-width: 1280px) { font-size: 16px; }
+                @media all and (max-width: 1024px) { font-size: 15px; }
+                @media all and (max-width: 768px) { font-size: 14px; }
+            }
+            .socials{ 
+                ul{ display: flex; justify-content: flex-start; list-style: none; margin: 0; padding: 0;
+                    li{ margin-right: 16px; padding-bottom: 0;
+                        a{ text-decoration: none; display: block; width: 20px;
+                            img{ max-width: 100%; }
+                        }
+                    }
+                }
+            }
+        }
+        .form_wrap{ width: 55%; max-width: 55%; min-width: 55%;
+            @media all and (max-width: 768px) { width: 100%; max-width: 100%; min-width: auto; }
+
+            
+        }
+    }
+
+    &:after{ content: ""; position: absolute; bottom: 0; left: 0; width: 100%; display: block; height: 8px; background: url("../img/color_line.jpg") no-repeat center/cover; }
+}

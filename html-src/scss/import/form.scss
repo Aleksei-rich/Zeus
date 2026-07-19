@@ -1,0 +1,41 @@
+.form_row{ margin-bottom: 10px;
+    p{ padding: 0; }
+
+    input, textarea{ width: 100%; outline: none; text-transform: uppercase; background: #fff; font-size: 17px; color: #231f20; border: none; height: 40px; padding:  0 20px;  
+        @media all and (max-width: 1440px)  { font-size: 16px; }
+        @media all and (max-width: 1280px) { height: 35px; font-size: 15px; }
+        @media all and (max-width: 1024px) { height: 30px; font-size: 14px; }
+        @media all and (max-width: 768px) { height: 25px; font-size: 13px; }
+    }
+    textarea{ min-height: 95px; padding: 10px 20px; 
+        @media all and (max-width: 768px) { min-height: 60px; }
+    }
+
+    &.btn_wrap{ margin-bottom: 0;
+        input.btn{ background: $blue; color: #fff; }
+    }
+
+    .wpcf7-spinner{ position: absolute; }
+}
+
+.wpcf7-list-item{ margin: 0; }
+.wpcf7-spinner{ margin: auto; }
+.wpcf7-not-valid-tip{ font-size: 10px; text-align: center; width: 100%; left: 0; }
+
+.wpcf7 form .wpcf7-response-output{ border-width: 1px; margin: 10px auto 0; padding: 5px; font-size: 12px; color: #fff; }
+.wpcf7 form.sent .wpcf7-response-output{ border-color: green; color: green; }
+.wpcf7 form.invalid .wpcf7-response-output{ border-color: red; color: red; }
+
+
+// .checkbox_wrap{
+//     input{ display: none; }
+//     input + span,
+//     input + label{font-size: 11px;line-height: 15px;color: #6B6B6B; cursor: pointer; font-weight: 300;   }
+//     input + span:before,
+//     input + label:before{ box-sizing: border-box; content: ""; display: inline-block;  width: 18px; min-width: 18px; height: 18px; border: 1px solid #6B6B6B; cursor: pointer; margin-right: 5px; float: left; margin-top: 2px; }
+//     input:checked + span:before,
+//     input:checked + label:before{ background: url("../img/form_ic_checkbox.svg") no-repeat center;  }
+//     a{ color: #6B6B6B; text-decoration: underline;
+//         &:hover{ text-decoration: none; }
+//     }
+// }

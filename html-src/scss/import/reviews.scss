@@ -1,0 +1,14 @@
+#reviews{
+    .wrap{
+        .wp-google-list{ display: flex; justify-content: space-between;
+            @media all and (max-width: 1024px) { display: block; }
+
+            .wp-google-place{ width: 35%!important; min-width: 35%!important; max-width: 35%!important; order: 2; 
+                @media all and (max-width: 1024px) { width: 100%!important; min-width: auto!important; max-width: 100%!important; margin-bottom: 30px; }
+            }
+            .wp-google-content-inner{ width: 65%!important; min-width: 65%!important; max-width: 65%!important; 
+                @media all and (max-width: 1024px) { width: 100%!important; min-width: auto!important; max-width: 100%!important;  }
+            }
+        }
+    }
+}

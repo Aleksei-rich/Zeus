@@ -1,0 +1,234 @@
+#calculation{
+    .descr{ font-size: 18px; color: #231f20; margin-bottom: 15px; }
+
+    .wrap{ border: 1px solid #aaacae; padding: 25px;
+        @media all and (max-width: 1024px) { padding: 0; border: none; }
+
+        p{ padding-bottom: 0; }
+
+        .form{ background: #cccccc; padding: 200px; position: relative;
+            @media all and (max-width: 1024px) { padding: 0; }
+
+            .content{ background: url("../img/curcles.png") repeat-y #3f4142; background-size: contain; padding: 40px; 
+                @media all and (max-width: 1024px) { background: transparent; padding: 0; position: relative;
+                    &:before{ content: ""; display: block; position: absolute; left: -15px; right: -15px; top: 0; bottom: 0; background: #cccccc; }
+                }
+            }
+            .sizes_wrap{ 
+                @media all and (max-width: 1024px) { position: relative; height: 300px; }
+
+                .sizes_bl{ position: absolute;
+                    @media all and (max-width: 1024px) {  }
+
+                    .input_wrap{ margin-bottom: 5px; z-index: 1000; position: relative;
+                        input{ width: 126px; height: 34px; background: #fff; text-transform: uppercase; border: 1px solid #aaacae; font-size: 14px; color: #231f20; padding: 0 5px; 
+                            @media all and (max-width: 1024px) { width: 89px; height: 24px; border-color: #a7a8ab; font-size: 11px; }
+                        }
+                    }
+                    .checkboxes_wrap{ width: 126px; 
+                        @media all and (max-width: 1024px) { width: 89px; }
+
+                        .wpcf7-list-item{ display: block; margin-bottom: 5px;
+                            @media all and (max-width: 1024px) { margin-bottom: 3px; }
+                            input{ display: none; 
+                                & + span{ font-size: 14px; color: #231f20; text-transform: uppercase; display: flex; justify-content: flex-start; 
+                                    @media all and (max-width: 1024px) { font-size: 11px; }
+
+                                    &:before{ content: ""; display: block; width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; background: #fff; border: 1px solid #aaacae; margin-right: 5px; 
+                                        @media all and (max-width: 1024px) { width: 10px; height: 10px; border-color: #a7a8ab; }
+                                    }
+                                }
+                                &:checked + span:before{ background: #000; border: 2px solid #fff; }
+                            }
+                        }
+                    }
+
+                    &.sizes_top{ top: 40px; left: 60px; right: 60px; display: flex; justify-content: center; flex-direction: column; align-items: center; 
+                        @media all and (max-width: 1024px) { top: 20px; left: 40px; right: 40px; }
+                        @media all and (max-width: 768px) { left: 20px; right: 20px; }
+
+                        .arrow{ position: absolute; left: 0; right: 0; top: 15px; height: 3px; background: $blue;
+                            @media all and (max-width: 1024px) { height: 2px;  }
+
+                            &:before{ width: 21px; height: 30px; position: absolute; left: -5px; top: -14px; content: ""; display: block; background: url("../img/calk_arr_left.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { width: 12px; height: 18px; top: -8px; }
+                            }
+                            &:after{ width: 21px; height: 30px; position: absolute; right: -5px; top: -14px; content: ""; display: block; background: url("../img/calk_arr_right.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { width: 12px; height: 18px; top: -8px; }
+                            }
+                        }
+                    }
+                    &.sizes_bot{ bottom: 40px; left: 60px; right: 60px; display: flex; justify-content: center; flex-direction: column-reverse; align-items: center;   
+                        @media all and (max-width: 1024px) { bottom: 20px; left: 40px; right: 40px; }
+                        @media all and (max-width: 768px) { left: 20px; right: 20px; }
+                        
+                        .input_wrap{ margin-bottom: 0;}
+                        
+                        .arrow{ position: absolute; left: 0; right: 0; bottom: 15px; height: 3px; background: $blue;
+                            @media all and (max-width: 1024px) { height: 2px; }
+
+                            &:before{ width: 21px; height: 30px; position: absolute; left: -5px; top: -14px; content: ""; display: block; background: url("../img/calk_arr_left.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { width: 12px; height: 18px; top: -8px; }
+                            }
+                            &:after{ width: 21px; height: 30px; position: absolute; right: -5px; top: -14px; content: ""; display: block; background: url("../img/calk_arr_right.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { width: 12px; height: 18px; top: -8px; }
+                            }
+                        }
+                    }
+                    &.sizes_left{ left: 20px; top: 90px; bottom: 90px; padding-top: 75px; 
+                        @media all and (max-width: 1024px) { top: 60px; bottom: 60px; padding-top: 35px; }
+                        @media all and (max-width: 768px) { left: 0; }
+
+                        .checkboxes_wrap{ margin-left: 40px; 
+                            @media all and (max-width: 1024px) { margin-left: 30px; }
+                        }
+
+                        .arrow{ position: absolute; left: 15px; top: 0; bottom: 0; width: 3px; background: $blue;
+                            @media all and (max-width: 1024px) { width: 2px; }
+                            &:before{ width: 30px; height: 21px; position: absolute; top: -5px; left: -14px; content: ""; display: block; background: url("../img/calk_arr_top.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { height: 12px; width: 18px; left: -8px; }
+                            }
+                            &:after{ width: 30px; height: 21px; position: absolute; bottom: -5px; left: -14px; content: ""; display: block; background: url("../img/calk_arr_bot.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { height: 12px; width: 18px; left: -8px; }
+                            }
+                        }
+                    }
+                    &.sizes_right{ right: 20px; top: 90px; bottom: 90px; padding-top: 75px; 
+                        @media all and (max-width: 1024px) { top: 60px; bottom: 60px; padding-top: 35px; }
+                        @media all and (max-width: 768px) { right: 0; }
+                    
+                        .arrow{ position: absolute; right: 15px; top: 0; bottom: 0; width: 3px; background: $blue;
+                            @media all and (max-width: 1024px) { width: 2px; }
+                            &:before{ width: 30px; height: 21px; position: absolute; top: -5px; left: -14px; content: ""; display: block; background: url("../img/calk_arr_top.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { height: 12px; width: 18px; left: -8px; }
+                            }
+                            &:after{ width: 30px; height: 21px; position: absolute; bottom: -5px; left: -14px; content: ""; display: block; background: url("../img/calk_arr_bot.png") no-repeat center/contain; 
+                                @media all and (max-width: 1024px) { height: 12px; width: 18px; left: -8px; }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .sizes_island{ max-width: 665px; margin-bottom: 50px; margin: 0 auto; position: relative; background: #cccccc; margin-bottom: 50px; padding: 15px; border: 2px solid #aaacae;
+                @media all and (max-width: 1024px) { background-color: #e8e8e8; border: 1px solid #282826; }
+
+                .has_island{ text-align: center; margin-bottom: 10px;
+                    input{ display: none; 
+                        & + span{ font-size: 32px; color: #231f20; display: flex; justify-content: center; align-items: center; line-height: 1;
+                            @media all and (max-width: 1024px) { font-size: 18px; }
+
+                            &:before{ content: ""; display: block; width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; background: #fff; border: 1px solid #aaacae; margin-right: 5px; 
+                                @media all and (max-width: 1024px) { width: 10px; height: 10px; border-color: #a7a8ab; }
+                            }
+                        }
+                        &:checked + span:before{ background: #000; border: 2px solid #fff; }
+                    }
+                }
+                .has_island_sink{ display: flex; flex-direction: column; justify-content: flex-start; align-items: center; width: 130px; margin: 0 auto; border: 2px solid #aaacae; border-radius: 20px; padding: 10px;
+                    @media all and (max-width: 1024px) { width: 85px; border-width: 1px; border-radius: 10px; }
+
+                    input{ display: none; 
+                        & + span{ font-size: 14px; color: #231f20; text-transform: uppercase; display: flex; justify-content: flex-start; 
+                            @media all and (max-width: 1024px) { font-size: 11px; }
+
+                            &:before{ content: ""; display: block; width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; background: #fff; border: 1px solid #aaacae; margin-right: 5px; 
+                                @media all and (max-width: 1024px) { width: 10px; height: 10px; border-color: #a7a8ab; }
+                            }
+                        }
+                        &:checked + span:before{ background: #000; border: 2px solid #fff; }
+                    }
+                    &:after{ content: ""; width: 30px; height: 30px; display: block; margin: 5px auto 0; border-radius: 50%; border: 2px solid #aaacae; 
+                        @media all and (max-width: 1024px) { width: 20px; height: 20px; }
+                    }
+                }
+                .island_width,
+                .island_height{
+                    .input_wrap{ position: relative; z-index: 1000; 
+                        input{ width: 126px; height: 34px; background: #fff; text-transform: uppercase; border: 1px solid #aaacae; font-size: 14px; color: #231f20; padding: 0 5px; 
+                            @media all and (max-width: 1024px) { width: 89px; height: 24px; border-color: #a7a8ab; font-size: 11px; }
+                        }
+                    }
+                }
+                .island_width{ display: flex; justify-content: center; position: relative; margin-top: 10px;
+                    input{}
+
+                    .arrow{ position: absolute; left: 15px; right: 45px; bottom: 15px; height: 3px; background: $blue;
+                        @media all and (max-width: 1024px) { height: 2px; }
+                        &:before{ width: 21px; height: 30px; position: absolute; left: -5px; top: -14px; content: ""; display: block; background: url("../img/calk_arr_left.png") no-repeat center/contain; 
+                            @media all and (max-width: 1024px) { width: 12px; height: 18px; top: -8px; }
+                        }
+                        &:after{ width: 21px; height: 30px; position: absolute; right: -5px; top: -14px; content: ""; display: block; background: url("../img/calk_arr_right.png") no-repeat center/contain; 
+                            @media all and (max-width: 1024px) { width: 12px; height: 18px; top: -8px; }
+                        }
+                    }
+                }
+                .island_height{ position: absolute; right: 15px; top: 20px; bottom: 30px; display: flex; align-items: center;
+                    input{}
+
+                    .arrow{ position: absolute; right: 15px; top: 0; bottom: 0; width: 3px; background: $blue;
+                        @media all and (max-width: 1024px) { width: 2px; }
+                        &:before{ width: 30px; height: 21px; position: absolute; top: -5px; left: -14px; content: ""; display: block; background: url("../img/calk_arr_top.png") no-repeat center/contain; 
+                            @media all and (max-width: 1024px) { height: 12px; width: 18px; left: -8px; }
+                        }
+                        &:after{ width: 30px; height: 21px; position: absolute; bottom: -5px; left: -14px; content: ""; display: block; background: url("../img/calk_arr_bot.png") no-repeat center/contain; 
+                            @media all and (max-width: 1024px) { height: 12px; width: 18px; left: -8px; }
+                        }
+                    }
+                }
+            }
+
+            .parameters_wrap{ max-width: 605px; margin: 0 auto 30px;
+                @media all and (max-width: 1024px) {  max-width: 100%; margin: 0; padding: 20px 10px; position: relative;
+                    &:before{ content: ""; display: block; position: absolute; left: -15px; right: -15px; top: 0; bottom: 0; background: #515355; }
+                }
+
+                .input_wrap{ margin-bottom: 10px; position: relative;
+                    input{ height: 40px; background: #fff; font-size: 18px; width: 100%; padding: 0 10px; border: 1px solid #aaacae; text-transform: uppercase; 
+                        @media all and (max-width: 1024px) { height: 22px; font-size: 12px; }
+                    }
+                    select{ height: 40px; background: #fff; font-size: 18px; width: 100%; padding: 0 10px; border: 1px solid #aaacae; text-transform: uppercase; font: inherit;letter-spacing: inherit;word-spacing: inherit;appearance: none;
+                        &:not([multiple]) {
+                            padding-left: 45px;
+                            background: url('../img/select.png') no-repeat 10px center #fff; background-size: 30px;
+                            
+                            @media all and (max-width: 1024px) { background-size: 16px; padding-left: 25px; background-position-x: 5px; }
+                        }
+                        
+                        @media all and (max-width: 1024px) { height: 22px; font-size: 12px; }
+                    }
+                }
+            }
+
+            .photos_wrap{  margin-bottom: 25px; 
+                @media all and (max-width: 1024px) {  max-width: 100%;position: relative; padding: 0 10px 20px; margin-bottom: 0;
+                    &:before{ content: ""; display: block; position: absolute; left: -15px; right: -15px; top: 0; bottom: 0; background: #515355; }
+                }
+
+                .photos_fied_content{ background: #fff; padding: 10px; max-width: 685px; margin: auto; 
+                    @media all and (max-width: 1024px) {  max-width: 100%; position: relative;}
+                }
+            }
+
+            .userdata_wrap{  max-width: 685px; margin: 0 auto;
+                @media all and (max-width: 1024px) { background: #515355; max-width: 100%;position: relative; padding: 0 10px 20px;
+                    &:before{ content: ""; display: block; position: absolute; left: -15px; right: -15px; top: 0; bottom: 0; background: #515355; }
+                }
+
+                .input_wrap{  margin-bottom: 10px; position: relative;
+                    input{ height: 40px; background: #fff; font-size: 18px; width: 100%; padding: 0 10px; border: 1px solid #aaacae; text-transform: uppercase; 
+                        @media all and (max-width: 1024px) { height: 22px; font-size: 12px; }
+                    }
+                    textarea{ height: 90px; background: #fff; font-size: 18px; width: 100%; padding: 10px 10px; border: 1px solid #aaacae; text-transform: uppercase; 
+                        @media all and (max-width: 1024px) { height: 55px; font-size: 12px; }
+                    }
+                }
+                .btn_wrap{ position: relative;
+                    .btn{ width: 100%; border: none; height: 40px; font-size: 17px; 
+                        @media all and (max-width: 1024px) { height: 22px; font-size: 12px; }
+                    }
+                }
+            }
+        }
+    }
+}

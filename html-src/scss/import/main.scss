@@ -1,0 +1,79 @@
+#main{
+    .wrap{ padding-bottom: 10px; position: relative;
+        @media all and (max-width: 1024px) { padding-bottom: 50px; }
+        @media all and (max-width: 768px) { padding-bottom: 84px; }
+
+        &:after{ content: ""; display: block; width: 100%; bottom: 0; left: 0; height: 5px; background: #d2d2d2; position: absolute; 
+            @media all and (max-width: 1024px) { display: none; }
+        }
+        
+        .item{ position: relative;
+            .image_wrap{ display: flex; justify-content: center; align-items: center;
+                @media all and (max-width: 768px) { height: 300px; }
+
+                img{ display: block; object-fit: cover; width: 100%; height: 100%; 
+                    &.des{ display: block; 
+                        @media all and (max-width: 1024px) { display: none; }
+                    }
+                    &.mob{ display: none; 
+                        @media all and (max-width: 1024px) { display: block; }
+                    }
+                }
+            }
+            .content_wrap{ position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+                .container{ max-width: 1250px; height: 100%; }
+                .content{ display: flex; flex-direction: column; justify-content: flex-end; height: 100%; padding-bottom: 60px; padding-top: 20px;
+                    @media all and (max-width: 1440px) { padding-bottom: 50px;  }
+                    @media all and (max-width: 1280px) { padding-bottom: 40px;  }
+                    @media all and (max-width: 1024px) { padding-bottom: 30px;  }
+                    @media all and (max-width: 768px) { padding-bottom: 20px;  }
+                }
+                .txt_wrap{ margin-bottom: 50px; width: 340px; height: 310px; background-color: rgba(0, 96, 154, 0.75); background-blend-mode: multiply; display: flex; flex-direction: column; justify-content: space-between;
+                    @media all and (max-width: 1560px) { margin-bottom: 40px; width: 320px; height: 280px; }
+                    @media all and (max-width: 1440px) { margin-bottom: 30px; width: 280px; height: 260px; }
+                    @media all and (max-width: 1280px) { margin-bottom: 20px; width: 240px; height: 240px; }
+                    @media all and (max-width: 1024px) { margin-bottom: 15px; width: 220px; height: 220px; }
+                    @media all and (max-width: 768px) { width: 200px; height: 150px; }
+
+                    .title{ font-size: 28px; font-weight: 700; line-height: 1.2; color: #fff; text-transform: uppercase; padding: 30px 20px; 
+                        @media all and (max-width: 1560px) { padding: 25px 20px; font-size: 26px; }
+                        @media all and (max-width: 1440px) { padding: 20px 15px; font-size: 22px; }
+                        @media all and (max-width: 1280px) { padding: 15px 15px; font-size: 20px; }
+                        @media all and (max-width: 1024px) { padding: 15px 15px; font-size: 16px; }
+                        @media all and (max-width: 768px) { padding: 10px 10px; font-size: 14px; }
+                    }
+                    .socials{ 
+                        ul{ display: flex; justify-content: flex-start; list-style: none;
+                            @media all and (max-width: 1024px) { padding-bottom: 15px; margin-left: 15px; }
+                            // @media all and (max-width: 768px) { padding-bottom: 10px; }
+
+                            li{ margin-left: 16px; padding-bottom: 0;
+                                @media all and (max-width: 1024px) {
+                                    &:first-child{ margin-left: 0; }
+                                }
+                                a{ text-decoration: none; display: block; width: 20px;
+                                    img{ max-width: 100%; }
+                                }
+                            }
+                        }
+                    }
+                }
+                .btn_wrap{ display: flex; justify-content: space-between;
+                    @media all and (max-width: 1024px) { bottom: -50px; left: 15px; right: 15px;  position: absolute;  }
+                    @media all and (max-width: 768px) { bottom: -84px; display: flex; flex-direction: column; align-items: center;
+                        a{ margin-top: 10px; width: 300px; }
+                    }
+                }
+            }
+        }
+
+        &.owl-carousel .owl-stage-outer{ overflow: visible; }
+
+        .owl-dots{ position: absolute; bottom: 30px; width: 100%; left: 0; 
+            @media all and (max-width: 1440px) { bottom: 25px; }
+            @media all and (max-width: 1280px) { bottom: 20px; }
+            @media all and (max-width: 1024px) { bottom: 60px; }
+            @media all and (max-width: 768px) { bottom: 95px; }
+        }
+    }
+}

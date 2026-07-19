@@ -1,6 +1,25 @@
 <?php
-    
-    
+
+
+/**
+ * Configure ACF Local JSON storage location.
+ */
+add_filter('acf/settings/save_json', 'zeus_acf_json_save_point');
+function zeus_acf_json_save_point($path) {
+    return get_stylesheet_directory() . '/acf-json';
+}
+
+add_filter('acf/settings/load_json', 'zeus_acf_json_load_point');
+function zeus_acf_json_load_point($paths) {
+    $path = get_stylesheet_directory() . '/acf-json';
+
+    if (!in_array($path, $paths, true)) {
+        $paths[] = $path;
+    }
+
+    return $paths;
+}
+
 /**
  * Enqueue scripts and styles.
  */

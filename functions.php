@@ -90,13 +90,22 @@ function catalog() {
 
 ////////////////////////////////////////////////////////////
 
-// Создаем новую таксономию для Portfolio
+// Регистрируем таксономию Project Style для Projects
 add_action('init', 'create_portfolio_category');
 
 function create_portfolio_category() {
     $labels = array(
-        'name' => 'Categoryes',
-        'menu_name' => __('Categoryes'),
+        'name' => 'Project Styles',
+        'singular_name' => 'Project Style',
+        'menu_name' => 'Project Styles',
+        'all_items' => 'All Project Styles',
+        'edit_item' => 'Edit Project Style',
+        'view_item' => 'View Project Style',
+        'update_item' => 'Update Project Style',
+        'add_new_item' => 'Add New Project Style',
+        'new_item_name' => 'New Project Style Name',
+        'search_items' => 'Search Project Styles',
+        'not_found' => 'Not Found',
     );
 
     register_taxonomy('portfolio-category', array('portfolio'), array(

@@ -145,6 +145,37 @@ function portfolio() {
 
 ////////////////////////////////////////////////////////////
 
+// Регистрируем таксономию Room Type для Projects
+add_action('init', 'register_room_type_taxonomy');
+
+function register_room_type_taxonomy() {
+    $labels = array(
+        'name' => 'Room Types',
+        'singular_name' => 'Room Type',
+        'menu_name' => 'Room Types',
+        'all_items' => 'All Room Types',
+        'edit_item' => 'Edit Room Type',
+        'view_item' => 'View Room Type',
+        'update_item' => 'Update Room Type',
+        'add_new_item' => 'Add New Room Type',
+        'new_item_name' => 'New Room Type Name',
+        'search_items' => 'Search Room Types',
+        'not_found' => 'Not Found',
+    );
+
+    register_taxonomy('room_type', array('portfolio'), array(
+        'labels'             => $labels,
+        'hierarchical'       => true,
+        'public'             => true,
+        'show_admin_column'  => true,
+        'show_in_nav_menus'  => true,
+        'show_in_rest'       => true,
+        'rewrite'            => array('slug' => 'projects/room-type', 'with_front' => false),
+    ));
+}
+
+////////////////////////////////////////////////////////////
+
 function getYoutubeLink($link){
     preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $link, $youtubeMatch);
     if(isset($youtubeMatch[1])){

@@ -112,22 +112,32 @@ add_action('init', 'portfolio');
 
 function portfolio() {
     $labels = array(
-        'name' => 'Portfolio',
-        'menu_name' => 'Portfolio'
+        'name' => 'Projects',
+        'singular_name' => 'Project',
+        'menu_name' => 'Projects',
+        'add_new_item' => 'Add New Project',
+        'edit_item' => 'Edit Project',
+        'new_item' => 'New Project',
+        'view_item' => 'View Project',
+        'all_items' => 'All Projects',
+        'search_items' => 'Search Projects',
+        'not_found' => 'No projects found',
+        'not_found_in_trash' => 'No projects found in Trash',
     );
 
     $args = array(
         'labels' => $labels,
         'public' => true,
-        'publicly_queryable' => false,
+        'publicly_queryable' => true,
         'exclude_from_search' => false,
         'hierarchical'  => false,
         'menu_position' => 5,
         'show_in_menu'  => true,
         'show_in_nav_menus' => true,
-        'has_archive'   => false,
+        'has_archive'   => true,
+        'rewrite'       => array('slug' => 'projects', 'with_front' => false),
         'menu_icon'     => "dashicons-admin-page",
-        'supports'      => array('title', 'page-attributes'),
+        'supports'      => array('title', 'page-attributes', 'thumbnail', 'excerpt'),
         'taxonomies'    => array('portfolio-category'),
     );
     register_post_type('portfolio', $args);

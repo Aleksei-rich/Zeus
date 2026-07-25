@@ -74,3 +74,33 @@ No template or `functions.php` code has been changed. No migration script has be
 ## Hosting reference
 
 Production: Namecheap Stellar Plus (shared hosting), cPanel. SSH confirmed working (user `zeusiwpo`, port `21098`, WordPress path `/home/zeusiwpo/public_html`). WP-CLI 2.6.0 confirmed installed. No staging site known to exist. Git remote is GitHub (`git@github.com:Aleksei-rich/Zeus.git`) — source control only, not a deployment mechanism; no CI/CD or deploy tooling found anywhere in the repo.
+
+## Verified production audit results - 2026-07-24
+
+- Production path verified: /home/zeusiwpo/public_html
+- Active production theme verified: zeus
+- Corrected audit included trash status because WordPress post_status=any excludes trash
+- total_posts: 8
+- 5 real historical Portfolio posts in trash:
+  - Builder series ID 158
+  - Brooklyn Premier series ID 339
+  - Shaker Premier series ID 355
+  - Oslo Premier series ID 372
+  - Napa Premier Series ID 373
+- 3 test posts in trash, excluded from migration:
+  - Test ID 458
+  - Test2 ID 459
+  - TestPost ID 466
+- 126 legacy gallery rows/images
+- 0 YouTube links
+- Catalog auto-match:
+  - Builder auto-match
+  - Napa auto-match
+  - Shaker auto-match using legacy color Sand
+  - Oslo manual assignment required
+  - Brooklyn manual assignment required
+- No production database writes were made
+- Temporary audit script and report directory were removed from production
+- Local temporary audit scripts were deleted
+- git status is clean
+- Next step: write migration script and template updates, but do not run production writes without approval

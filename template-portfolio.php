@@ -67,48 +67,32 @@
                         }
                     }
                     
-                    $image = get_field("image", $item->ID);
-                    $gallery = is_array(get_field("gallery", $item->ID)) ? get_field("gallery", $item->ID) : array();
-                    
+                    $portfolio_display = zeus_get_portfolio_display($item->ID);
+                    $image = $portfolio_display['image'];
+                    $gallery = $portfolio_display['gallery'];
+
                     if($image){
             ?>
             <div class="item <?php echo $class; ?> _active">
                 <a href="#" class="show_galley" data-gallery="portfolio_<?php echo $item->ID; ?>">
                     <img src="<?php echo $image["sizes"]["post"] ?>" alt="<?php echo $image["alt"] ?>">
                 </a>
-                
+
                 <?php if(count($gallery) > 0){ ?>
                 <div class="gallery_links">
                     <script>
                         catalog["portfolio_<?php echo $item->ID; ?>"] = [
-                            <?php 
-                                foreach($gallery as $gall_item){ 
-                                    $gall_link = false;
-                            
-                                    if($gall_item['image']){
-                                        $gall_link = $gall_item['image']["sizes"]["large"];
-                                    }
-
-                                    if($gall_item['youtube_link']){
-                                        $gall_link = getYoutubeLink($gall_item['youtube_link']);
-                                    }
-
-                                    if($gall_link){
-                            ?>
+                            <?php foreach($gallery as $gall_item){ ?>
                                 {
-                                    src: '<?php echo $gall_link; ?>',
-                                    <?php if($gall_item['image']){ ?>
-                                    thumb: "<?php echo $gall_link; ?>",
-                                    <?php }else if($gall_item['youtube_link']){ ?>
-                                    thumb: "<?php echo getYoutubeThumbnail($gall_item['youtube_link']); ?>",
-                                    <?php } ?>
+                                    src: '<?php echo $gall_item["sizes"]["large"]; ?>',
+                                    thumb: "<?php echo $gall_item["sizes"]["large"]; ?>"
                                 },
-                                <?php } } ?>
+                            <?php } ?>
                         ];
                     </script>
                 </div>
                 <?php } ?>
-                
+
             </div>
             <?php } ?>
             <?php } ?>

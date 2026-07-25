@@ -206,41 +206,25 @@
     $portfolio = get_posts(array(
         'numberposts' => -1,
         'post_type'   => 'portfolio',
-        'meta_key' => 'in_home',
+        'meta_key' => 'featured_home',
         'meta_value' => true,
     ));
 
     if (count($portfolio) > 0) {
-        
-        foreach ($portfolio as $item) { 
-            $gallery = is_array(get_field("gallery", $item->ID)) ? get_field("gallery", $item->ID) : array();
+
+        foreach ($portfolio as $item) {
+            $portfolio_display = zeus_get_portfolio_display($item->ID);
+            $gallery = $portfolio_display['gallery'];
         ?>
-            
+
             <script>
                 catalog["portfolio_<?php echo $item->ID; ?>"] = [
-                    <?php 
-                        foreach($gallery as $gall_item){ 
-                            $gall_link = false;
-
-                            if($gall_item['image']){
-                                $gall_link = $gall_item['image']["sizes"]["large"];
-                            }
-
-                            if($gall_item['youtube_link']){
-                                $gall_link = getYoutubeLink($gall_item['youtube_link']);
-                            }
-
-                            if($gall_link){
-                    ?>
+                    <?php foreach($gallery as $gall_item){ ?>
                         {
-                            src: '<?php echo $gall_link; ?>',
-                            <?php if($gall_item['image']){ ?>
-                            thumb: "<?php echo $gall_link; ?>",
-                            <?php }else if($gall_item['youtube_link']){ ?>
-                            thumb: "<?php echo getYoutubeThumbnail($gall_item['youtube_link']); ?>",
-                            <?php } ?>
+                            src: '<?php echo $gall_item["sizes"]["large"]; ?>',
+                            thumb: "<?php echo $gall_item["sizes"]["large"]; ?>"
                         },
-                        <?php } } ?>
+                    <?php } ?>
                 ];
             </script>
         <?php } ?>
@@ -250,9 +234,10 @@
         <h2 class="section_title">Examples <span class="cursive">of Works</span></h2>
         <div class="wrap">
             <div class="slider_wrap">
-                <?php 
-                    foreach ($portfolio as $item) { 
-                       $image = get_field("image", $item->ID);
+                <?php
+                    foreach ($portfolio as $item) {
+                       $portfolio_display = zeus_get_portfolio_display($item->ID);
+                       $image = $portfolio_display['image'];
 
                         if($image){
                 ?>
@@ -266,7 +251,7 @@
                         <div class="name">
                             <a href="#" class="show_galley" data-gallery="portfolio_<?php echo $item->ID; ?>"><?php echo get_the_title($item->ID); ?></a>
                         </div>
-                        <div class="color"><?php echo get_field("color", $item->ID) ?></div>
+                        <div class="color"><?php echo $portfolio_display['color']; ?></div>
                         <div class="link">
                             <a href="#" class="show_galley" data-gallery="portfolio_<?php echo $item->ID; ?>">MORE DETAILS</a>
                         </div>

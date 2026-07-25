@@ -204,6 +204,87 @@ function register_room_type_taxonomy() {
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * Normalize an ACF post-relationship value to a plain post ID,
+ * regardless of whether ACF returns an ID, a WP_Post object, an
+ * array containing an ID, or a single-element array wrapping any
+ * of those.
+ */
+function zeus_resolve_post_id($value) {
+    if (is_numeric($value)) {
+        return (int) $value;
+    }
+    if ($value instanceof WP_Post) {
+        return (int) $value->ID;
+    }
+    if (is_array($value)) {
+        if (isset($value['ID'])) {
+            return (int) $value['ID'];
+        }
+        if (count($value) > 0) {
+            return zeus_resolve_post_id(reset($value));
+        }
+    }
+    return 0;
+}
+
+/**
+ * Normalize one project_gallery item to the sizes/alt shape the
+ * templates expect, regardless of whether ACF handed back a full
+ * image array already or just an attachment ID/object/array.
+ */
+function zeus_normalize_gallery_image($item) {
+    if (is_array($item) && isset($item['sizes'])) {
+        return $item;
+    }
+
+    $attachment_id = zeus_resolve_post_id($item);
+    if (!$attachment_id) {
+        return null;
+    }
+
+    $post_src  = wp_get_attachment_image_src($attachment_id, 'post');
+    $large_src = wp_get_attachment_image_src($attachment_id, 'large');
+
+    return array(
+        'ID'    => $attachment_id,
+        'alt'   => get_post_meta($attachment_id, '_wp_attachment_image_alt', true),
+        'sizes' => array(
+            'post'  => $post_src ? $post_src[0] : '',
+            'large' => $large_src ? $large_src[0] : wp_get_attachment_url($attachment_id),
+        ),
+    );
+}
+
+/**
+ * Resolve display data for a Portfolio post under the new field model:
+ * cover image is the first project_gallery image, falling back to the
+ * linked Catalog item's own image/color when the gallery is empty.
+ */
+function zeus_get_portfolio_display($post_id) {
+    $gallery = get_field('project_gallery', $post_id);
+    $gallery = is_array($gallery) ? $gallery : array();
+    $gallery = array_values(array_filter(array_map('zeus_normalize_gallery_image', $gallery)));
+
+    $image = count($gallery) > 0 ? $gallery[0] : null;
+
+    $catalog_item_id = zeus_resolve_post_id(get_field('catalog_item', $post_id));
+
+    if (!$image && $catalog_item_id) {
+        $image = get_field('image', $catalog_item_id);
+    }
+
+    $color = $catalog_item_id ? get_field('color', $catalog_item_id) : '';
+
+    return array(
+        'image'   => $image,
+        'gallery' => $gallery,
+        'color'   => $color,
+    );
+}
+
+////////////////////////////////////////////////////////////
+
 function getYoutubeLink($link){
     preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $link, $youtubeMatch);
     if(isset($youtubeMatch[1])){

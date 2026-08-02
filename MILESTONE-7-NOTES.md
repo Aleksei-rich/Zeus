@@ -104,3 +104,20 @@ Production: Namecheap Stellar Plus (shared hosting), cPanel. SSH confirmed worki
 - Local temporary audit scripts were deleted
 - git status is clean
 - Next step: write migration script and template updates, but do not run production writes without approval
+
+## Real migration completed - 2026-07-26
+
+- Production database backup created before the real run: /home/zeusiwpo/milestone7-db-backup-20260726-165620.sql
+- Real migration (MILESTONE7_MIGRATION_DRY_RUN=false) ran successfully against production
+- 5 real Portfolio posts migrated:
+  - Builder series (ID 158): 41 gallery images, catalog_item 263, featured_home 1
+  - Brooklyn Premier series (ID 339): 23 gallery images, catalog_item 217, featured_home 1
+  - Shaker Premier series (ID 355): 42 gallery images, catalog_item 177, featured_home 1
+  - Oslo Premier series (ID 372): 8 gallery images, catalog_item 245, featured_home 1
+  - Napa Premier Series (ID 373): 12 gallery images, catalog_item 388, featured_home 1
+- Total migrated gallery images: 126 (matches the verified audit total exactly)
+- Legacy postmeta (image, gallery, gallery_*_image, gallery_*_youtube_link, color, in_home) was not deleted or modified - left fully intact
+- post_status was not changed - all 5 posts remain in trash. Restoring to publish is a separate, not-yet-made decision.
+- The uploaded migration script was removed from production after the run, removal verified
+- The local temporary migration script (_milestone7-portfolio-migration.php) was deleted after the migration completed successfully
+- No deploy performed. No merge into main. No git operations performed against production at any point.

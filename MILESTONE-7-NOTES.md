@@ -121,3 +121,32 @@ Production: Namecheap Stellar Plus (shared hosting), cPanel. SSH confirmed worki
 - The uploaded migration script was removed from production after the run, removal verified
 - The local temporary migration script (_milestone7-portfolio-migration.php) was deleted after the migration completed successfully
 - No deploy performed. No merge into main. No git operations performed against production at any point.
+
+## Portfolio posts published and live - 2026-08-04
+
+- 5 Portfolio posts were restored from trash and published.
+- wp_untrash_post() restored all 5 to draft first, not publish, despite _wp_trash_meta_status reading publish for each - a known WP-CLI capability-context gotcha (no WordPress user context when running via wp eval-file). wp post update then set post_status=publish for only IDs 158, 339, 355, 372, 373, which resolved it correctly.
+- Final slugs (post_name), unchanged since the restore step:
+  - 158 builder-series
+  - 339 brooklyn-premier-series
+  - 355 shaker-premier-series
+  - 372 oslo-premier-series
+  - 373 napa-premier-series
+- After publish, /projects/builder-series/, /projects/brooklyn-premier-series/, /projects/shaker-premier-series/, /projects/oslo-premier-series/, and /projects/napa-premier-series/ all initially returned HTTP 404, along with /projects/ itself. Homepage returned 200.
+- Root cause: stale cached WordPress rewrite rules, predating the Milestone 2 has_archive/projects-slug registration change that was part of the deployed functions.php. Not a content or code problem.
+- Fixed with a soft rewrite flush only: wp rewrite flush --path=/home/zeusiwpo/public_html. No --hard flush was used.
+- After the flush, all 5 project permalinks return HTTP 200, the /projects/ archive returns HTTP 200, and the homepage returns HTTP 200.
+- Migration data remained correct and untouched through the restore, publish, and flush steps:
+  - 158: project_gallery count 41, catalog_item 263, featured_home 1
+  - 339: project_gallery count 23, catalog_item 217, featured_home 1
+  - 355: project_gallery count 42, catalog_item 177, featured_home 1
+  - 372: project_gallery count 8, catalog_item 245, featured_home 1
+  - 373: project_gallery count 12, catalog_item 388, featured_home 1
+- Backups were not deleted and remain on production:
+  - /home/zeusiwpo/milestone7-db-backup-20260726-165620.sql
+  - /home/zeusiwpo/milestone7-before-portfolio-restore-20260803-190839.sql
+  - /home/zeusiwpo/milestone7-theme-backup-20260802-150500.tar.gz
+- No merge into main was performed.
+- No additional deploy was performed after the earlier 4-file deploy (functions.php, template-home.php, template-portfolio.php, acf-json/group_66b1efc8113da.json).
+- No migration script remains on production.
+- The temporary restore script (_milestone7-portfolio-restore.php) was removed from production after use.

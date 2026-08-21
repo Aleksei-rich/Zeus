@@ -39,6 +39,9 @@ Thumbs.db
 .idea/
 *.sublime-*
 
+# Claude Code session runtime state (not project content)
+.claude/scheduled_tasks.lock
+
 # Backups / DB dumps (never commit real data)
 *.sql
 *.sql.gz

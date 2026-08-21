@@ -10,14 +10,18 @@
  */
 get_header();
 
-$zeus_page_cabinets     = get_page_by_path( 'cabinets' );
-$zeus_page_kitchen      = get_page_by_path( 'kitchen-cabinets' );
-$zeus_page_bath         = get_page_by_path( 'bathroom-cabinets-vanities' );
-$zeus_page_countertops  = get_page_by_path( 'countertops' );
-$zeus_page_quartz       = get_page_by_path( 'quartz' );
-$zeus_page_granite      = get_page_by_path( 'granite' );
-$zeus_page_porcelain    = get_page_by_path( 'porcelain' );
-$zeus_page_marble       = get_page_by_path( 'marble' );
+// NOTE: get_page_by_path() requires the FULL ancestor path for non-top-
+// level pages (returns null for a bare child slug) — zeus_get_post_by_slug()
+// (defined by the zeus-core plugin) does a plain, depth-independent
+// post_name lookup instead. See docs/DECISIONS.md, "Seeding safety fix".
+$zeus_page_cabinets     = zeus_get_post_by_slug( 'cabinets', 'page' );
+$zeus_page_kitchen      = zeus_get_post_by_slug( 'kitchen-cabinets', 'page' );
+$zeus_page_bath         = zeus_get_post_by_slug( 'bathroom-cabinets-vanities', 'page' );
+$zeus_page_countertops  = zeus_get_post_by_slug( 'countertops', 'page' );
+$zeus_page_quartz       = zeus_get_post_by_slug( 'quartz', 'page' );
+$zeus_page_granite      = zeus_get_post_by_slug( 'granite', 'page' );
+$zeus_page_porcelain    = zeus_get_post_by_slug( 'porcelain', 'page' );
+$zeus_page_marble       = zeus_get_post_by_slug( 'marble', 'page' );
 
 $zeus_collections = get_posts(
 	array(

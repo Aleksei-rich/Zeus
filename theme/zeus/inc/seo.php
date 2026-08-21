@@ -58,6 +58,17 @@ function zeus_output_head_meta() {
 		$url = home_url( add_query_arg( array(), $GLOBALS['wp']->request ) );
 	}
 
+	// Never ship a page with no description at all — falls back to the
+	// site tagline, and if even that's unset, a minimal factual default
+	// so this can't silently regress to nothing (see docs/DECISIONS.md,
+	// "SEO audit findings").
+	if ( ! $description ) {
+		$description = get_bloginfo( 'description' );
+	}
+	if ( ! $description ) {
+		$description = get_bloginfo( 'name' ) . ' — custom cabinets and countertops in Orlando and Central Florida.';
+	}
+
 	if ( $description ) {
 		printf( '<meta name="description" content="%s">' . "\n", esc_attr( $description ) );
 	}

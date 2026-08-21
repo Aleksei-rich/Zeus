@@ -50,7 +50,7 @@ function zeus_get_seo_description( $post_id ) {
  * source of truth so no template hard-codes the URL.
  */
 function zeus_consultation_url() {
-	$page = get_page_by_path( 'consultation' );
+	$page = function_exists( 'zeus_get_post_by_slug' ) ? zeus_get_post_by_slug( 'consultation', 'page' ) : get_page_by_path( 'consultation' );
 	return $page ? get_permalink( $page ) : home_url( '/consultation/' );
 }
 

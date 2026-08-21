@@ -34,10 +34,12 @@ Start-Process -FilePath $mariadbd -ArgumentList @(
 Start-Sleep -Seconds 3
 
 Write-Host "Starting PHP dev server (http://localhost:8890)..."
+$router = Join-Path $PSScriptRoot "router.php"
 Start-Process -FilePath $php -ArgumentList @(
     "-c", $ini,
     "-S", "localhost:8890",
-    "-t", $wpPath
+    "-t", $wpPath,
+    $router
 ) -RedirectStandardOutput $phpLog -RedirectStandardError $phpLog -WindowStyle Hidden
 
 Write-Host ""

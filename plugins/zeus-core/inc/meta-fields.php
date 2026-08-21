@@ -2,8 +2,11 @@
 /**
  * Structured custom fields for cabinet_collection and project, implemented
  * with native register_post_meta() + hand-built meta boxes. No ACF or
- * other field-management plugin — see docs/DECISIONS.md (2026-08-21,
- * "Phase 2: no plugins installed...").
+ * other field-management plugin — see docs/DECISIONS.md.
+ *
+ * Moved from the theme to this first-party plugin. Meta keys UNCHANGED
+ * from the original theme-owned version so existing postmeta rows in
+ * the database remain fully valid.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -81,6 +84,7 @@ function zeus_register_meta_fields() {
 	foreach ( array( 'cabinet_collection', 'project', 'page', 'post' ) as $seo_post_type ) {
 		register_post_meta( $seo_post_type, 'zeus_seo_title', $text_field );
 		register_post_meta( $seo_post_type, 'zeus_seo_description', $text_field );
+		register_post_meta( $seo_post_type, 'zeus_noindex', $bool_field );
 	}
 }
 add_action( 'init', 'zeus_register_meta_fields' );
@@ -100,11 +104,11 @@ function zeus_sanitize_id_array( $value ) {
  * Meta boxes (classic UI — renders below the block editor).
  * ------------------------------------------------------------------ */
 function zeus_add_meta_boxes() {
-	add_meta_box( 'zeus_collection_fields', __( 'Collection Details', 'zeus' ), 'zeus_render_collection_meta_box', 'cabinet_collection', 'normal', 'high' );
-	add_meta_box( 'zeus_project_fields', __( 'Project Details', 'zeus' ), 'zeus_render_project_meta_box', 'project', 'normal', 'high' );
+	add_meta_box( 'zeus_collection_fields', __( 'Collection Details', 'zeus-core' ), 'zeus_render_collection_meta_box', 'cabinet_collection', 'normal', 'high' );
+	add_meta_box( 'zeus_project_fields', __( 'Project Details', 'zeus-core' ), 'zeus_render_project_meta_box', 'project', 'normal', 'high' );
 
 	foreach ( array( 'cabinet_collection', 'project', 'page', 'post' ) as $seo_post_type ) {
-		add_meta_box( 'zeus_seo_fields', __( 'SEO', 'zeus' ), 'zeus_render_seo_meta_box', $seo_post_type, 'normal', 'default' );
+		add_meta_box( 'zeus_seo_fields', __( 'SEO', 'zeus-core' ), 'zeus_render_seo_meta_box', $seo_post_type, 'normal', 'default' );
 	}
 }
 add_action( 'add_meta_boxes', 'zeus_add_meta_boxes' );
@@ -117,18 +121,18 @@ function zeus_render_collection_meta_box( $post ) {
 	$gallery      = (array) get_post_meta( $post->ID, 'zeus_gallery', true );
 	?>
 	<p>
-		<label for="zeus_profile_type"><strong><?php esc_html_e( 'Profile type', 'zeus' ); ?></strong></label><br>
+		<label for="zeus_profile_type"><strong><?php esc_html_e( 'Profile type', 'zeus-core' ); ?></strong></label><br>
 		<input type="text" id="zeus_profile_type" name="zeus_profile_type" class="widefat" value="<?php echo esc_attr( $profile_type ); ?>" placeholder="e.g. Slim Shaker (narrow-rail)">
 	</p>
 	<p>
-		<label for="zeus_construction_notes"><strong><?php esc_html_e( 'Material / construction notes', 'zeus' ); ?></strong></label><br>
+		<label for="zeus_construction_notes"><strong><?php esc_html_e( 'Material / construction notes', 'zeus-core' ); ?></strong></label><br>
 		<textarea id="zeus_construction_notes" name="zeus_construction_notes" class="widefat" rows="4"><?php echo esc_textarea( $notes ); ?></textarea>
 	</p>
 	<p>
-		<label><input type="checkbox" name="zeus_is_featured" value="1" <?php checked( $featured, true ); ?>> <?php esc_html_e( 'Feature on homepage', 'zeus' ); ?></label>
+		<label><input type="checkbox" name="zeus_is_featured" value="1" <?php checked( $featured, true ); ?>> <?php esc_html_e( 'Feature on homepage', 'zeus-core' ); ?></label>
 	</p>
-	<?php zeus_render_gallery_field( 'zeus_gallery', $gallery, __( 'Collection gallery', 'zeus' ) ); ?>
-	<p class="description"><?php esc_html_e( 'Finishes are assigned via the Finish taxonomy panel. Short description = Excerpt. Full description = main editor content.', 'zeus' ); ?></p>
+	<?php zeus_render_gallery_field( 'zeus_gallery', $gallery, __( 'Collection gallery', 'zeus-core' ) ); ?>
+	<p class="description"><?php esc_html_e( 'Finishes are assigned via the Finish taxonomy panel. Short description = Excerpt. Full description = main editor content.', 'zeus-core' ); ?></p>
 	<?php
 }
 
@@ -147,47 +151,51 @@ function zeus_render_project_meta_box( $post ) {
 	}
 	?>
 	<p>
-		<strong><?php esc_html_e( 'Project status', 'zeus' ); ?></strong><br>
-		<label><input type="radio" name="zeus_project_status" value="completed" <?php checked( $status, 'completed' ); ?>> <?php esc_html_e( 'Completed project (real, finished work)', 'zeus' ); ?></label><br>
-		<label><input type="radio" name="zeus_project_status" value="concept" <?php checked( $status, 'concept' ); ?>> <?php esc_html_e( '3D design concept (not yet built)', 'zeus' ); ?></label>
-		<br><span class="description"><?php esc_html_e( 'Required. This controls the label shown on the frontend — a concept must never display as a completed project.', 'zeus' ); ?></span>
+		<strong><?php esc_html_e( 'Project status', 'zeus-core' ); ?></strong><br>
+		<label><input type="radio" name="zeus_project_status" value="completed" <?php checked( $status, 'completed' ); ?>> <?php esc_html_e( 'Completed project (real, finished work)', 'zeus-core' ); ?></label><br>
+		<label><input type="radio" name="zeus_project_status" value="concept" <?php checked( $status, 'concept' ); ?>> <?php esc_html_e( '3D design concept (not yet built)', 'zeus-core' ); ?></label>
+		<br><span class="description"><?php esc_html_e( 'Required. This controls the label shown on the frontend — a concept must never display as a completed project.', 'zeus-core' ); ?></span>
 	</p>
 	<p>
-		<label for="zeus_location"><strong><?php esc_html_e( 'Location (e.g. "Windermere, FL")', 'zeus' ); ?></strong></label><br>
+		<label for="zeus_location"><strong><?php esc_html_e( 'Location (e.g. "Windermere, FL")', 'zeus-core' ); ?></strong></label><br>
 		<input type="text" id="zeus_location" name="zeus_location" class="widefat" value="<?php echo esc_attr( $location ); ?>">
 	</p>
 	<p>
-		<label for="zeus_design_decisions"><strong><?php esc_html_e( 'Design decisions', 'zeus' ); ?></strong></label><br>
+		<label for="zeus_design_decisions"><strong><?php esc_html_e( 'Design decisions', 'zeus-core' ); ?></strong></label><br>
 		<textarea id="zeus_design_decisions" name="zeus_design_decisions" class="widefat" rows="4"><?php echo esc_textarea( $decisions ); ?></textarea>
 	</p>
 	<p>
-		<label><input type="checkbox" name="zeus_is_featured" value="1" <?php checked( $featured, true ); ?>> <?php esc_html_e( 'Feature on homepage', 'zeus' ); ?></label>
+		<label><input type="checkbox" name="zeus_is_featured" value="1" <?php checked( $featured, true ); ?>> <?php esc_html_e( 'Feature on homepage', 'zeus-core' ); ?></label>
 	</p>
 	<p>
-		<label for="zeus_cta_variant"><strong><?php esc_html_e( 'CTA override (optional)', 'zeus' ); ?></strong></label><br>
+		<label for="zeus_cta_variant"><strong><?php esc_html_e( 'CTA override (optional)', 'zeus-core' ); ?></strong></label><br>
 		<input type="text" id="zeus_cta_variant" name="zeus_cta_variant" class="widefat" value="<?php echo esc_attr( $cta ); ?>">
 	</p>
 	<?php
-	zeus_render_single_image_field( 'zeus_before_image', $before_id, __( 'Before image', 'zeus' ) );
-	zeus_render_single_image_field( 'zeus_after_image', $after_id, __( 'After image', 'zeus' ) );
-	zeus_render_gallery_field( 'zeus_gallery', $gallery, __( 'Project gallery', 'zeus' ) );
+	zeus_render_single_image_field( 'zeus_before_image', $before_id, __( 'Before image', 'zeus-core' ) );
+	zeus_render_single_image_field( 'zeus_after_image', $after_id, __( 'After image', 'zeus-core' ) );
+	zeus_render_gallery_field( 'zeus_gallery', $gallery, __( 'Project gallery', 'zeus-core' ) );
 	?>
-	<p class="description"><?php esc_html_e( 'Project type, service area, cabinetry style, and countertop material are assigned via their taxonomy panels. Description = main editor content.', 'zeus' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Project type, service area, cabinetry style, and countertop material are assigned via their taxonomy panels. Description = main editor content.', 'zeus-core' ); ?></p>
 	<?php
 }
 
 function zeus_render_seo_meta_box( $post ) {
 	wp_nonce_field( 'zeus_save_seo_meta', 'zeus_seo_meta_nonce' );
-	$title = get_post_meta( $post->ID, 'zeus_seo_title', true );
-	$desc  = get_post_meta( $post->ID, 'zeus_seo_description', true );
+	$title    = get_post_meta( $post->ID, 'zeus_seo_title', true );
+	$desc     = get_post_meta( $post->ID, 'zeus_seo_description', true );
+	$noindex  = get_post_meta( $post->ID, 'zeus_noindex', true );
 	?>
 	<p>
-		<label for="zeus_seo_title"><strong><?php esc_html_e( 'SEO title override (optional)', 'zeus' ); ?></strong></label><br>
+		<label for="zeus_seo_title"><strong><?php esc_html_e( 'SEO title override (optional)', 'zeus-core' ); ?></strong></label><br>
 		<input type="text" id="zeus_seo_title" name="zeus_seo_title" class="widefat" value="<?php echo esc_attr( $title ); ?>">
 	</p>
 	<p>
-		<label for="zeus_seo_description"><strong><?php esc_html_e( 'Meta description', 'zeus' ); ?></strong></label><br>
+		<label for="zeus_seo_description"><strong><?php esc_html_e( 'Meta description', 'zeus-core' ); ?></strong></label><br>
 		<textarea id="zeus_seo_description" name="zeus_seo_description" class="widefat" rows="2" maxlength="160"><?php echo esc_textarea( $desc ); ?></textarea>
+	</p>
+	<p>
+		<label><input type="checkbox" name="zeus_noindex" value="1" <?php checked( $noindex, true ); ?>> <?php esc_html_e( 'Hide from search engines (noindex)', 'zeus-core' ); ?></label>
 	</p>
 	<?php
 }
@@ -203,8 +211,8 @@ function zeus_render_single_image_field( $name, $attachment_id, $label ) {
 				<img src="<?php echo esc_url( $url ); ?>" style="max-width:100px;height:auto;display:block;">
 			<?php endif; ?>
 		</div>
-		<button type="button" class="button zeus-image-field__select"><?php esc_html_e( 'Select image', 'zeus' ); ?></button>
-		<button type="button" class="button zeus-image-field__clear"><?php esc_html_e( 'Clear', 'zeus' ); ?></button>
+		<button type="button" class="button zeus-image-field__select"><?php esc_html_e( 'Select image', 'zeus-core' ); ?></button>
+		<button type="button" class="button zeus-image-field__clear"><?php esc_html_e( 'Clear', 'zeus-core' ); ?></button>
 	</div>
 	<?php
 }
@@ -224,7 +232,7 @@ function zeus_render_gallery_field( $name, $ids, $label ) {
 				<img src="<?php echo esc_url( $url ); ?>" style="max-width:80px;height:auto;display:inline-block;margin:2px;">
 			<?php endforeach; ?>
 		</div>
-		<button type="button" class="button zeus-gallery-field__select"><?php esc_html_e( 'Edit gallery', 'zeus' ); ?></button>
+		<button type="button" class="button zeus-gallery-field__select"><?php esc_html_e( 'Edit gallery', 'zeus-core' ); ?></button>
 	</div>
 	<?php
 }
@@ -270,6 +278,7 @@ function zeus_save_post_meta( $post_id, $post ) {
 	if ( isset( $_POST['zeus_seo_meta_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['zeus_seo_meta_nonce'] ) ), 'zeus_save_seo_meta' ) ) {
 		update_post_meta( $post_id, 'zeus_seo_title', isset( $_POST['zeus_seo_title'] ) ? sanitize_text_field( wp_unslash( $_POST['zeus_seo_title'] ) ) : '' );
 		update_post_meta( $post_id, 'zeus_seo_description', isset( $_POST['zeus_seo_description'] ) ? sanitize_text_field( wp_unslash( $_POST['zeus_seo_description'] ) ) : '' );
+		update_post_meta( $post_id, 'zeus_noindex', ! empty( $_POST['zeus_noindex'] ) );
 	}
 }
 add_action( 'save_post', 'zeus_save_post_meta', 10, 2 );

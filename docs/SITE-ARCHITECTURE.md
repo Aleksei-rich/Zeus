@@ -96,3 +96,52 @@ Walnut finish page are the primary target for this term.
 - No parameter-based URLs indexed (filtering on the Portfolio archive uses
   query params but those are excluded from indexing via canonical + robots
   rules — see `SEO-STRATEGY.md`).
+
+## Final URL map (Phase 2)
+
+```
+/                                          Home (front-page.php)
+/cabinets/                                 Page — hub
+/cabinets/kitchen-cabinets/                Page — service
+/cabinets/bathroom-cabinets-vanities/      Page — service
+/cabinet-styles/                           cabinet_collection archive — hub
+/cabinet-styles/brooklyn/                  cabinet_collection single
+/cabinet-styles/shaker/                    cabinet_collection single
+/cabinet-styles/oslo/                      cabinet_collection single (incl. Walnut "Slim Shaker")
+/cabinet-styles/euro-flat-panel/           cabinet_collection single
+/countertops/                              Page — hub
+/countertops/quartz/                       Page
+/countertops/granite/                      Page
+/countertops/porcelain/                    Page
+/countertops/marble/                       Page
+/custom-spaces/                            Page — hub
+/custom-spaces/closets/                    Page
+/custom-spaces/laundry-pantry/             Page
+/custom-spaces/home-office/                Page
+/portfolio/                                project archive — hub, filterable
+/portfolio/{project-slug}/                 project single
+/blog/                                     Posts page (static front page + posts page pattern)
+/blog/{post-slug}/                         Post
+/about/                                    Page
+/contact/                                  Page
+/consultation/                             Page — Request Free Consultation form
+/thank-you/                                Page — conversion landing, noindex
+```
+
+No collisions between top-level sections: `cabinets` (services) and
+`cabinet-styles` (collections) are deliberately distinct roots so a
+service page and a collection page never compete for the same URL or
+query. `portfolio` and `blog` are separate roots. Future service-area
+content lives inside `portfolio` project entries (via the `service_area`
+taxonomy) rather than as new top-level `/areas/{city}/` pages, avoiding
+future collision risk — see `SEO-STRATEGY.md` on avoiding thin
+doorway pages.
+
+Taxonomy archives (`finish`, `project_type`, `service_area`,
+`cabinetry_style`, `countertop_material`) are registered as
+non-public-facing (used for internal filtering/relationships only, not
+separate crawlable archive URLs) — the canonical, indexable page for each
+concept is the single Page/CPT entry above (e.g. `countertop_material:
+quartz` relates back to `/countertops/quartz/`, not a separate taxonomy
+archive URL), which avoids duplicate/thin content competing with the main
+pages.

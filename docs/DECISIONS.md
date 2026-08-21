@@ -6,6 +6,35 @@ owner-directed one.
 
 ---
 
+## 2026-08-21 — Phase 2: no plugins installed for the content-model/theme foundation; native WordPress only (supersedes the earlier ACF-in-code plan)
+
+**Decision:** The `cabinet_collection` and `project` CPTs, their
+taxonomies, and all structured fields are built using only native
+WordPress APIs — `register_post_type`, `register_taxonomy`,
+`register_post_meta`, and hand-built capability/nonce-checked meta boxes
+for editorial input. **No plugin is installed** for this (not ACF free,
+not ACF Pro). SEO plugin (Yoast or otherwise) and a forms plugin are
+likewise **not installed** in Phase 2 — canonical URLs, title tags, and
+basic Open Graph/JSON-LD are implemented directly in the theme via
+`wp_head`; the consultation form ships as structurally correct, accessible
+markup without a plugin-driven submission handler yet.
+**Reasoning:** The current instruction is explicit: the custom theme and
+content model are the foundation, plugins are supporting tools, and no
+plugin should be installed merely because the old site used it or "to
+have it just in case." ACF Pro's license status for this project is
+still unverified (see the earlier 2026-08-21 ACF entry, which this
+supersedes rather than deletes — the reasoning there was correct at the
+time but a plugin-free approach is strictly safer and was explicitly
+requested now). Native `register_post_meta` plus custom meta boxes fully
+covers the fields this phase needs (scalars, taxonomy relationships,
+attachment-ID arrays for galleries) without a repeater/gallery field type
+dependency. This can be revisited — e.g., swapping hand-built meta boxes
+for ACF Pro fields — later, only if editorial UX genuinely demands it and
+a valid license is confirmed; the underlying meta keys are designed so
+that swap would be non-breaking.
+**Type:** Autonomous professional default, directly implementing the
+owner's explicit "architecture priority" instruction.
+
 ## 2026-08-21 — Standalone local WordPress environment built from LocalWP's bundled binaries, bypassing the Local GUI entirely
 
 **Decision:** Built a clean local WordPress dev environment using PHP

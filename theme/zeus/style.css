@@ -1,0 +1,14 @@
+/*
+Theme Name: ZEUS
+Author: ZEUS Cabinets & Countertops
+Description: Custom lightweight theme for the ZEUS Cabinets & Countertops rebuild. Block-editor compatible, no page builder dependency.
+Version: 0.1.0
+Requires at least: 6.4
+Requires PHP: 8.0
+Text Domain: zeus
+*/
+
+/* This file intentionally holds only the required theme header comment.
+   All real styles live in assets/css/style.css (enqueued in inc/enqueue.php)
+   so editor tooling that expects a populated style.css doesn't conflict
+   with our token-based, hand-authored stylesheet organization. */

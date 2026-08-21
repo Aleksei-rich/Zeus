@@ -54,31 +54,76 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
       `/wp-admin/` → HTTP 302 redirect to login, as expected)
 - [x] Start/stop tooling: `tools/start-local-env.ps1` /
       `tools/stop-local-env.ps1`
-- [ ] Install baseline plugin set (Yoast SEO, ACF, forms solution) and
-      justify each in `DECISIONS.md`
-- [ ] Scaffold custom block theme skeleton (`theme.json`, base templates)
+- [x] Theme directory symlinked (Windows junction) from
+      `.localenv/wordpress/wp-content/themes/zeus` → `theme/zeus/` so
+      edits to the git-tracked theme apply live with no copy step
+- [x] Plugin decision: **no plugins installed** for the content-model/
+      theme foundation (not ACF, not Yoast, not a forms plugin) — native
+      WordPress only. See `DECISIONS.md`.
+- [x] Custom theme scaffolded (`theme.json`, classic template hierarchy,
+      `inc/`, `template-parts/`, `components/`, `patterns/`, `assets/`)
 
-## Phase 2 — Theme & content model build (not started)
+## Phase 2 — Theme & content model build (done)
 
-- [ ] Register `cabinet_collection` CPT + `finish` taxonomy
-- [ ] Register `project` CPT + `project_type`/`service_area`/
-      `cabinetry_style`/`countertop_material` taxonomies
-- [ ] Build homepage template (13-section structure)
-- [ ] Build Cabinets hub + Kitchen/Bathroom service pages
-- [ ] Build 4 Cabinet Collection pages (Brooklyn, Shaker, Oslo, Euro/Flat
-      Panel), including Oslo Walnut "Slim Shaker" content
-- [ ] Build Countertops hub + 4 material pages
-- [ ] Build Custom Spaces hub + 3 service pages
-- [ ] Build Portfolio archive + single project template
-- [ ] Build Request Free Consultation form + thank-you page
-- [ ] Build About, Contact
-- [ ] Blog setup
+- [x] Registered `cabinet_collection` CPT + `finish` taxonomy
+- [x] Registered `project` CPT + `project_type`/`service_area`/
+      `cabinetry_style`/`countertop_material` taxonomies (all
+      non-public/rewrite-disabled — internal filtering only, see
+      `SITE-ARCHITECTURE.md` URL map)
+- [x] Structured fields implemented via native `register_post_meta` +
+      hand-built, nonce/capability-checked meta boxes (no ACF) —
+      `theme/zeus/inc/meta-fields.php`
+- [x] Native SEO plumbing (title override, meta description, Open Graph,
+      Organization/LocalBusiness/BreadcrumbList/BlogPosting JSON-LD,
+      noindex support) — `theme/zeus/inc/seo.php`, no SEO plugin
+- [x] Built homepage template (`front-page.php`, all 13 sections) — see
+      Phase 3 below, done together
+- [x] Seeded the 4 real Cabinet Collections (Brooklyn, Shaker, Oslo,
+      Euro/Flat Panel) with correct finishes and "Slim Shaker"
+      terminology (Oslo, incl. Classic Walnut) —
+      `theme/zeus/inc/post-types.php`
+- [x] Built Cabinets hub + Kitchen/Bathroom service pages (seeded Pages)
+- [x] Built Countertops hub + 4 material pages (seeded Pages, factual
+      general material-property content + placeholder notes)
+- [x] Built Custom Spaces hub + 3 service pages (seeded Pages)
+- [x] Built Portfolio archive + single project template (honest empty
+      state — zero fake projects seeded, by design)
+- [x] Built Request Free Consultation page + homepage section —
+      structural, accessible markup only; submission handling is a
+      **tracked follow-up**, not built yet (no form plugin used)
+- [x] Built About, Contact (seeded Pages)
+- [x] Blog set up (static front page + posts page pattern: `/` = Home,
+      `/blog/` = Posts page)
+- [x] Primary + Footer nav menus created and assigned to their theme
+      locations, matching the site IA
+- [ ] **Follow-up (not yet built):** native Request Free Consultation
+      form submission handler + Thank You page conversion tracking hook
+      (the Thank You page itself exists and is `noindex`, but nothing
+      currently POSTs to it)
 
-## Phase 3 — SEO/perf/accessibility hardening (not started)
+## Phase 3 — SEO/perf/accessibility/homepage foundation (homepage done; hardening pass not started)
 
-- [ ] Structured data implementation per `SEO-STRATEGY.md`
-- [ ] Core Web Vitals pass
-- [ ] WCAG 2.2 AA pass
+- [x] Homepage structural foundation built and self-QA'd: semantic
+      heading hierarchy (single H1, no skipped levels), skip link,
+      keyboard-accessible nav incl. `:focus-within` submenus (verified
+      via real Tab-key interaction in Chrome), native `<details>` FAQ
+      (zero JS), mobile nav drawer verified via interaction (open/close,
+      `aria-expanded`, focus/scroll-lock, Escape-to-close all confirmed),
+      persistent mobile conversion bar, no console errors, no fabricated
+      reviews/projects/stats/certifications anywhere
+- [ ] Structured data implementation is in place for Organization/
+      LocalBusiness/BreadcrumbList/BlogPosting (done); `ImageObject` /
+      richer Portfolio schema deferred until real project content exists
+- [ ] Core Web Vitals pass (needs real images/content first — hero
+      currently has no image, so LCP/CLS tuning is premature)
+- [ ] Full WCAG 2.2 AA pass (spot-checked during build; a dedicated audit
+      pass is still open)
+- [ ] Live responsive-viewport screenshot verification was attempted via
+      Chrome automation but the sandboxed browser window would not
+      resize below its default size — mobile CSS breakpoints were
+      verified by code review and the mobile nav's JS was verified
+      working via direct interaction, but a true narrow-viewport visual
+      check is still outstanding
 
 ## Phase 4 — Staging (not started, blocked on hosting access)
 

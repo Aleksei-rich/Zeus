@@ -61,8 +61,13 @@ site import.
 - **Database:** MariaDB 10.6.23 on `127.0.0.1:3307`, db `zeus_rebuild`,
   user `zeus_dev`, password in `.localenv/db-password.txt` (gitignored)
 - **Files:** WordPress core + `wp-content` under `.localenv/wordpress/`
-  (gitignored — not vendored into the repo; only the custom theme under
-  `theme/` will be version-controlled once theme work starts)
+  (gitignored — not vendored into the repo). The custom theme itself
+  lives at `theme/zeus/` in this repo (version-controlled) and is linked
+  into the running site via a **Windows directory junction** at
+  `.localenv/wordpress/wp-content/themes/zeus` →`theme/zeus/` (created
+  with `mklink /J`, no admin privilege required — a true symlink needed
+  elevation this session doesn't have). Editing files under `theme/zeus/`
+  takes effect immediately on the running site; no copy/sync step needed.
 - **Config:** `.localenv/php.ini` — the bundled PHP ships with no `php.ini`
   and no extensions enabled by default; this file enables curl, openssl,
   mysqli, pdo_mysql, mbstring, gd, fileinfo, zip, exif, intl
@@ -70,11 +75,11 @@ site import.
   `tools/stop-local-env.ps1` (PowerShell) start/stop both the MariaDB
   instance and the PHP built-in dev server. Nothing here is a permanent
   Windows service — run the start script each time local dev work begins.
-- **State:** fresh install, default `twentytwentyfive` theme active
-  (custom theme not built yet — Phase 2), only default core plugins
-  present (Akismet, Hello — both inactive), permalinks set to
-  `/%postname%/`, `blog_public` set to 0 (discourage indexing of this
-  local instance).
+- **State:** custom `zeus` theme active (Phase 2 build — 13-section
+  homepage, `cabinet_collection`/`project` CPTs, full page/nav structure;
+  see `docs/TASKS.md`). No plugins active (Akismet/Hello are WP defaults,
+  both inactive — Phase 2 deliberately shipped plugin-free, see
+  `DECISIONS.md`). Permalinks `/%postname%/`, `blog_public` set to 0.
 
 Known quirk hit and worked around: WP-CLI's `core download` failed on
 Windows because current WordPress core ships a deeply nested

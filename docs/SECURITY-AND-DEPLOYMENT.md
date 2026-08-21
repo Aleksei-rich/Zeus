@@ -53,6 +53,28 @@ not something to attempt speculatively.
 - [ ] Performance QA (Core Web Vitals field + lab data)
 - [ ] Accessibility QA (WCAG 2.2 AA pass)
 - [ ] Rollback procedure documented and rehearsed
+- [ ] Verify the private lead-uploads directory
+      (`wp-content/uploads/zeus-private-leads/`) is genuinely not
+      directly downloadable on the real hosting environment (its
+      `.htaccess`/`web.config` protection was only verified indirectly —
+      the local dev server needed a custom router script,
+      `tools/router.php`, because PHP's built-in server doesn't honor
+      `.htaccess` at all; a misconfigured production host — e.g. Nginx
+      without an equivalent `location` block — could have the same gap)
+- [ ] If a full-page caching plugin/service is used in production,
+      exclude `/consultation/` (or at least its POST handling) from the
+      cache — the form's nonce and time-trap timestamp are generated
+      per-request and a cached copy could serve stale ones, causing
+      legitimate submissions to fail with a "session expired" error
+- [ ] Decide sitemap/redirect-management approach (native vs. a plugin
+      such as Yoast) once the real migration scope from
+      `docs/REDIRECT-MAP-DRAFT.csv` is known — see `docs/DECISIONS.md`,
+      "Performance + SEO technical audit"
+- [ ] Data retention plan finalized and a real Privacy Policy page
+      written — see `docs/PRIVACY-AND-DATA-RETENTION.md`
+- [ ] When real hero photography is added, confirm it loads eager +
+      `fetchpriority="high"` (it will be the LCP element) rather than
+      the default lazy-loading behavior
 
 Production launch requires explicit owner approval regardless of how
 complete this checklist is.

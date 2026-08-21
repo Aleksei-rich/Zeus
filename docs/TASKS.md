@@ -71,59 +71,112 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
       non-public/rewrite-disabled — internal filtering only, see
       `SITE-ARCHITECTURE.md` URL map)
 - [x] Structured fields implemented via native `register_post_meta` +
-      hand-built, nonce/capability-checked meta boxes (no ACF) —
-      `theme/zeus/inc/meta-fields.php`
+      hand-built, nonce/capability-checked meta boxes (no ACF) — now
+      owned by the `zeus-core` plugin, see Phase 3.5
 - [x] Native SEO plumbing (title override, meta description, Open Graph,
-      Organization/LocalBusiness/BreadcrumbList/BlogPosting JSON-LD,
-      noindex support) — `theme/zeus/inc/seo.php`, no SEO plugin
-- [x] Built homepage template (`front-page.php`, all 13 sections) — see
-      Phase 3 below, done together
+      Organization/BreadcrumbList/BlogPosting JSON-LD, noindex support)
+      — `theme/zeus/inc/seo.php`, no SEO plugin
+- [x] Built homepage template (`front-page.php`, all 13 sections)
 - [x] Seeded the 4 real Cabinet Collections (Brooklyn, Shaker, Oslo,
       Euro/Flat Panel) with correct finishes and "Slim Shaker"
-      terminology (Oslo, incl. Classic Walnut) —
-      `theme/zeus/inc/post-types.php`
+      terminology (Oslo, incl. Classic Walnut)
 - [x] Built Cabinets hub + Kitchen/Bathroom service pages (seeded Pages)
 - [x] Built Countertops hub + 4 material pages (seeded Pages, factual
       general material-property content + placeholder notes)
 - [x] Built Custom Spaces hub + 3 service pages (seeded Pages)
 - [x] Built Portfolio archive + single project template (honest empty
       state — zero fake projects seeded, by design)
-- [x] Built Request Free Consultation page + homepage section —
-      structural, accessible markup only; submission handling is a
-      **tracked follow-up**, not built yet (no form plugin used)
+- [x] Built Request Free Consultation page + homepage section, **and**
+      its real backend (see Phase 3.5 — no longer a follow-up)
 - [x] Built About, Contact (seeded Pages)
 - [x] Blog set up (static front page + posts page pattern: `/` = Home,
       `/blog/` = Posts page)
 - [x] Primary + Footer nav menus created and assigned to their theme
       locations, matching the site IA
-- [ ] **Follow-up (not yet built):** native Request Free Consultation
-      form submission handler + Thank You page conversion tracking hook
-      (the Thank You page itself exists and is `noindex`, but nothing
-      currently POSTs to it)
 
-## Phase 3 — SEO/perf/accessibility/homepage foundation (homepage done; hardening pass not started)
+## Phase 3 — SEO/perf/accessibility/homepage foundation (homepage done)
 
-- [x] Homepage structural foundation built and self-QA'd: semantic
-      heading hierarchy (single H1, no skipped levels), skip link,
-      keyboard-accessible nav incl. `:focus-within` submenus (verified
-      via real Tab-key interaction in Chrome), native `<details>` FAQ
-      (zero JS), mobile nav drawer verified via interaction (open/close,
-      `aria-expanded`, focus/scroll-lock, Escape-to-close all confirmed),
-      persistent mobile conversion bar, no console errors, no fabricated
-      reviews/projects/stats/certifications anywhere
-- [ ] Structured data implementation is in place for Organization/
-      LocalBusiness/BreadcrumbList/BlogPosting (done); `ImageObject` /
-      richer Portfolio schema deferred until real project content exists
-- [ ] Core Web Vitals pass (needs real images/content first — hero
-      currently has no image, so LCP/CLS tuning is premature)
-- [ ] Full WCAG 2.2 AA pass (spot-checked during build; a dedicated audit
-      pass is still open)
-- [ ] Live responsive-viewport screenshot verification was attempted via
-      Chrome automation but the sandboxed browser window would not
-      resize below its default size — mobile CSS breakpoints were
-      verified by code review and the mobile nav's JS was verified
-      working via direct interaction, but a true narrow-viewport visual
-      check is still outstanding
+- [x] Homepage structural foundation built and self-QA'd
+- [x] Structured data: Organization/BreadcrumbList/BlogPosting JSON-LD
+      in place; `ImageObject`/richer Portfolio schema still deferred
+      until real project content exists
+- [x] Performance pass done (see Phase 3.5) — Core Web Vitals *field*
+      data still needs real content/images first
+- [x] Full WCAG 2.2 AA-oriented pass done (see Phase 3.5)
+- [x] Mobile responsive QA done at true 320/375/768/1024/1440px widths
+      (see Phase 3.5 for method — screenshot tooling on this machine
+      proved unreliable; verified via direct DOM measurement instead)
+
+## Phase 3.5 — Architecture hardening pass (done, 2026-08-21)
+
+- [x] **Theme/plugin separation:** created `plugins/zeus-core/`, a
+      first-party plugin now owning `cabinet_collection`/`project`/
+      `zeus_lead` CPT registration, all 5 taxonomies, all
+      `register_post_meta` definitions, editorial meta boxes + admin
+      media pickers, content seeding, and the consultation form
+      handler. Theme keeps only presentation. Linked into
+      `wp-content/plugins/` via a Windows junction, same technique as
+      the theme. Verified content survives a theme switch and plugin
+      deactivation (raw DB rows confirmed intact either way) — see
+      `DECISIONS.md`.
+- [x] **Seeding safety audit — found and fixed a real bug:**
+      `get_page_by_path()` silently fails for child-page slugs, which
+      made the original seed-on-`init` code (and this plugin's first
+      draft) duplicate 9 pages and every nav menu item on a second run.
+      Fixed with a `zeus_get_post_by_slug()` helper (plain `post_name`
+      lookup) and a permanent, append-only seed registry that also
+      guarantees deleted content is never silently resurrected —
+      verified with a real delete-then-reseed test. Seeding is no
+      longer hooked to `init`/activation at all: it only runs via
+      `wp zeus seed` (WP-CLI) or Tools → ZEUS Setup in wp-admin.
+- [x] **Consultation form backend built and tested end-to-end:** nonce
+      verification, honeypot + time-trap + per-IP rate limiting (no
+      third-party CAPTCHA), server-side validation for every field,
+      real MIME/extension + size checks on uploads, uploads stored in a
+      private directory (not the public Media Library) with a random
+      filename, admin-gated download, success redirect to `/thank-you/`,
+      failure redirects preserve safe field values with accessible
+      per-field error messages. Local dev logs notifications to a file
+      instead of emailing (production uses `wp_mail()` unchanged — see
+      `docs/PRIVACY-AND-DATA-RETENTION.md`). All 6 required test cases
+      (valid, invalid email, missing field, invalid upload type,
+      oversized upload, forged nonce) plus the honeypot path verified
+      via real HTTP requests against the running site.
+- [x] **Mobile QA + a11y fixes:** found and fixed a real horizontal-
+      overflow bug (header CTA/logo/phone crammed into one non-wrapping
+      row + a static hero font-size too large for 375px) — now zero
+      overflow at 320–1440px, verified numerically via a true-width
+      iframe (the extension's own `resize_window` and headless-Edge
+      screenshots were both unreliable on this machine — documented in
+      `DECISIONS.md` so this isn't re-discovered from scratch later).
+      Found and fixed a real focus-management gap in the mobile nav
+      drawer (✕ button didn't return focus; nothing contained Tab
+      inside the open drawer) using `inert` on background content.
+      Darkened the placeholder accent color for a safer contrast
+      margin (4.53:1 → 5.57:1).
+- [x] **Performance pass:** disabled WP core's emoji script (dead
+      weight), confirmed zero webfonts / lean DOM (412 elements) / no
+      third-party requests / correct native lazy-loading and
+      `aspect-ratio` reservation for image slots. Hero LCP-loading
+      strategy documented as a pre-launch item once a real hero image
+      exists (see `SECURITY-AND-DEPLOYMENT.md`).
+- [x] **SEO audit:** found and fixed a real bug — the site had **no
+      meta description anywhere** (empty WP tagline + a silent-on-empty
+      code path). Set a real tagline and hardened the fallback so this
+      can't regress. Verified canonical/OG/schema/404/pagination/
+      taxonomy-indexing all correct. `/wp-sitemap.xml` 404 confirmed as
+      *expected* (WP core disables it while `blog_public=0`, which this
+      local env deliberately has set). Recommendation logged in
+      `DECISIONS.md` on when a dedicated SEO plugin might be worth it —
+      not installed now.
+- [x] Read-only old-site inventory completed — see
+      `docs/OLD-SITE-INVENTORY.md`, `docs/REDIRECT-MAP-DRAFT.csv`,
+      `docs/MEDIA-MIGRATION-INVENTORY.md`. Notable finding: sampled
+      "catalog" images include a 3D render and third-party
+      manufacturer-watermarked photography — confirms media must be
+      reviewed image-by-image before any migration, never bulk-imported.
+- [x] `docs/PRIVACY-AND-DATA-RETENTION.md` created for the lead-capture
+      data collected by the new consultation form.
 
 ## Phase 4 — Staging (not started, blocked on hosting access)
 
@@ -140,5 +193,25 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
 
 - [ ] Confirm ACF Pro license status with owner (deferred, not blocking —
       see `DECISIONS.md`)
-- [ ] Selective old-site content harvest (photos, reviews, URLs) — later,
-      read-only inspection only
+- [x] ~~Selective old-site content harvest~~ — read-only inventory done
+      (`OLD-SITE-INVENTORY.md`, `REDIRECT-MAP-DRAFT.csv`,
+      `MEDIA-MIGRATION-INVENTORY.md`); actual media/content harvest is
+      still a separate future step, gated on owner decisions flagged in
+      those docs (which old pages map where, which trashed portfolio
+      entries — if any — should come back as real, honestly-labeled
+      projects)
+- [ ] Finalize data-retention policy + write a real Privacy Policy page
+      before production (see `docs/PRIVACY-AND-DATA-RETENTION.md`)
+- [ ] Decide sitemap/redirect-management approach (native vs. a plugin)
+      once real migration scope is known (see `DECISIONS.md`)
+- [ ] When real hero photography is added: implement eager-load +
+      `fetchpriority="high"` for it (LCP element)
+- [ ] Pre-launch: verify the private lead-uploads directory is actually
+      blocked from direct access on the real hosting environment (only
+      indirectly verified locally — see `SECURITY-AND-DEPLOYMENT.md`)
+- [ ] Review the 3 old Contact Form 7 forms ("Consult form", "Call
+      order", "Calculation") for feature parity before considering the
+      new consultation form's scope final
+- [ ] Decide whether/how to use the old site's real address (7742
+      Brofield Ave, Windermere, FL) in structured data, without implying
+      a walk-in showroom — see `OLD-SITE-INVENTORY.md`

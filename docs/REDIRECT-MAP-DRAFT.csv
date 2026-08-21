@@ -1,0 +1,17 @@
+old_url,new_url,status,notes
+/,/,ready,Front page; old slug was kitchen-cabinets-orlando-zeus-cabinets-countertops but front-page redirects work by path not slug
+/kitchen-cabinets-orlando-zeus-cabinets-countertops/,/,ready,"Old page slug, in case it's linked/indexed directly rather than via /"
+/about-company/,/about/,ready,Direct equivalent exists
+/contacts/,/contact/,ready,Direct equivalent exists
+/portfolio/,/portfolio/,ready,Same path on both sites (coincidental match) - verify old canonical vs new archive intent are equivalent before launch
+/privacy-policy/,/privacy-policy/,ready,WP default policy page slug matches on both sites; new site's is currently empty and needs real content before launch
+/faq/,/,decide,"FAQ is a homepage section on the new site, not a standalone page - redirect to / or build a dedicated /faq/ page; owner decision"
+/online-order/,,decide,"No direct new-site equivalent yet - likely candidate: /consultation/ - owner decision on intent (was this a project-request form or literal purchase flow?)"
+/feedback/,,decide,"No direct new-site equivalent - was this a review-submission page or a contact form? Needs the actual old page content reviewed before deciding target"
+/projects/,/portfolio/,ready,Old portfolio archive (registered under CPT rewrite slug 'projects') maps to new /portfolio/
+/projects/brooklin-1-copy-4-copy-copy/,,decide,"Old portfolio entry 'Builder series' - trashed on old site (not live); only migrate if the owner wants this project restored as new site content"
+/projects/brooklyn-premier-series/,,decide,"Old portfolio entry 'Brooklyn Premier series' - trashed on old site; same as above"
+/projects/shaker-premier-series/,,decide,"Old portfolio entry 'Shaker Premier series' - trashed on old site; same as above"
+/projects/oslo-premier-series/,,decide,"Old portfolio entry 'Oslo Premier series' - trashed on old site; same as above"
+/projects/napa-premier-series/,,decide,"Old portfolio entry 'Napa Premier Series' - trashed on old site; same as above"
+,,,"--- Not included below: 3 old test/placeholder portfolio entries (Test, Test2, TestPost) and 1 untitled blog post (ID 402) - low/no value, recommend letting these 404 or blanket-redirecting to / rather than individually mapping"

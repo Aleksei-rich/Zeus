@@ -48,6 +48,20 @@ old-site inspection" step (real project photos, reviews, existing URLs
 for the 301 map) — not a base to build on, per the explicit brief
 requirement that the new install be clean.
 
+**Update (2026-08-21):** the read-only inventory step happened — see
+`docs/OLD-SITE-INVENTORY.md`, `docs/REDIRECT-MAP-DRAFT.csv`,
+`docs/MEDIA-MIGRATION-INVENTORY.md`. Its live MySQL 8.4 database was
+never queried directly (even "read-only" mysqld startup can trigger
+crash-recovery writes to a datadir); instead the ~340MB data directory
+at `%APPDATA%\Roaming\Local\run\oaBQNX1ZU\mysql\data` was **copied** to
+this project's gitignored scratch space, queried there, then the temp
+instance was shut down and the copy deleted. Its file modification
+times were verified unchanged before/after. If this needs doing again:
+the old site's actual runtime port/credentials are in
+`%APPDATA%\Roaming\Local\sites.json` under the `oaBQNX1ZU` entry
+(MySQL 8.4.0, not MariaDB — a different bundled binary than this
+project's own local DB) — same copy-first method applies.
+
 ## This project's local WordPress environment — live
 
 A clean, standalone local WordPress install now runs for this project,
@@ -75,11 +89,31 @@ site import.
   `tools/stop-local-env.ps1` (PowerShell) start/stop both the MariaDB
   instance and the PHP built-in dev server. Nothing here is a permanent
   Windows service — run the start script each time local dev work begins.
-- **State:** custom `zeus` theme active (Phase 2 build — 13-section
-  homepage, `cabinet_collection`/`project` CPTs, full page/nav structure;
-  see `docs/TASKS.md`). No plugins active (Akismet/Hello are WP defaults,
-  both inactive — Phase 2 deliberately shipped plugin-free, see
+  The PHP server now runs with `tools/router.php` — PHP's built-in
+  server doesn't honor `.htaccess`, so this router replicates the one
+  rule that matters locally (denying direct access to the private lead-
+  uploads directory) and otherwise behaves like normal WordPress
+  request handling.
+- **Plugin:** `plugins/zeus-core/` (version-controlled, first-party —
+  see `DECISIONS.md`, "Theme/plugin separation") is linked into
+  `.localenv/wordpress/wp-content/plugins/zeus-core` via the same
+  Windows-junction technique as the theme, and is active. It owns all
+  CPT/taxonomy/meta-field registration, editorial admin UI, lead
+  capture, and the consultation form handler — the theme owns
+  presentation only.
+- **State:** custom `zeus` theme + `zeus-core` plugin both active
+  (Phase 3.5 hardening build — 13-section homepage, working
+  consultation form with a real (locally-logged) backend,
+  `cabinet_collection`/`project`/`zeus_lead` CPTs, full page/nav
+  structure; see `docs/TASKS.md`). No third-party plugins active
+  (Akismet/Hello are WP defaults, both inactive — this project
+  deliberately ships plugin-free for its own content model, see
   `DECISIONS.md`). Permalinks `/%postname%/`, `blog_public` set to 0.
+- **Content seeding is manual, not automatic:** run `wp zeus seed`
+  (needs the `.localenv` PHP/WP-CLI paths above) or visit Tools → ZEUS
+  Setup in wp-admin to (re-)run initial content setup. It's safe to run
+  repeatedly — idempotent, and never recreates anything that was
+  deliberately deleted (see `DECISIONS.md`, "Seeding safety fix").
 
 Known quirk hit and worked around: WP-CLI's `core download` failed on
 Windows because current WordPress core ships a deeply nested

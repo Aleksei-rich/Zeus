@@ -18,6 +18,7 @@ $dataDir   = Join-Path $localenv "mysql-data"
 $wpPath    = Join-Path $localenv "wordpress"
 $dbLog     = Join-Path $localenv "mysql-logs\mariadbd.log"
 $phpLog    = Join-Path $localenv "php-server.log"
+$phpErrLog = Join-Path $localenv "php-server-error.log"
 $pidFile   = Join-Path $localenv "mysql.pid"
 $sockFile  = Join-Path $localenv "mysql.sock"
 
@@ -40,7 +41,7 @@ Start-Process -FilePath $php -ArgumentList @(
     "-S", "localhost:8890",
     "-t", $wpPath,
     $router
-) -RedirectStandardOutput $phpLog -RedirectStandardError $phpLog -WindowStyle Hidden
+) -RedirectStandardOutput $phpLog -RedirectStandardError $phpErrLog -WindowStyle Hidden
 
 Write-Host ""
 Write-Host "Site:      http://localhost:8890"

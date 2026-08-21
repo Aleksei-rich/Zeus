@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push --force-with-lease*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -f*)",
+      "Bash(git clean -fd*)",
+      "Bash(git branch -D*)",
+      "Bash(git rebase*)",
+      "Bash(git push*zeuscabinetsflorida.com*)",
+      "Bash(ssh*zeuscabinetsflorida.com*)",
+      "Bash(scp*zeuscabinetsflorida.com*)",
+      "Bash(sftp*zeuscabinetsflorida.com*)",
+      "Bash(rsync*zeuscabinetsflorida.com*)",
+      "Bash(wp*--url=*zeuscabinetsflorida.com*)",
+      "Bash(mysql*zeuscabinetsflorida.com*)",
+      "Bash(curl*zeuscabinetsflorida.com*--data*)",
+      "Bash(curl*zeuscabinetsflorida.com*-X POST*)"
+    ]
+  }
+}

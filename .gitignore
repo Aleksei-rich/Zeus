@@ -1,0 +1,47 @@
+# WordPress core (not vendored — installed by environment setup, never committed)
+/wordpress/
+/wp-admin/
+/wp-includes/
+/wp-*.php
+!/tools/wp-cli.phar
+
+# WordPress content that is environment-specific or generated
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backup*/
+wp-content/*.log
+
+# Config / secrets — never commit real credentials
+wp-config.php
+.env
+.env.*
+!.env.example
+*.local.json
+secrets/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+dist/
+build/
+*.map
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-*
+
+# Backups / DB dumps (never commit real data)
+*.sql
+*.sql.gz
+*.zip
+backups/
+
+# Logs
+logs/
+*.log

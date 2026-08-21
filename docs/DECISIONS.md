@@ -6,6 +6,28 @@ owner-directed one.
 
 ---
 
+## 2026-08-21 — Standalone local WordPress environment built from LocalWP's bundled binaries, bypassing the Local GUI entirely
+
+**Decision:** Built a clean local WordPress dev environment using PHP
+8.2.29, MariaDB 10.6.23, and WP-CLI — all found bundled inside the
+LocalWP installation — run directly by full path under this project's
+`.localenv/` directory, without creating or touching any LocalWP "site"
+through the app's GUI or its `sites.json` registry. Fresh WordPress core
+downloaded from wordpress.org (not the old site). Site runs at
+`http://localhost:8890` via PHP's built-in dev server; MariaDB runs on
+`127.0.0.1:3307`. See `HANDOFF.md` for full details and credential
+locations.
+**Reasoning:** The brief's LocalWP step says to prepare a clean local
+WordPress environment "if it can safely be used without requiring owner
+interaction," and to stop for exactly one GUI click only if a GUI
+interaction is genuinely required. Local's standard site-creation flow
+is GUI-only (no documented headless API), but its bundled PHP/MariaDB/
+WP-CLI binaries can be run standalone, achieving the same result — a
+clean local WP environment — with zero owner interaction and zero risk
+to Local's own site registry or the existing "zeus" reference site.
+**Type:** Autonomous professional default, in direct service of the
+brief's explicit "minimize owner involvement" instruction.
+
 ## 2026-08-21 — Countertop Materials modeled as Pages, not a CPT
 
 **Decision:** Quartz, Granite, Porcelain, Marble are standard WordPress

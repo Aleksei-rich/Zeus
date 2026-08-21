@@ -48,14 +48,47 @@ old-site inspection" step (real project photos, reviews, existing URLs
 for the 301 map) — not a base to build on, per the explicit brief
 requirement that the new install be clean.
 
+## This project's local WordPress environment — live
+
+A clean, standalone local WordPress install now runs for this project,
+built entirely from LocalWP's bundled PHP/MariaDB/WP-CLI binaries, without
+touching Local's GUI or its site registry. Fresh WordPress core, no old-
+site import.
+
+- **Site:** http://localhost:8890
+- **Admin:** http://localhost:8890/wp-admin — user `zeus_admin`, password
+  in `.localenv/wp-admin-password.txt` (gitignored, not reproduced here)
+- **Database:** MariaDB 10.6.23 on `127.0.0.1:3307`, db `zeus_rebuild`,
+  user `zeus_dev`, password in `.localenv/db-password.txt` (gitignored)
+- **Files:** WordPress core + `wp-content` under `.localenv/wordpress/`
+  (gitignored — not vendored into the repo; only the custom theme under
+  `theme/` will be version-controlled once theme work starts)
+- **Config:** `.localenv/php.ini` — the bundled PHP ships with no `php.ini`
+  and no extensions enabled by default; this file enables curl, openssl,
+  mysqli, pdo_mysql, mbstring, gd, fileinfo, zip, exif, intl
+- **Start/stop:** `tools/start-local-env.ps1` and
+  `tools/stop-local-env.ps1` (PowerShell) start/stop both the MariaDB
+  instance and the PHP built-in dev server. Nothing here is a permanent
+  Windows service — run the start script each time local dev work begins.
+- **State:** fresh install, default `twentytwentyfive` theme active
+  (custom theme not built yet — Phase 2), only default core plugins
+  present (Akismet, Hello — both inactive), permalinks set to
+  `/%postname%/`, `blog_public` set to 0 (discourage indexing of this
+  local instance).
+
+Known quirk hit and worked around: WP-CLI's `core download` failed on
+Windows because current WordPress core ships a deeply nested
+`wp-includes/php-ai-client/...` path, and wp-cli's tarball extraction
+routes through a long auto-generated temp folder name that pushed the
+combined path over Windows' path-length limit. Worked around by
+downloading `latest.zip` directly and extracting straight to the short
+`.localenv/wordpress/` destination instead.
+
 ## Other dev tooling
 
 Not found on system `PATH`: `php`, `mysql`, `wp`, `docker`, `node`,
-`composer`. (This is expected on a machine that manages PHP/MySQL/WP-CLI
-through LocalWP's bundled binaries rather than a global install.) Any
-local environment for this project will either use LocalWP's bundled
-binaries directly by full path, or a GUI-created LocalWP site — see
-`TASKS.md` Phase 1 for the in-progress decision between those two paths.
+`composer`. (Expected — PHP/MySQL/WP-CLI are used directly from LocalWP's
+bundled binaries by full path, as above, rather than a global install.)
 
 ## Git
 

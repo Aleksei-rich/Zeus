@@ -1,3 +1,6 @@
+# Local standalone dev environment (DB data, downloaded WP core, credentials)
+/.localenv/
+
 # WordPress core (not vendored — installed by environment setup, never committed)
 /wordpress/
 /wp-admin/

@@ -18,17 +18,42 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
 - [x] Create `docs/TASKS.md` (this file)
 - [x] Create `docs/HANDOFF.md`
 - [x] Create `.claude/rules/` safety rule set
-- [ ] Commit Phase 0 milestone
-- [ ] Local WordPress readiness assessment (LocalWP detected — see
+- [x] Commit Phase 0 milestone
+- [x] Local WordPress readiness assessment (LocalWP detected — see
       `HANDOFF.md`; existing "zeus" site is old-site mirror, not reusable)
 - [ ] Stand up a clean local WordPress environment for this project
+      (in progress — see Phase 1)
 
-## Phase 1 — Local environment (next up)
+## Phase 1 — Local environment (in progress)
 
-- [ ] Decide + execute: bundled-PHP/WP-CLI standalone environment
-      (autonomous) vs. LocalWP GUI new-site creation (needs one owner
-      click) — attempt autonomous path first
-- [ ] Fresh WordPress core install, no old-site import
+- [x] Decided: standalone environment using Local's bundled PHP 8.2.29 +
+      MariaDB 10.6.23 + WP-CLI, run directly (no Local GUI, no site
+      registry changes) — fully autonomous, no owner interaction needed.
+      Lives under `.localenv/` (gitignored: DB data, downloaded core,
+      credentials).
+- [x] MariaDB instance initialized and running on 127.0.0.1:3307
+      (isolated from Local's own instances/sites)
+- [x] `zeus_rebuild` database + scoped `zeus_dev` user created (random
+      generated password, stored only in `.localenv/db-password.txt`,
+      gitignored, never committed or displayed in full)
+- [x] Custom `.localenv/php.ini` written (bundled PHP ships with no ini
+      and no enabled extensions by default — enabled curl, openssl,
+      mysqli, pdo_mysql, mbstring, gd, fileinfo, zip, exif, intl)
+- [x] WordPress core downloaded and extracted to `.localenv/wordpress/`
+      (worked around a WP-CLI `core download` failure on Windows: current
+      WP core ships a deeply nested `wp-includes/php-ai-client/...` path,
+      and wp-cli's tarball extraction goes through a long auto-generated
+      temp directory name that pushes the combined path over Windows'
+      path-length limit. Fixed by downloading `latest.zip` directly and
+      extracting straight to the short `.localenv/wordpress/` path.)
+- [x] Fresh WordPress core install, no old-site import (`wp core install`
+      completed; site title, admin user `zeus_admin`, permalinks set to
+      `/%postname%/`, `blog_public` disabled)
+- [x] Verified end-to-end: PHP built-in server serves the site
+      (`http://localhost:8890` → HTTP 200, correct title;
+      `/wp-admin/` → HTTP 302 redirect to login, as expected)
+- [x] Start/stop tooling: `tools/start-local-env.ps1` /
+      `tools/stop-local-env.ps1`
 - [ ] Install baseline plugin set (Yoast SEO, ACF, forms solution) and
       justify each in `DECISIONS.md`
 - [ ] Scaffold custom block theme skeleton (`theme.json`, base templates)

@@ -178,12 +178,85 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
 - [x] `docs/PRIVACY-AND-DATA-RETENTION.md` created for the lead-capture
       data collected by the new consultation form.
 
-## Phase 4 — Staging (not started, blocked on hosting access)
+## Phase 4 — Real content, visual design & LOCAL RC1 (in progress, started 2026-08-21)
+
+- [x] Real ZEUS brand identity adopted: logo (header/footer variants),
+      favicon, navy/gold color tokens derived from the old site's own
+      logo file — see `DECISIONS.md`
+- [x] Real, verified contact info (phone, email, hours, social) wired
+      into header/footer/Contact page, replacing dev placeholders
+- [x] Physical address decision: NOT published (service-area business
+      per the brief; a real address exists tied to the old Google
+      Business Profile but publishing it as a showroom was out of scope
+      for this pass — see `CONTENT-MIGRATION-PLAN.md`)
+- [x] Old-site Portfolio ("Premier series"/"Builder series") fully
+      investigated read-only; found to be marketing composites with
+      unconfirmable project grouping — no Portfolio entries created
+      (see `DECISIONS.md`, `CONTENT-MIGRATION-PLAN.md`)
+- [x] 4 individually-verified-real photos salvaged from that same
+      investigation for generic (non-attributed) use: homepage hero
+      (eager-load + `fetchpriority="high"`, the LCP element), Kitchen
+      Cabinets and About page featured images — see
+      `ASSET-PROVENANCE.csv`
+- [x] `docs/CONTENT-MIGRATION-PLAN.md` and `docs/ASSET-PROVENANCE.csv`
+      created
+- [x] Real, fresh copy written (replacing all `[Development
+      placeholder]` text) for: homepage hero/Why-ZEUS/Reviews/Featured-
+      Projects sections, Cabinets hub, Kitchen Cabinets, Bathroom
+      Cabinets & Vanities, Custom Spaces hub, Custom Closets, Laundry &
+      Pantry, Home Office, Countertops hub, Quartz, Granite, Porcelain,
+      Marble, Brooklyn, Shaker, Oslo, Euro/Flat Panel, About, Contact
+- [x] Reviews section rebuilt as honest architecture (no fabricated
+      review text, no AggregateRating schema) pointing at the old
+      site's real, verified Google Business Profile review feed
+- [x] Unique SEO title + meta description set for all of the above pages
+- [x] Real bug found+fixed: `zeus_seo_title` override was duplicating
+      the site name in the `<title>` tag (document_title_parts filter
+      only replaced one part) — see `DECISIONS.md`
+- [x] Real bug found+fixed: collection/project cards with no image yet
+      rendered a large empty gray placeholder box (fixed aspect-ratio
+      wrapper always rendered) — now the wrapper only renders with an
+      actual image
+- [x] Real bug found+fixed: site title had a leftover
+      "(Rebuild - Local Dev)" suffix bleeding into every page's
+      `<title>` tag and the Organization schema's business `name` field
+- [x] Portfolio archive and Blog empty-state templates, and the
+      zeus-core seed source (`inc/seeding.php`), also had bracketed
+      dev-placeholder text — fixed (seeding.php is create-only/registry-
+      guarded so this couldn't affect the live DB, but a future reseed
+      of a wiped install would have reproduced the old placeholder copy)
+- [x] Full-repo sweep confirms zero remaining `[Development
+      placeholder]`/TODO/lorem-ipsum markers in DB content or templates
+- [ ] Cabinet Styles hub, remaining collection/service/countertop pages:
+      spot-checked via curl + a sample of visual screenshots — not
+      every single page individually screenshotted at all 3 breakpoints
+- [ ] Full accessibility re-check with real content/images (contrast
+      spot-checked during the color-token rename; not re-run as a full
+      pass with a dedicated tool)
+- [ ] Performance measurement (page weight, LCP) with real images now
+      present — not yet run as a dedicated pass
+- [x] **Known tooling limitation discovered:** the local headless Edge
+      screenshot method (relied on since Phase 3 for visual QA) cannot
+      reliably render viewports narrower than roughly 480–500px on this
+      machine — `--window-size` below that floor is silently not
+      honored for internal layout while the output PNG is still saved
+      at the requested (smaller) size, producing false "content cut
+      off" artifacts that are a tool bug, not a site bug. Confirmed via
+      an in-page JS diagnostic (`document.body.scrollWidth ===
+      document.documentElement.clientWidth` even at the smallest
+      reachable width, and zero real overflowing elements). True
+      375px-width visual confirmation on a real device/browser is still
+      recommended before public launch even though code review found no
+      structural mobile issues (flex-wrap present on CTA rows, grids
+      collapse to 1 column, images are `max-width:100%`, no fixed px
+      widths found). See `DECISIONS.md`.
+
+## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path
 - [ ] Create `staging.zeuscabinetsflorida.com`
 
-## Phase 5 — Production launch (not started, owner-approval required)
+## Phase 7 — Production launch (not started, owner-approval required)
 
 - [ ] Pre-launch checklist (see `SECURITY-AND-DEPLOYMENT.md`)
 - [ ] Owner approval
@@ -204,8 +277,8 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
       before production (see `docs/PRIVACY-AND-DATA-RETENTION.md`)
 - [ ] Decide sitemap/redirect-management approach (native vs. a plugin)
       once real migration scope is known (see `DECISIONS.md`)
-- [ ] When real hero photography is added: implement eager-load +
-      `fetchpriority="high"` for it (LCP element)
+- [x] ~~When real hero photography is added: implement eager-load +
+      `fetchpriority="high"` for it (LCP element)~~ — done, Phase 4
 - [ ] Pre-launch: verify the private lead-uploads directory is actually
       blocked from direct access on the real hosting environment (only
       indirectly verified locally — see `SECURITY-AND-DEPLOYMENT.md`)
@@ -214,4 +287,12 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
       new consultation form's scope final
 - [ ] Decide whether/how to use the old site's real address (7742
       Brofield Ave, Windermere, FL) in structured data, without implying
-      a walk-in showroom — see `OLD-SITE-INVENTORY.md`
+      a walk-in showroom — see `OLD-SITE-INVENTORY.md`. Phase 4 left
+      this unpublished/service-area-only pending that owner decision.
+- [ ] Get the owner's Google Business Profile connection details
+      (Place ID / API key) to wire the real review feed into the
+      homepage Reviews section (architecture is ready — see
+      `CONTENT-MIGRATION-PLAN.md`)
+- [ ] Real device/browser confirmation of true &lt;500px mobile
+      rendering before public launch (local headless-Edge tooling can't
+      reliably render below ~480–500px on this machine — see Phase 4)

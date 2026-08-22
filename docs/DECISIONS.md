@@ -6,6 +6,85 @@ owner-directed one.
 
 ---
 
+## 2026-08-22 — Phase 4 content pass: real copy for every remaining page, three real bugs found+fixed, and a local tooling limitation identified
+
+**Content:** Wrote fresh, ZEUS-authored copy (replacing every
+`[Development placeholder]` block) for the Cabinets/Countertops/Custom
+Spaces hub pages, all 6 service pages, all 4 countertop-material pages,
+all 4 cabinet-collection pages, About, and Contact — directly in the
+database via `wp-cli`/`wp eval-file` (not template-hardcoded), since
+this is editorial content the owner should be able to edit normally
+afterward. Also set a unique `zeus_seo_title`/`zeus_seo_description`
+per page. Full method and per-page detail: `docs/CONTENT-MIGRATION-PLAN.md`.
+
+**Real bug #1 — duplicated site name in `<title>`:** `zeus_seo_title`
+overrides are complete, already-branded strings (e.g. "Quartz
+Countertops Orlando | ZEUS..."), but `zeus_filter_document_title_parts()`
+only replaced the `title` key of WordPress's title-parts array, leaving
+the `site` key intact — so WP's own title separator appended the site
+name a second time ("...| ZEUS ... – ZEUS ..."). **Fix:** the filter now
+replaces the whole parts array when an override is present
+(`theme/zeus/inc/seo.php`).
+
+**Real bug #2 — empty gray box on cards with no image:**
+`components/card-collection.php` and `components/card-project.php`
+always rendered a `.zeus-card__media` wrapper div even when
+`has_post_thumbnail()` was false. That wrapper has a fixed 4:3
+aspect-ratio and a background color, so every one of the four cabinet
+collections (none have images yet) showed as a large empty gray box on
+the homepage's Featured Collections section — a "bad empty state"
+explicitly flagged in the brief's visual-QA checklist. **Fix:** the
+wrapper div now only renders when a thumbnail actually exists.
+
+**Real bug #3 — dev suffix leaking into every page title and schema:**
+the `blogname` option was still `"ZEUS Cabinets & Countertops (Rebuild -
+Local Dev)"` from initial setup, which fed directly into every page's
+`<title>` tag AND the sitewide Organization/LocalBusiness JSON-LD
+schema's `name` field (via `get_bloginfo('name')` in
+`theme/zeus/inc/seo.php`) — meaning the structured-data business name
+was literally wrong. **Fix:** `wp option update blogname "ZEUS Cabinets
+& Countertops"`. (Database change, not tracked by git.)
+
+**Also fixed:** `archive-project.php` and `home.php` (Blog listing) had
+their own hardcoded `[Development placeholder]` strings in their
+empty-state branches — not caught by the earlier DB-content sweep since
+these are template literals, not post content. And the `zeus-core`
+plugin's seed source (`inc/seeding.php`) still generated the old
+placeholder copy — harmless today (seeding is create-only and
+registry-guarded, so it can never overwrite today's real content), but
+updated anyway so a future reseed of a wiped database doesn't
+regress to placeholder text.
+
+**Tooling finding — headless Edge narrow-width limitation:** while
+investigating what first looked like a severe mobile horizontal-overflow
+bug (hero/paragraph text and the header hamburger button appearing cut
+off at 375–460px in `--screenshot` captures), a from-scratch
+investigation (bisecting the width where clipping starts, then an
+in-page JS diagnostic injected via a temporary script in
+`site-footer.php`, comparing `document.documentElement.clientWidth`
+against the requested `--window-size`) established that this machine's
+headless Edge silently fails to honor `--window-size` below roughly
+480–500px — the browser lays out at a wider internal viewport than
+requested while the `--screenshot` output PNG is still saved at the
+smaller requested pixel dimensions, producing a false "overflow"
+artifact. At the narrowest width the tool would actually honor (~490px),
+the same JS diagnostic found `document.body.scrollWidth ===
+document.documentElement.clientWidth` and zero elements exceeding the
+viewport — i.e., no real overflow. Manual audit of the relevant CSS
+(`.zeus-cta__actions` has `flex-wrap:wrap`, all grids collapse to a
+single column below their breakpoints, all images are
+`max-width:100%`, no fixed pixel widths found anywhere in the
+mobile-relevant rules) found nothing that would behave differently at
+375px than at 490px. Logged as a known limitation in `TASKS.md` rather
+than either (a) "fixing" a bug that doesn't exist, or (b) silently
+leaving true sub-500px rendering unverified without explanation — real
+device confirmation before public launch is still recommended.
+**Type:** Autonomous professional-default call (investigate before
+declaring a fix; don't ship a change for a bug that turned out not to
+exist).
+
+---
+
 ## 2026-08-21 — Real brand identity adopted; old-site "Premier series" portfolio groups found to be marketing composites, not real projects; a small set of verified-real photos used generically instead
 
 **Brand identity:** found a genuine, current, professionally-designed

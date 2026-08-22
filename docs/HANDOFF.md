@@ -129,6 +129,31 @@ Not found on system `PATH`: `php`, `mysql`, `wp`, `docker`, `node`,
 `composer`. (Expected — PHP/MySQL/WP-CLI are used directly from LocalWP's
 bundled binaries by full path, as above, rather than a global install.)
 
+**Working WP-CLI invocation** (discovered/fixed during Phase 4 — the
+naive combination fails with either a missing-mysqli error or DLL
+load warnings): use the **win32** PHP build (not win64) — the project's
+`.localenv/php.ini` has `extension_dir` hardcoded to the `bin\win32\ext`
+path, so pairing it with the win64 `php.exe` fails to load every
+extension.
+
+```
+"$PHP_WIN32_EXE" -c ".localenv/php.ini" "$WPCLI_PHAR" --path=".localenv/wordpress" --url=http://localhost:8890 <command>
+```
+
+A ready-to-use wrapper exists at `.localenv/wpcli.sh` (gitignored, since
+it's under `.localenv/`) — `./​.localenv/wpcli.sh post list ...` etc.
+
+**Headless Edge screenshot tooling limitation (found during Phase 4):**
+`msedge.exe --headless=new --screenshot=... --window-size=W,H` does not
+reliably honor `--window-size` below roughly 480–500px on this machine
+— it silently lays out at a wider internal viewport while still saving
+the screenshot PNG at the smaller requested pixel size, which looks
+exactly like a horizontal-overflow bug but isn't one (confirmed via an
+in-page JS diagnostic; see `docs/DECISIONS.md`, 2026-08-22 entry). Trust
+screenshots at ≥550px width from this tool; treat anything narrower as
+unverified until checked on a real device/browser, or bisect+diagnose
+before concluding there's a real bug.
+
 ## Git
 
 No global git identity was configured on this machine

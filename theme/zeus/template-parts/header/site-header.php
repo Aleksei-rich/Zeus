@@ -7,7 +7,10 @@
 <header class="zeus-header">
 	<div class="zeus-container zeus-header__inner">
 		<a class="zeus-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-			<?php bloginfo( 'name' ); ?>
+			<picture>
+				<source srcset="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-header.webp' ); ?>" type="image/webp">
+				<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-header.png' ); ?>" width="450" height="118" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="zeus-logo__img">
+			</picture>
 		</a>
 
 		<nav class="zeus-primary-nav" aria-label="<?php esc_attr_e( 'Primary', 'zeus' ); ?>">

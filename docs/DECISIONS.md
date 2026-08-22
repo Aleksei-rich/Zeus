@@ -6,6 +6,74 @@ owner-directed one.
 
 ---
 
+## 2026-08-21 — Real brand identity adopted; old-site "Premier series" portfolio groups found to be marketing composites, not real projects; a small set of verified-real photos used generically instead
+
+**Brand identity:** found a genuine, current, professionally-designed
+ZEUS logo in the old site's media library (`logo-e1783888738132-*.png`,
+uploaded July 2026 — the most recent logo asset found). Extracted its
+real navy (`#071f34`) and gold (`#dcc16e`) colors by pixel-sampling
+(28k+ and 18k+ pixel averages), replacing the placeholder amber palette
+from earlier phases. Renamed theme.json tokens `charcoal`→`navy`,
+`accent`/`accent-dark`→`gold`/`gold-dark` throughout the theme (~25
+references). **Real bug caught during this rename:** blindly swapping
+the old accent color for raw gold broke button/badge text contrast
+(white-on-gold = 1.77:1) — fixed by using navy text on gold backgrounds
+(9.48:1) with a navy-background hover state, and a darker `gold-dark`
+for focus rings (passes 3:1 against both white and navy). Synthesized a
+white-on-transparent variant of the logo (navy pixels → white, gold
+pixels kept) for use on the new navy footer/CTA backgrounds, since the
+old site's own "footer logo" file turned out to be black, not white,
+and unusable there. Generated a Z-monogram favicon from the same logo.
+All derivatives generated locally via PHP GD; no external tool used.
+
+**Portfolio content — real finding, changed the plan:** the old site's
+5 trashed `portfolio` CPT entries ("Builder series," "Brooklyn/Shaker/
+Oslo Premier series," "Napa Premier Series") looked promising in the
+Phase 3 inventory, but a deeper look (their ACF gallery fields, ~126
+images across the 5 groups) revealed their **featured images are
+product-marketing composites** — a door-color swatch overlaid on a
+stock/rendered kitchen photo with "Premier series" branding text; one
+("Oslo White") is stamped "COMING SOON," confirming these represent a
+now-defunct **product line's catalog graphics**, not documentation of
+completed customer installations. This reverses the Phase 3 inventory's
+tentative "moderate confidence real completed project" read on 2 sample
+images from this same gallery.
+**However:** the *gallery* images behind that marketing featured image
+(as opposed to the featured image itself) include what are clearly
+genuine, unstaged photographs — several show appliances still wrapped
+in factory protective film (a strong, hard-to-fake signal of a
+freshly-completed real install), real people mid-walkthrough, and
+ordinary phone-camera EXIF-free files named by messaging-app export
+convention (`photo_2024-09-30_20-53-13.jpg` etc.) rather than any
+studio/marketing naming. But the ~41-image "Builder series" gallery
+alone spans at least 4 visually distinct rooms (different colors,
+different homes) across photo timestamps from April, August, and two
+different dates in September 2024 — clear evidence multiple unrelated
+jobs were dumped into one CMS gallery, not one project.
+**Decision:** because I cannot confidently attribute any individual
+photo to one specific project (location, exact collection/finish match,
+and completion date are all unknown), **no Portfolio project entries
+were created** from this material — public or draft — per the explicit
+"if project grouping itself is uncertain, do not create a public
+project from it" instruction. The Portfolio section stays in its
+honest empty state.
+**What was used instead:** 4 of the individually-verified-authentic
+photos (no marketing overlay, no "Premier series" branding, appliance
+protective-film or candid-person evidence of a real job) were selected
+for **general, non-attributed use** — not as Portfolio entries making
+specific claims, just as real photography replacing generic
+placeholders on the homepage hero and two service pages. Each was
+re-encoded through GD (strips any residual metadata; confirmed none had
+GPS/camera EXIF to begin with) with a clean, descriptive filename and
+factual alt text that describes only what's visible (no location, no
+collection name, no date claims). Documented with full source
+provenance in `docs/ASSET-PROVENANCE.csv`.
+**Type:** Autonomous, cautious application of the explicit media-
+classification rules — real photography used where defensible, withheld
+from higher-stakes structured claims where it wasn't.
+
+---
+
 ## 2026-08-21 — Mobile visual QA + accessibility hardening: two real bugs found and fixed
 
 **Mobile QA method:** the Chrome extension's `resize_window` doesn't

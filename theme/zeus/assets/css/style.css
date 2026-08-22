@@ -30,7 +30,7 @@ input, textarea, select { font: inherit; }
 html { overflow-x: hidden; }
 body {
 	background: var(--wp--preset--color--base);
-	color: var(--wp--preset--color--charcoal);
+	color: var(--wp--preset--color--navy);
 	font-family: var(--wp--preset--font-family--body);
 	line-height: 1.6;
 	overflow-x: hidden;
@@ -46,12 +46,12 @@ h1, h2, h3, h4, h5, h6 {
 p { margin: 0 0 var(--wp--preset--spacing--2); }
 
 a {
-	color: var(--wp--preset--color--accent-dark);
+	color: var(--wp--preset--color--gold-dark);
 }
 a:hover { text-decoration: underline; }
 
 :focus-visible {
-	outline: 3px solid var(--wp--preset--color--accent);
+	outline: 3px solid var(--wp--preset--color--gold-dark);
 	outline-offset: 2px;
 }
 
@@ -60,7 +60,7 @@ a:hover { text-decoration: underline; }
 	position: absolute;
 	left: -9999px;
 	top: 0;
-	background: var(--wp--preset--color--charcoal);
+	background: var(--wp--preset--color--navy);
 	color: var(--wp--preset--color--base);
 	padding: var(--wp--preset--spacing--1) var(--wp--preset--spacing--2);
 	z-index: 1000;
@@ -84,15 +84,63 @@ a:hover { text-decoration: underline; }
 }
 .zeus-section--tight { padding-block: var(--wp--preset--spacing--4); }
 .zeus-section--stone { background: var(--wp--preset--color--stone-50); }
-.zeus-section--charcoal { background: var(--wp--preset--color--charcoal); color: var(--wp--preset--color--base); }
-.zeus-section--charcoal a { color: var(--wp--preset--color--base); }
+.zeus-section--navy { background: var(--wp--preset--color--navy); color: var(--wp--preset--color--base); }
+
+/* ---- Hero -------------------------------------------------------------------- */
+.zeus-hero {
+	background: var(--wp--preset--color--stone-50);
+	padding-block: var(--wp--preset--spacing--5);
+}
+@media (min-width: 768px) {
+	.zeus-hero { padding-block: var(--wp--preset--spacing--7); }
+}
+.zeus-hero__grid {
+	display: grid;
+	gap: var(--wp--preset--spacing--4);
+	align-items: center;
+}
+@media (min-width: 1024px) {
+	.zeus-hero__grid { grid-template-columns: 1fr 1fr; gap: var(--wp--preset--spacing--6); }
+}
+.zeus-hero__content h1 {
+	font-size: var(--wp--preset--font-size--xxx-large);
+	margin-bottom: var(--wp--preset--spacing--2);
+}
+.zeus-hero__lede {
+	font-size: var(--wp--preset--font-size--large);
+	max-width: 46ch;
+	color: var(--wp--preset--color--stone-600);
+}
+.zeus-hero__media { order: -1; }
+@media (min-width: 1024px) {
+	.zeus-hero__media { order: 0; }
+}
+.zeus-hero__img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border-radius: var(--wp--custom--radius--large);
+	box-shadow: var(--wp--custom--shadow--raised);
+}
+.zeus-section--navy a { color: var(--wp--preset--color--base); }
+
+.zeus-page-thumb { margin-block: var(--wp--preset--spacing--4); }
+.zeus-page-thumb__img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: var(--wp--custom--radius--large);
+	box-shadow: var(--wp--custom--shadow--raised);
+}
 
 .zeus-section__header { margin-bottom: var(--wp--preset--spacing--4); max-width: 640px; }
 .zeus-section__eyebrow {
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 	font-size: var(--wp--preset--font-size--small);
-	color: var(--wp--preset--color--accent-dark);
+	color: var(--wp--preset--color--gold-dark);
 	font-weight: 700;
 	margin-bottom: var(--wp--preset--spacing--1);
 }
@@ -125,20 +173,21 @@ a:hover { text-decoration: underline; }
 	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .zeus-btn--primary {
-	background: var(--wp--preset--color--accent);
-	color: var(--wp--preset--color--base);
+	background: var(--wp--preset--color--gold);
+	color: var(--wp--preset--color--navy);
 }
 .zeus-btn--primary:hover {
-	background: var(--wp--preset--color--accent-dark);
+	background: var(--wp--preset--color--navy);
+	color: var(--wp--preset--color--base);
 	text-decoration: none;
 }
 .zeus-btn--secondary {
 	background: transparent;
 	border-color: currentColor;
-	color: var(--wp--preset--color--charcoal);
+	color: var(--wp--preset--color--navy);
 }
 .zeus-btn--secondary:hover {
-	background: var(--wp--preset--color--charcoal);
+	background: var(--wp--preset--color--navy);
 	color: var(--wp--preset--color--base);
 	text-decoration: none;
 }
@@ -147,7 +196,7 @@ a:hover { text-decoration: underline; }
 }
 .zeus-btn--on-dark.zeus-btn--secondary:hover {
 	background: var(--wp--preset--color--base);
-	color: var(--wp--preset--color--charcoal);
+	color: var(--wp--preset--color--navy);
 }
 .zeus-btn--block { width: 100%; }
 
@@ -167,18 +216,20 @@ a:hover { text-decoration: underline; }
 	padding-block: var(--wp--preset--spacing--2);
 }
 .zeus-logo {
-	font-family: var(--wp--preset--font-family--heading);
-	font-weight: 700;
-	font-size: var(--wp--preset--font-size--large);
-	letter-spacing: 0.02em;
+	display: inline-flex;
 	min-width: 0;
-	overflow-wrap: break-word;
-	flex: 1 1 auto;
-}
-@media (min-width: 480px) {
-	.zeus-logo { flex: 0 1 auto; }
+	flex: 0 1 auto;
 }
 .zeus-logo:hover { text-decoration: none; }
+.zeus-logo__img {
+	height: 40px;
+	width: auto;
+	max-width: 100%;
+}
+@media (min-width: 768px) {
+	.zeus-logo__img { height: 48px; }
+}
+.zeus-footer .zeus-logo__img { height: 44px; margin-bottom: var(--wp--preset--spacing--2); }
 
 .zeus-primary-nav { display: none; }
 @media (min-width: 1024px) {
@@ -191,6 +242,7 @@ a:hover { text-decoration: underline; }
 	align-items: center;
 	min-height: 44px;
 	font-weight: 600;
+	white-space: nowrap;
 }
 .zeus-primary-nav .sub-menu {
 	display: none;
@@ -271,7 +323,7 @@ a:hover { text-decoration: underline; }
 	z-index: 150;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	background: var(--wp--preset--color--charcoal);
+	background: var(--wp--preset--color--navy);
 	box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
 }
 @media (min-width: 1024px) {
@@ -331,7 +383,7 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 	text-align: center;
 	padding: var(--wp--preset--spacing--5) var(--wp--preset--spacing--3);
 	border-radius: var(--wp--custom--radius--large);
-	background: var(--wp--preset--color--charcoal);
+	background: var(--wp--preset--color--navy);
 	color: var(--wp--preset--color--base);
 }
 .zeus-cta__actions { display: flex; flex-wrap: wrap; gap: var(--wp--preset--spacing--2); justify-content: center; margin-top: var(--wp--preset--spacing--3); }
@@ -375,7 +427,7 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 	border: 1px solid var(--wp--preset--color--stone-200);
 	border-radius: var(--wp--custom--radius--medium);
 	background: var(--wp--preset--color--base);
-	color: var(--wp--preset--color--charcoal);
+	color: var(--wp--preset--color--navy);
 }
 .zeus-form textarea { min-height: 120px; }
 .zeus-form__grid { display: grid; gap: var(--wp--preset--spacing--2); }
@@ -419,8 +471,8 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 	width: 2.25rem;
 	height: 2.25rem;
 	border-radius: 50%;
-	background: var(--wp--preset--color--accent);
-	color: var(--wp--preset--color--base);
+	background: var(--wp--preset--color--gold);
+	color: var(--wp--preset--color--navy);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -440,13 +492,16 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 }
 
 /* ---- Footer ----------------------------------------------------------------------- */
-.zeus-footer { background: var(--wp--preset--color--charcoal); color: var(--wp--preset--color--base); }
+.zeus-footer { background: var(--wp--preset--color--navy); color: var(--wp--preset--color--base); }
 .zeus-footer a { color: var(--wp--preset--color--base); }
 .zeus-footer__grid { display: grid; gap: var(--wp--preset--spacing--4); grid-template-columns: 1fr; padding-block: var(--wp--preset--spacing--5); }
 @media (min-width: 768px) {
 	.zeus-footer__grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
 }
 .zeus-footer__heading { font-size: var(--wp--preset--font-size--small); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--wp--preset--spacing--1); }
+.zeus-footer__brand p { color: rgba(255,255,255,0.85); }
+.zeus-footer__social { display: flex; gap: var(--wp--preset--spacing--2); }
+.zeus-footer__social a { font-weight: 600; min-height: 24px; display: inline-flex; align-items: center; }
 .zeus-footer__bottom {
 	border-top: 1px solid rgba(255,255,255,0.15);
 	padding-block: var(--wp--preset--spacing--2);

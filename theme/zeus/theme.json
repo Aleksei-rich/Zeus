@@ -16,9 +16,9 @@
 				{ "slug": "stone-50", "name": "Stone 50", "color": "#f6f4f1" },
 				{ "slug": "stone-200", "name": "Stone 200", "color": "#e3ded6" },
 				{ "slug": "stone-600", "name": "Stone 600", "color": "#6f6a62" },
-				{ "slug": "charcoal", "name": "Charcoal (contrast)", "color": "#221f1c" },
-				{ "slug": "accent", "name": "Accent (placeholder — pending brand palette)", "color": "#955a26" },
-				{ "slug": "accent-dark", "name": "Accent Dark", "color": "#8a5222" }
+				{ "slug": "navy", "name": "Navy (brand)", "color": "#071f34" },
+				{ "slug": "gold", "name": "Gold (brand accent)", "color": "#dcc16e" },
+				{ "slug": "gold-dark", "name": "Gold Dark (text-safe accent)", "color": "#8a6f2e" }
 			]
 		},
 		"typography": {
@@ -83,7 +83,7 @@
 	"styles": {
 		"color": {
 			"background": "var(--wp--preset--color--base)",
-			"text": "var(--wp--preset--color--charcoal)"
+			"text": "var(--wp--preset--color--navy)"
 		},
 		"typography": {
 			"fontFamily": "var(--wp--preset--font-family--body)",
@@ -100,7 +100,7 @@
 			},
 			"link": {
 				"color": {
-					"text": "var(--wp--preset--color--accent-dark)"
+					"text": "var(--wp--preset--color--gold-dark)"
 				}
 			}
 		}

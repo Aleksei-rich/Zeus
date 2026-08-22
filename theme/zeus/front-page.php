@@ -40,22 +40,43 @@ $zeus_featured_projects = get_posts(
 		'meta_value'     => '1',
 	)
 );
+
+// Real ZEUS project photography (see docs/ASSET-PROVENANCE.csv) — this
+// is the page's LCP element, so it loads eager + high priority, not lazy.
+$zeus_hero_image_post = zeus_get_post_by_slug( 'custom-kitchen-with-island-seating', 'attachment' );
+$zeus_hero_image_id   = $zeus_hero_image_post ? $zeus_hero_image_post->ID : 0;
 ?>
 
 <!-- 1. Hero -->
-<section class="zeus-section zeus-section--stone" aria-label="<?php esc_attr_e( 'Introduction', 'zeus' ); ?>">
-	<div class="zeus-container" style="text-align:center;">
-		<h1 style="font-size: var(--wp--preset--font-size--xxx-large); max-width: 900px; margin-inline:auto;">
-			<?php esc_html_e( 'Custom Cabinets & Countertops for Orlando & Central Florida', 'zeus' ); ?>
-		</h1>
-		<p style="font-size: var(--wp--preset--font-size--large); max-width: 640px; margin-inline:auto;">
-			<?php esc_html_e( 'ZEUS designs and builds custom kitchen and bathroom cabinetry and countertops for homeowners in Orlando, Windermere, Winter Garden, Horizon West, Clermont, and Dr. Phillips.', 'zeus' ); ?>
-		</p>
-		<div class="zeus-cta__actions">
-			<?php get_template_part( 'components/button', null, array( 'label' => __( 'Request Free Consultation', 'zeus' ), 'url' => zeus_consultation_url(), 'variant' => 'primary' ) ); ?>
-			<?php get_template_part( 'components/button', null, array( 'label' => zeus_phone_number_display(), 'url' => zeus_phone_number_href(), 'variant' => 'secondary' ) ); ?>
+<section class="zeus-hero" aria-label="<?php esc_attr_e( 'Introduction', 'zeus' ); ?>">
+	<div class="zeus-container zeus-hero__grid">
+		<div class="zeus-hero__content">
+			<p class="zeus-section__eyebrow"><?php esc_html_e( 'Orlando & Central Florida', 'zeus' ); ?></p>
+			<h1><?php esc_html_e( 'Custom Kitchen Cabinets & Countertops', 'zeus' ); ?></h1>
+			<p class="zeus-hero__lede">
+				<?php esc_html_e( 'ZEUS designs and builds custom kitchen and bathroom cabinetry and countertops for homeowners in Orlando, Windermere, Winter Garden, Horizon West, Clermont, and Dr. Phillips.', 'zeus' ); ?>
+			</p>
+			<div class="zeus-cta__actions" style="justify-content:flex-start;">
+				<?php get_template_part( 'components/button', null, array( 'label' => __( 'Request Free Consultation', 'zeus' ), 'url' => zeus_consultation_url(), 'variant' => 'primary' ) ); ?>
+				<?php get_template_part( 'components/button', null, array( 'label' => zeus_phone_number_display(), 'url' => zeus_phone_number_href(), 'variant' => 'secondary' ) ); ?>
+			</div>
 		</div>
-		<p class="zeus-placeholder-note" style="margin-top: var(--wp--preset--spacing--3);"><?php esc_html_e( '[Development placeholder: hero photography of real ZEUS projects]', 'zeus' ); ?></p>
+		<div class="zeus-hero__media">
+			<?php if ( $zeus_hero_image_id ) : ?>
+				<?php
+				echo wp_get_attachment_image(
+					$zeus_hero_image_id,
+					'zeus-hero',
+					false,
+					array(
+						'loading'       => 'eager',
+						'fetchpriority' => 'high',
+						'class'         => 'zeus-hero__img',
+					)
+				);
+				?>
+			<?php endif; ?>
+		</div>
 	</div>
 </section>
 
@@ -174,7 +195,10 @@ zeus_section_start(
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 7. Featured real projects -->
+<!-- 7. Featured real projects — only rendered once real, confidently-
+     grouped completed projects exist (see docs/DECISIONS.md, "Premier
+     series"/"Builder series" finding); no placeholder projects shown. -->
+<?php if ( $zeus_featured_projects ) : ?>
 <?php
 zeus_section_start(
 	array(
@@ -184,19 +208,16 @@ zeus_section_start(
 	)
 );
 ?>
-	<?php if ( $zeus_featured_projects ) : ?>
-		<div class="zeus-grid zeus-grid--3">
-			<?php foreach ( $zeus_featured_projects as $zeus_project_post ) : ?>
-				<?php get_template_part( 'components/card-project', null, array( 'post' => $zeus_project_post ) ); ?>
-			<?php endforeach; ?>
-		</div>
-	<?php else : ?>
-		<p class="zeus-placeholder-note"><?php esc_html_e( '[Development placeholder: featured project case studies will appear here once real, completed ZEUS projects are documented. No placeholder or fabricated projects are shown.]', 'zeus' ); ?></p>
-	<?php endif; ?>
+	<div class="zeus-grid zeus-grid--3">
+		<?php foreach ( $zeus_featured_projects as $zeus_project_post ) : ?>
+			<?php get_template_part( 'components/card-project', null, array( 'post' => $zeus_project_post ) ); ?>
+		<?php endforeach; ?>
+	</div>
 	<p style="margin-top: var(--wp--preset--spacing--3);">
 		<a class="zeus-btn zeus-btn--secondary" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ); ?>"><?php esc_html_e( 'View Full Portfolio', 'zeus' ); ?></a>
 	</p>
 <?php zeus_section_end(); ?>
+<?php endif; ?>
 
 <!-- 8. Why ZEUS -->
 <?php
@@ -207,15 +228,20 @@ zeus_section_start(
 	)
 );
 ?>
-	<div class="zeus-grid zeus-grid--3">
+	<div class="zeus-grid zeus-grid--4">
 		<div><h3><?php esc_html_e( 'Custom, Not Catalog', 'zeus' ); ?></h3><p><?php esc_html_e( 'Every project is designed for the specific space, not assembled from stock sizes.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'One Team, Start to Finish', 'zeus' ); ?></h3><p><?php esc_html_e( 'Design, cabinetry, and countertops handled by one team, not separate subcontractors.', 'zeus' ); ?></p></div>
+		<div><h3><?php esc_html_e( 'Clear Pricing Up Front', 'zeus' ); ?></h3><p><?php esc_html_e( 'You get a clear estimate before work begins, so there are no surprises on the final invoice.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Local to Central Florida', 'zeus' ); ?></h3><p><?php esc_html_e( 'Focused on the Orlando area rather than spread across the whole state.', 'zeus' ); ?></p></div>
 	</div>
-	<p class="zeus-placeholder-note" style="margin-top: var(--wp--preset--spacing--2);"><?php esc_html_e( '[Development placeholder: verified certifications, licensing, or years-in-business claims will be added only once confirmed by the owner.]', 'zeus' ); ?></p>
 <?php zeus_section_end(); ?>
 
-<!-- 9. Reviews (placeholder architecture — no fabricated reviews) -->
+<!-- 9. Reviews — clean architecture, no fabricated review text. ZEUS has
+     a real, active Google Business Profile with an existing reviews
+     feed (see docs/OLD-SITE-INVENTORY.md, "Existing review integration");
+     this section is built to receive that live feed once the owner
+     provides the Google Place/API connection. No AggregateRating
+     schema is added until real review data is actually connected. -->
 <?php
 zeus_section_start(
 	array(
@@ -225,14 +251,8 @@ zeus_section_start(
 	)
 );
 ?>
-	<div class="zeus-grid zeus-grid--3" data-zeus-reviews-placeholder>
-		<?php for ( $i = 0; $i < 3; $i++ ) : ?>
-			<div class="zeus-card">
-				<div class="zeus-card__body">
-					<p class="zeus-placeholder-note"><?php esc_html_e( '[Development placeholder: real, verified customer reviews will be pulled in here from a genuine review source (e.g. Google). No review content is fabricated.]', 'zeus' ); ?></p>
-				</div>
-			</div>
-		<?php endfor; ?>
+	<div class="zeus-container--narrow" style="text-align:center;">
+		<p><?php esc_html_e( 'ZEUS reviews are collected through our Google Business Profile. We\'re connecting that live feed to this page — check back soon, or search for ZEUS Cabinets & Countertops on Google to read verified reviews today.', 'zeus' ); ?></p>
 	</div>
 <?php zeus_section_end(); ?>
 

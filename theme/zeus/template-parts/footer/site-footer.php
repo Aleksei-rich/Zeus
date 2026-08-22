@@ -2,16 +2,33 @@
 /**
  * Site footer: brand blurb, nav, service areas, legal line.
  */
-$zeus_areas = array( 'Orlando', 'Windermere', 'Winter Garden', 'Horizon West', 'Clermont', 'Dr. Phillips' );
+$zeus_areas  = array( 'Orlando', 'Windermere', 'Winter Garden', 'Horizon West', 'Clermont', 'Dr. Phillips' );
+$zeus_social = zeus_social_links();
 ?>
 <footer class="zeus-footer">
 	<div class="zeus-container zeus-footer__grid">
-		<div>
-			<p class="zeus-logo"><?php bloginfo( 'name' ); ?></p>
+		<div class="zeus-footer__brand">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="zeus-logo">
+				<picture>
+					<source srcset="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer.webp' ); ?>" type="image/webp">
+					<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer.png' ); ?>" width="450" height="118" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="zeus-logo__img">
+				</picture>
+			</a>
 			<p><?php esc_html_e( 'Custom cabinetry and countertops for Orlando and Central Florida. Service-area business — consultations by appointment.', 'zeus' ); ?></p>
 			<p>
-				<a href="<?php echo esc_attr( zeus_phone_number_href() ); ?>"><?php echo esc_html( zeus_phone_number_display() ); ?></a>
+				<a href="<?php echo esc_attr( zeus_phone_number_href() ); ?>"><?php echo esc_html( zeus_phone_number_display() ); ?></a><br>
+				<a href="mailto:<?php echo esc_attr( zeus_email_address() ); ?>"><?php echo esc_html( zeus_email_address() ); ?></a>
 			</p>
+			<?php if ( $zeus_social ) : ?>
+				<p class="zeus-footer__social">
+					<?php if ( ! empty( $zeus_social['facebook'] ) ) : ?>
+						<a href="<?php echo esc_url( $zeus_social['facebook'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Facebook', 'zeus' ); ?></a>
+					<?php endif; ?>
+					<?php if ( ! empty( $zeus_social['instagram'] ) ) : ?>
+						<a href="<?php echo esc_url( $zeus_social['instagram'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Instagram', 'zeus' ); ?></a>
+					<?php endif; ?>
+				</p>
+			<?php endif; ?>
 		</div>
 
 		<div>
@@ -39,6 +56,7 @@ $zeus_areas = array( 'Orlando', 'Windermere', 'Winter Garden', 'Horizon West', '
 
 		<div>
 			<p class="zeus-footer__heading"><?php esc_html_e( 'Get Started', 'zeus' ); ?></p>
+			<p><?php echo esc_html( zeus_business_hours() ); ?></p>
 			<p>
 				<a class="zeus-btn zeus-btn--secondary zeus-btn--on-dark" href="<?php echo esc_url( zeus_consultation_url() ); ?>">
 					<?php esc_html_e( 'Request Free Consultation', 'zeus' ); ?>
@@ -49,6 +67,5 @@ $zeus_areas = array( 'Orlando', 'Windermere', 'Winter Garden', 'Horizon West', '
 
 	<div class="zeus-container zeus-footer__bottom">
 		<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></span>
-		<span class="zeus-placeholder-note"><?php esc_html_e( '[Development placeholder: licensing/registration info if applicable]', 'zeus' ); ?></span>
 	</div>
 </footer>

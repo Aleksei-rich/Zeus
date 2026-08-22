@@ -54,12 +54,33 @@ function zeus_consultation_url() {
 	return $page ? get_permalink( $page ) : home_url( '/consultation/' );
 }
 
+/**
+ * Real, verified ZEUS contact details — sourced read-only from the old
+ * site's business-info fields during the Phase 3.5 inventory (see
+ * docs/OLD-SITE-INVENTORY.md). Centralized here (not hard-coded per
+ * template) so a future correction only needs one edit.
+ */
 function zeus_phone_number_display() {
-	return '[Development placeholder: phone number]';
+	return '(689) 222-3077';
 }
 
 function zeus_phone_number_href() {
-	return 'tel:+10000000000';
+	return 'tel:+16892223077';
+}
+
+function zeus_email_address() {
+	return 'sales@zeuscabinetsflorida.com';
+}
+
+function zeus_business_hours() {
+	return __( 'Monday–Friday, 9:00 AM–7:00 PM', 'zeus' );
+}
+
+function zeus_social_links() {
+	return array(
+		'facebook'  => 'https://www.facebook.com/profile.php?id=100083163667410',
+		'instagram' => 'https://www.instagram.com/zeus.cabinets',
+	);
 }
 
 /**
@@ -67,7 +88,7 @@ function zeus_phone_number_href() {
  * container markup used by every homepage/landing section.
  */
 function zeus_section_start( $args = array() ) {
-	$variant   = $args['variant'] ?? ''; // '', 'stone', 'charcoal', 'tight'
+	$variant   = $args['variant'] ?? ''; // '', 'stone', 'navy', 'tight'
 	$container = $args['container'] ?? ''; // '', 'narrow', 'wide'
 	$id        = $args['id'] ?? '';
 

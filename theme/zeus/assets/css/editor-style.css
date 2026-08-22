@@ -2,7 +2,7 @@
    content previews accurately. Loaded via add_editor_style(). */
 body {
 	font-family: var(--wp--preset--font-family--body);
-	color: var(--wp--preset--color--charcoal);
+	color: var(--wp--preset--color--navy);
 }
 h1, h2, h3, h4, h5, h6 {
 	font-family: var(--wp--preset--font-family--heading);

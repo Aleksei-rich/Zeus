@@ -11,8 +11,9 @@ $zeus_social = zeus_social_links();
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="zeus-logo">
 				<picture>
 					<source srcset="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer.webp' ); ?>" type="image/webp">
-					<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer.png' ); ?>" width="450" height="118" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="zeus-logo__img">
+					<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer.png' ); ?>" width="981" height="240" alt="ZEUS" class="zeus-logo__img">
 				</picture>
+				<span class="zeus-logo__subtitle"><?php esc_html_e( 'Cabinets + Countertops', 'zeus' ); ?></span>
 			</a>
 			<p><?php esc_html_e( 'Custom cabinetry and countertops for Orlando and Central Florida. Service-area business — consultations by appointment.', 'zeus' ); ?></p>
 			<p>

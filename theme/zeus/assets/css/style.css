@@ -217,19 +217,35 @@ a:hover { text-decoration: underline; }
 }
 .zeus-logo {
 	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2px;
 	min-width: 0;
 	flex: 0 1 auto;
 }
 .zeus-logo:hover { text-decoration: none; }
 .zeus-logo__img {
-	height: 40px;
+	height: 34px;
 	width: auto;
 	max-width: 100%;
 }
 @media (min-width: 768px) {
-	.zeus-logo__img { height: 48px; }
+	.zeus-logo__img { height: 42px; }
 }
-.zeus-footer .zeus-logo__img { height: 44px; margin-bottom: var(--wp--preset--spacing--2); }
+.zeus-logo__subtitle {
+	font-size: 0.62rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: var(--wp--preset--color--stone-600);
+	white-space: nowrap;
+}
+@media (min-width: 768px) {
+	.zeus-logo__subtitle { font-size: 0.7rem; }
+}
+.zeus-footer .zeus-logo { margin-bottom: var(--wp--preset--spacing--2); }
+.zeus-footer .zeus-logo__img { height: 38px; }
+.zeus-footer .zeus-logo__subtitle { color: rgba(255,255,255,0.75); }
 
 .zeus-primary-nav { display: none; }
 @media (min-width: 1024px) {
@@ -267,8 +283,33 @@ a:hover { text-decoration: underline; }
 .zeus-header__actions { display: flex; align-items: center; gap: var(--wp--preset--spacing--2); flex-shrink: 0; }
 .zeus-header__phone { display: none; }
 @media (min-width: 768px) {
-	.zeus-header__phone { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+	.zeus-header__phone { display: inline-flex; align-items: center; gap: 0.55rem; }
 }
+.zeus-header__phone svg {
+	width: 24px;
+	height: 24px;
+	flex-shrink: 0;
+	color: var(--wp--preset--color--gold-dark);
+}
+.zeus-header__phone-text { display: flex; flex-direction: column; line-height: 1.15; }
+.zeus-header__phone-label {
+	font-size: 0.62rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-weight: 600;
+	color: var(--wp--preset--color--stone-600);
+}
+.zeus-header__phone-number {
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--wp--preset--color--navy);
+}
+@media (min-width: 1024px) {
+	.zeus-header__phone-number { font-size: 1.2rem; }
+}
+.zeus-header__phone:hover .zeus-header__phone-number,
+.zeus-header__phone:hover svg { color: var(--wp--preset--color--gold-dark); }
+.zeus-header__phone:hover { text-decoration: none; }
 /* The header's own CTA button is desktop-only: below the lg breakpoint
    the persistent mobile conversion bar (Call | Consultation) and the
    mobile nav drawer's own button already cover this, and keeping it

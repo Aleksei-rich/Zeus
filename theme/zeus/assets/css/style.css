@@ -88,40 +88,48 @@ a:hover { text-decoration: underline; }
 
 /* ---- Hero -------------------------------------------------------------------- */
 .zeus-hero {
-	background: var(--wp--preset--color--stone-50);
-	padding-block: var(--wp--preset--spacing--5);
+	position: relative;
+	min-height: 480px;
+	display: flex;
+	align-items: center;
+	padding-block: var(--wp--preset--spacing--6);
+	overflow: hidden;
+	background: var(--wp--preset--color--navy);
 }
 @media (min-width: 768px) {
-	.zeus-hero { padding-block: var(--wp--preset--spacing--7); }
-}
-.zeus-hero__grid {
-	display: grid;
-	gap: var(--wp--preset--spacing--4);
-	align-items: center;
+	.zeus-hero { min-height: 600px; }
 }
 @media (min-width: 1024px) {
-	.zeus-hero__grid { grid-template-columns: 1fr 1fr; gap: var(--wp--preset--spacing--6); }
+	.zeus-hero { min-height: 680px; }
 }
+.zeus-hero__media {
+	position: absolute;
+	inset: 0;
+}
+.zeus-hero__img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 65%;
+}
+.zeus-hero__scrim {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(100deg, rgba(7,31,52,0.90) 0%, rgba(7,31,52,0.78) 32%, rgba(7,31,52,0.42) 58%, rgba(7,31,52,0.12) 78%, rgba(7,31,52,0) 100%);
+}
+.zeus-hero > .zeus-container { position: relative; }
+.zeus-hero__content { max-width: 620px; color: var(--wp--preset--color--base); }
 .zeus-hero__content h1 {
 	font-size: var(--wp--preset--font-size--xxx-large);
 	margin-bottom: var(--wp--preset--spacing--2);
+	color: var(--wp--preset--color--base);
 }
+.zeus-hero .zeus-section__eyebrow { color: var(--wp--preset--color--gold); }
 .zeus-hero__lede {
 	font-size: var(--wp--preset--font-size--large);
 	max-width: 46ch;
-	color: var(--wp--preset--color--stone-600);
-}
-.zeus-hero__media { order: -1; }
-@media (min-width: 1024px) {
-	.zeus-hero__media { order: 0; }
-}
-.zeus-hero__img {
-	width: 100%;
-	height: auto;
-	aspect-ratio: 4 / 3;
-	object-fit: cover;
-	border-radius: var(--wp--custom--radius--large);
-	box-shadow: var(--wp--custom--shadow--raised);
+	color: rgba(255,255,255,0.88);
 }
 .zeus-section--navy a { color: var(--wp--preset--color--base); }
 
@@ -500,6 +508,23 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 /* ---- Trust strip / process / service-area lists --------------------------------- */
 .zeus-trust-strip { display: flex; flex-wrap: wrap; gap: var(--wp--preset--spacing--3); justify-content: center; text-align: center; }
 .zeus-trust-strip__item { max-width: 220px; }
+
+/* ---- Two paths (in-stock / custom), door strip, floating shelves, real photos ---- */
+.zeus-two-paths__card .zeus-card__media { aspect-ratio: 16 / 10; }
+.zeus-two-paths__card .zeus-card__body { gap: var(--wp--preset--spacing--2); }
+.zeus-two-paths__card .zeus-btn { align-self: flex-start; margin-top: var(--wp--preset--spacing--1); }
+
+.zeus-door-strip__item img,
+.zeus-floating-shelf img,
+.zeus-real-photo img {
+	width: 100%;
+	height: auto;
+	border-radius: var(--wp--custom--radius--medium);
+	box-shadow: var(--wp--custom--shadow--card);
+}
+.zeus-door-strip__item img { aspect-ratio: 1 / 1; object-fit: cover; }
+.zeus-floating-shelf img,
+.zeus-real-photo img { aspect-ratio: 4 / 3; object-fit: cover; }
 
 .zeus-process { counter-reset: zeus-step; }
 .zeus-process__step { position: relative; padding-left: 3rem; }

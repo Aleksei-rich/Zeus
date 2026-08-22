@@ -43,6 +43,7 @@ function zeus_setup() {
 	add_image_size( 'zeus-hero', 1600, 900, true );
 	add_image_size( 'zeus-gallery', 1200, 900, true );
 	add_image_size( 'zeus-thumb', 320, 240, true );
+	add_image_size( 'zeus-square', 400, 400, true ); // door/finish swatches (source is already square)
 
 	$GLOBALS['content_width'] = 1200;
 }

@@ -1,9 +1,16 @@
 <?php
 /**
- * Homepage — 13 sections per docs/SITE-ARCHITECTURE.md:
- * Hero, Trust, Services, Collections, Countertops, Process, Featured
- * Projects, Why ZEUS, Reviews, Service Area, FAQ, Consultation CTA/form,
- * Footer (footer.php).
+ * Homepage — Hero, Trust, Two Paths (In-Stock/Custom), In-Stock
+ * Collections, Why In-Stock Matters, Countertops, Custom Spaces,
+ * Process, Real ZEUS Photography, Why ZEUS, Reviews, Service Area,
+ * FAQ, Consultation CTA/form, Footer (footer.php).
+ *
+ * Business positioning (Phase 5 / RC2): ZEUS has two cabinetry
+ * offerings — in-stock collections available through a central
+ * warehouse for fast turnaround, and custom cabinetry/furniture for
+ * closets, built-ins, and non-standard spaces. Copy throughout this
+ * template is written to keep both visible; "custom" is a positive
+ * capability, not the only offering. See docs/DECISIONS.md.
  *
  * No fabricated reviews, stats, certifications, or completed-project
  * claims anywhere on this template — see docs/PROJECT-SPEC.md.
@@ -14,14 +21,18 @@ get_header();
 // level pages (returns null for a bare child slug) — zeus_get_post_by_slug()
 // (defined by the zeus-core plugin) does a plain, depth-independent
 // post_name lookup instead. See docs/DECISIONS.md, "Seeding safety fix".
-$zeus_page_cabinets     = zeus_get_post_by_slug( 'cabinets', 'page' );
-$zeus_page_kitchen      = zeus_get_post_by_slug( 'kitchen-cabinets', 'page' );
-$zeus_page_bath         = zeus_get_post_by_slug( 'bathroom-cabinets-vanities', 'page' );
-$zeus_page_countertops  = zeus_get_post_by_slug( 'countertops', 'page' );
-$zeus_page_quartz       = zeus_get_post_by_slug( 'quartz', 'page' );
-$zeus_page_granite      = zeus_get_post_by_slug( 'granite', 'page' );
-$zeus_page_porcelain    = zeus_get_post_by_slug( 'porcelain', 'page' );
-$zeus_page_marble       = zeus_get_post_by_slug( 'marble', 'page' );
+$zeus_page_cabinets      = zeus_get_post_by_slug( 'cabinets', 'page' );
+$zeus_page_kitchen       = zeus_get_post_by_slug( 'kitchen-cabinets', 'page' );
+$zeus_page_bath          = zeus_get_post_by_slug( 'bathroom-cabinets-vanities', 'page' );
+$zeus_page_countertops   = zeus_get_post_by_slug( 'countertops', 'page' );
+$zeus_page_quartz        = zeus_get_post_by_slug( 'quartz', 'page' );
+$zeus_page_granite       = zeus_get_post_by_slug( 'granite', 'page' );
+$zeus_page_porcelain     = zeus_get_post_by_slug( 'porcelain', 'page' );
+$zeus_page_marble        = zeus_get_post_by_slug( 'marble', 'page' );
+$zeus_page_custom_spaces = zeus_get_post_by_slug( 'custom-spaces', 'page' );
+$zeus_page_closets       = zeus_get_post_by_slug( 'closets', 'page' );
+$zeus_page_laundry       = zeus_get_post_by_slug( 'laundry-pantry', 'page' );
+$zeus_page_home_office   = zeus_get_post_by_slug( 'home-office', 'page' );
 
 $zeus_collections = get_posts(
 	array(
@@ -41,41 +52,44 @@ $zeus_featured_projects = get_posts(
 	)
 );
 
-// Real ZEUS project photography (see docs/ASSET-PROVENANCE.csv) — this
-// is the page's LCP element, so it loads eager + high priority, not lazy.
-$zeus_hero_image_post = zeus_get_post_by_slug( 'custom-kitchen-with-island-seating', 'attachment' );
-$zeus_hero_image_id   = $zeus_hero_image_post ? $zeus_hero_image_post->ID : 0;
+// Hero background: curated Oslo Walnut (OSLO Classic Walnut Slim
+// Shaker) lifestyle photography — dealer-provided lifestyle/product
+// media, not a claimed ZEUS completed project (see
+// docs/ASSET-PROVENANCE.csv). This is the page's LCP element, so it
+// loads eager + high priority, not lazy.
+$zeus_hero_image_id = 135; // oslo-walnut-kitchen-01
 ?>
 
 <!-- 1. Hero -->
 <section class="zeus-hero" aria-label="<?php esc_attr_e( 'Introduction', 'zeus' ); ?>">
-	<div class="zeus-container zeus-hero__grid">
+	<div class="zeus-hero__media">
+		<?php if ( $zeus_hero_image_id ) : ?>
+			<?php
+			echo wp_get_attachment_image(
+				$zeus_hero_image_id,
+				'zeus-hero',
+				false,
+				array(
+					'loading'       => 'eager',
+					'fetchpriority' => 'high',
+					'class'         => 'zeus-hero__img',
+				)
+			);
+			?>
+		<?php endif; ?>
+		<div class="zeus-hero__scrim" aria-hidden="true"></div>
+	</div>
+	<div class="zeus-container">
 		<div class="zeus-hero__content">
 			<p class="zeus-section__eyebrow"><?php esc_html_e( 'Orlando & Central Florida', 'zeus' ); ?></p>
-			<h1><?php esc_html_e( 'Custom Kitchen Cabinets & Countertops', 'zeus' ); ?></h1>
+			<h1><?php esc_html_e( 'Kitchen Cabinets & Countertops in Orlando & Central Florida', 'zeus' ); ?></h1>
 			<p class="zeus-hero__lede">
-				<?php esc_html_e( 'ZEUS designs and builds custom kitchen and bathroom cabinetry and countertops for homeowners in Orlando, Windermere, Winter Garden, Horizon West, Clermont, and Dr. Phillips.', 'zeus' ); ?>
+				<?php esc_html_e( 'Popular cabinet styles and finishes available through our central warehouse for fast turnaround — plus custom cabinetry and built-ins for spaces that need an individual solution.', 'zeus' ); ?>
 			</p>
 			<div class="zeus-cta__actions" style="justify-content:flex-start;">
 				<?php get_template_part( 'components/button', null, array( 'label' => __( 'Request Free Consultation', 'zeus' ), 'url' => zeus_consultation_url(), 'variant' => 'primary' ) ); ?>
-				<?php get_template_part( 'components/button', null, array( 'label' => zeus_phone_number_display(), 'url' => zeus_phone_number_href(), 'variant' => 'secondary' ) ); ?>
+				<?php get_template_part( 'components/button', null, array( 'label' => zeus_phone_number_display(), 'url' => zeus_phone_number_href(), 'variant' => 'secondary', 'on_dark' => true ) ); ?>
 			</div>
-		</div>
-		<div class="zeus-hero__media">
-			<?php if ( $zeus_hero_image_id ) : ?>
-				<?php
-				echo wp_get_attachment_image(
-					$zeus_hero_image_id,
-					'zeus-hero',
-					false,
-					array(
-						'loading'       => 'eager',
-						'fetchpriority' => 'high',
-						'class'         => 'zeus-hero__img',
-					)
-				);
-				?>
-			<?php endif; ?>
 		</div>
 	</div>
 </section>
@@ -85,12 +99,12 @@ $zeus_hero_image_id   = $zeus_hero_image_post ? $zeus_hero_image_post->ID : 0;
 	<h2 class="zeus-visually-hidden"><?php esc_html_e( 'Why Homeowners Trust ZEUS', 'zeus' ); ?></h2>
 	<div class="zeus-trust-strip">
 		<div class="zeus-trust-strip__item">
-			<h3><?php esc_html_e( 'Custom-Built', 'zeus' ); ?></h3>
-			<p><?php esc_html_e( 'Designed around your space, not picked from a generic catalog.', 'zeus' ); ?></p>
+			<h3><?php esc_html_e( 'Fast Turnaround', 'zeus' ); ?></h3>
+			<p><?php esc_html_e( 'Popular styles ship from our central warehouse — no waiting on full custom fabrication.', 'zeus' ); ?></p>
 		</div>
 		<div class="zeus-trust-strip__item">
-			<h3><?php esc_html_e( 'Orlando & Central Florida', 'zeus' ); ?></h3>
-			<p><?php esc_html_e( 'Serving Orlando, Windermere, Winter Garden, Horizon West, Clermont, and Dr. Phillips.', 'zeus' ); ?></p>
+			<h3><?php esc_html_e( 'Custom When It Counts', 'zeus' ); ?></h3>
+			<p><?php esc_html_e( 'Closets, built-ins, and unique spaces, made to fit.', 'zeus' ); ?></p>
 		</div>
 		<div class="zeus-trust-strip__item">
 			<h3><?php esc_html_e( 'Free Consultation', 'zeus' ); ?></h3>
@@ -99,34 +113,38 @@ $zeus_hero_image_id   = $zeus_hero_image_post ? $zeus_hero_image_post->ID : 0;
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 3. Main services -->
+<!-- 3. Two paths: in-stock vs. custom -->
 <?php
 zeus_section_start(
 	array(
 		'variant' => 'stone',
-		'eyebrow' => __( 'Services', 'zeus' ),
-		'heading' => __( 'What We Build', 'zeus' ),
+		'eyebrow' => __( 'Two Ways to Work With ZEUS', 'zeus' ),
+		'heading' => __( 'In-Stock Cabinetry or Custom-Built — Your Call', 'zeus' ),
+		'intro'   => __( 'Most kitchens and bathrooms move fastest with an in-stock collection. Some spaces need something built to fit. We do both.', 'zeus' ),
 	)
 );
 ?>
-	<div class="zeus-grid zeus-grid--3">
-		<?php
-		get_template_part( 'components/card-service', null, array(
-			'title' => __( 'Kitchen Cabinets', 'zeus' ),
-			'desc'  => __( 'Custom kitchen cabinetry designed around how your kitchen is actually used.', 'zeus' ),
-			'url'   => $zeus_page_kitchen ? get_permalink( $zeus_page_kitchen ) : home_url( '/cabinets/kitchen-cabinets/' ),
-		) );
-		get_template_part( 'components/card-service', null, array(
-			'title' => __( 'Bathroom Cabinets & Vanities', 'zeus' ),
-			'desc'  => __( 'Custom vanities and bathroom cabinetry, from a single vanity to a full remodel.', 'zeus' ),
-			'url'   => $zeus_page_bath ? get_permalink( $zeus_page_bath ) : home_url( '/cabinets/bathroom-cabinets-vanities/' ),
-		) );
-		get_template_part( 'components/card-service', null, array(
-			'title' => __( 'Countertops', 'zeus' ),
-			'desc'  => __( 'Quartz, granite, porcelain, and marble countertops matched to how you use your space.', 'zeus' ),
-			'url'   => $zeus_page_countertops ? get_permalink( $zeus_page_countertops ) : home_url( '/countertops/' ),
-		) );
-		?>
+	<div class="zeus-grid zeus-grid--2 zeus-two-paths">
+		<article class="zeus-card zeus-two-paths__card">
+			<div class="zeus-card__media">
+				<?php echo wp_get_attachment_image( 118, 'zeus-card', false, array( 'alt' => 'Brooklyn Pearl in-stock kitchen cabinets' ) ); ?>
+			</div>
+			<div class="zeus-card__body">
+				<h3><?php esc_html_e( 'In-Stock Cabinetry', 'zeus' ); ?></h3>
+				<p><?php esc_html_e( 'For kitchens and bathrooms where speed, selection, and value matter. Choose from a wide range of in-stock styles and finishes, stocked through our central warehouse for fast delivery and professional installation.', 'zeus' ); ?></p>
+				<a class="zeus-btn zeus-btn--secondary" href="<?php echo esc_url( $zeus_page_kitchen ? get_permalink( $zeus_page_kitchen ) : home_url( '/cabinets/kitchen-cabinets/' ) ); ?>"><?php esc_html_e( 'Explore In-Stock Collections', 'zeus' ); ?></a>
+			</div>
+		</article>
+		<article class="zeus-card zeus-two-paths__card">
+			<div class="zeus-card__media">
+				<?php echo wp_get_attachment_image( 139, 'zeus-card', false, array( 'alt' => 'White oak floating shelves, an example of custom cabinetry' ) ); ?>
+			</div>
+			<div class="zeus-card__body">
+				<h3><?php esc_html_e( 'Custom Cabinetry', 'zeus' ); ?></h3>
+				<p><?php esc_html_e( 'For closets, built-ins, laundry rooms, pantries, home offices, and non-standard dimensions — spaces that need an individual solution instead of a stock size.', 'zeus' ); ?></p>
+				<a class="zeus-btn zeus-btn--secondary" href="<?php echo esc_url( $zeus_page_custom_spaces ? get_permalink( $zeus_page_custom_spaces ) : home_url( '/custom-spaces/' ) ); ?>"><?php esc_html_e( 'Explore Custom Cabinetry', 'zeus' ); ?></a>
+			</div>
+		</article>
 	</div>
 <?php zeus_section_end(); ?>
 
@@ -134,9 +152,9 @@ zeus_section_start(
 <?php
 zeus_section_start(
 	array(
-		'eyebrow' => __( 'Cabinet Styles', 'zeus' ),
-		'heading' => __( 'Featured Collections', 'zeus' ),
-		'intro'   => __( 'From transitional Brooklyn to Slim Shaker Oslo — including the OSLO Classic Walnut Slim Shaker collection.', 'zeus' ),
+		'eyebrow' => __( 'In-Stock Cabinet Collections', 'zeus' ),
+		'heading' => __( 'Popular Styles, Ready to Move', 'zeus' ),
+		'intro'   => __( 'From transitional Brooklyn to Slim Shaker Oslo — including OSLO Classic Walnut — these collections are stocked for fast turnaround.', 'zeus' ),
 	)
 );
 ?>
@@ -149,7 +167,30 @@ zeus_section_start(
 	<?php endif; ?>
 <?php zeus_section_end(); ?>
 
-<!-- 5. Countertops -->
+<!-- 5. Why in-stock matters -->
+<?php
+zeus_section_start(
+	array(
+		'variant' => 'navy',
+		'eyebrow' => __( 'Why In-Stock Matters', 'zeus' ),
+		'heading' => __( 'Cabinets In Stock. Projects Moving Faster.', 'zeus' ),
+		'intro'   => __( 'Our in-stock collections are stocked through a central warehouse — multiple styles and finishes, ready for delivery and professional installation without waiting on full custom fabrication.', 'zeus' ),
+	)
+);
+?>
+	<div class="zeus-grid zeus-grid--4 zeus-door-strip">
+		<?php foreach ( array( 97, 105, 109, 102 ) as $zeus_door_id ) : ?>
+			<div class="zeus-door-strip__item"><?php echo wp_get_attachment_image( $zeus_door_id, 'zeus-square' ); ?></div>
+		<?php endforeach; ?>
+	</div>
+	<div class="zeus-grid zeus-grid--3" style="margin-top: var(--wp--preset--spacing--4);">
+		<div><h3><?php esc_html_e( 'Wide Selection', 'zeus' ); ?></h3><p><?php esc_html_e( 'Multiple styles and finishes available without waiting on a full custom order.', 'zeus' ); ?></p></div>
+		<div><h3><?php esc_html_e( 'Faster Delivery', 'zeus' ); ?></h3><p><?php esc_html_e( 'In-stock cabinetry moves from selection to delivery faster than made-to-order fabrication.', 'zeus' ); ?></p></div>
+		<div><h3><?php esc_html_e( 'Professional Installation', 'zeus' ); ?></h3><p><?php esc_html_e( 'We deliver and install — the same team from consultation through final walkthrough.', 'zeus' ); ?></p></div>
+	</div>
+<?php zeus_section_end(); ?>
+
+<!-- 6. Countertops -->
 <?php
 zeus_section_start(
 	array(
@@ -178,7 +219,46 @@ zeus_section_start(
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 6. Process -->
+<!-- 7. Custom spaces -->
+<?php
+zeus_section_start(
+	array(
+		'variant' => 'stone',
+		'eyebrow' => __( 'Custom Cabinetry', 'zeus' ),
+		'heading' => __( 'Built for Spaces That Need an Individual Solution', 'zeus' ),
+		'intro'   => __( 'Closets, laundry rooms, pantries, home offices, and floating shelves — custom-built when a standard size or stocked style is not enough.', 'zeus' ),
+	)
+);
+?>
+	<div class="zeus-grid zeus-grid--3">
+		<?php
+		get_template_part( 'components/card-service', null, array(
+			'title' => __( 'Custom Closets', 'zeus' ),
+			'desc'  => __( 'Reach-in and walk-in storage systems built around what you actually own.', 'zeus' ),
+			'url'   => $zeus_page_closets ? get_permalink( $zeus_page_closets ) : home_url( '/custom-spaces/closets/' ),
+		) );
+		get_template_part( 'components/card-service', null, array(
+			'title' => __( 'Laundry & Pantry', 'zeus' ),
+			'desc'  => __( 'Built-in storage planned around your appliances and everyday routine.', 'zeus' ),
+			'url'   => $zeus_page_laundry ? get_permalink( $zeus_page_laundry ) : home_url( '/custom-spaces/laundry-pantry/' ),
+		) );
+		get_template_part( 'components/card-service', null, array(
+			'title'    => __( 'Home Office', 'zeus' ),
+			'desc'     => __( 'A dedicated, organized workspace built around how you work.', 'zeus' ),
+			'url'      => $zeus_page_home_office ? get_permalink( $zeus_page_home_office ) : home_url( '/custom-spaces/home-office/' ),
+			'image_id' => 120,
+		) );
+		?>
+	</div>
+	<div class="zeus-grid zeus-grid--3" style="margin-top: var(--wp--preset--spacing--4);">
+		<?php foreach ( array( 139, 140, 141 ) as $zeus_shelf_id ) : ?>
+			<div class="zeus-floating-shelf"><?php echo wp_get_attachment_image( $zeus_shelf_id, 'zeus-card' ); ?></div>
+		<?php endforeach; ?>
+	</div>
+	<p class="zeus-card__meta" style="margin-top: var(--wp--preset--spacing--2);"><?php esc_html_e( 'Floating shelves — an example of the custom built-in work we do beyond cabinetry.', 'zeus' ); ?></p>
+<?php zeus_section_end(); ?>
+
+<!-- 8. Process -->
 <?php
 zeus_section_start(
 	array(
@@ -189,13 +269,13 @@ zeus_section_start(
 ?>
 	<div class="zeus-grid zeus-grid--4 zeus-process">
 		<div class="zeus-process__step"><h3><?php esc_html_e( 'Consultation', 'zeus' ); ?></h3><p><?php esc_html_e( 'We talk through your space, goals, and budget.', 'zeus' ); ?></p></div>
-		<div class="zeus-process__step"><h3><?php esc_html_e( 'Design', 'zeus' ); ?></h3><p><?php esc_html_e( 'We plan the layout, style, and materials with you.', 'zeus' ); ?></p></div>
-		<div class="zeus-process__step"><h3><?php esc_html_e( 'Build', 'zeus' ); ?></h3><p><?php esc_html_e( 'Your cabinetry and countertops are built to spec.', 'zeus' ); ?></p></div>
+		<div class="zeus-process__step"><h3><?php esc_html_e( 'Design & Selection', 'zeus' ); ?></h3><p><?php esc_html_e( 'We plan the layout and help you choose an in-stock collection or a custom-built solution.', 'zeus' ); ?></p></div>
+		<div class="zeus-process__step"><h3><?php esc_html_e( 'Delivery or Build', 'zeus' ); ?></h3><p><?php esc_html_e( 'In-stock cabinetry ships from our warehouse; custom cabinetry is built to your exact spec.', 'zeus' ); ?></p></div>
 		<div class="zeus-process__step"><h3><?php esc_html_e( 'Install', 'zeus' ); ?></h3><p><?php esc_html_e( 'We install and finish the space, ready to use.', 'zeus' ); ?></p></div>
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 7. Featured real projects — only rendered once real, confidently-
+<!-- 9. Featured real projects — only rendered once real, confidently-
      grouped completed projects exist (see docs/DECISIONS.md, "Premier
      series"/"Builder series" finding); no placeholder projects shown. -->
 <?php if ( $zeus_featured_projects ) : ?>
@@ -219,7 +299,26 @@ zeus_section_start(
 <?php zeus_section_end(); ?>
 <?php endif; ?>
 
-<!-- 8. Why ZEUS -->
+<!-- 9b. Real ZEUS project photography — individually-verified-real
+     photos, used generically (not attributed to a specific named
+     project since grouping could not be confirmed). See
+     docs/ASSET-PROVENANCE.csv. -->
+<?php
+zeus_section_start(
+	array(
+		'eyebrow' => __( 'Real ZEUS Work', 'zeus' ),
+		'heading' => __( 'From Real ZEUS Installations', 'zeus' ),
+	)
+);
+?>
+	<div class="zeus-grid zeus-grid--3">
+		<?php foreach ( array( 74, 75, 77 ) as $zeus_real_photo_id ) : ?>
+			<div class="zeus-real-photo"><?php echo wp_get_attachment_image( $zeus_real_photo_id, 'zeus-card' ); ?></div>
+		<?php endforeach; ?>
+	</div>
+<?php zeus_section_end(); ?>
+
+<!-- 10. Why ZEUS -->
 <?php
 zeus_section_start(
 	array(
@@ -229,14 +328,14 @@ zeus_section_start(
 );
 ?>
 	<div class="zeus-grid zeus-grid--4">
-		<div><h3><?php esc_html_e( 'Custom, Not Catalog', 'zeus' ); ?></h3><p><?php esc_html_e( 'Every project is designed for the specific space, not assembled from stock sizes.', 'zeus' ); ?></p></div>
+		<div><h3><?php esc_html_e( 'In Stock or Custom', 'zeus' ); ?></h3><p><?php esc_html_e( 'Popular styles ship fast from our warehouse; custom cabinetry covers everything else.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'One Team, Start to Finish', 'zeus' ); ?></h3><p><?php esc_html_e( 'Design, cabinetry, and countertops handled by one team, not separate subcontractors.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Clear Pricing Up Front', 'zeus' ); ?></h3><p><?php esc_html_e( 'You get a clear estimate before work begins, so there are no surprises on the final invoice.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Local to Central Florida', 'zeus' ); ?></h3><p><?php esc_html_e( 'Focused on the Orlando area rather than spread across the whole state.', 'zeus' ); ?></p></div>
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 9. Reviews — clean architecture, no fabricated review text. ZEUS has
+<!-- 11. Reviews — clean architecture, no fabricated review text. ZEUS has
      a real, active Google Business Profile with an existing reviews
      feed (see docs/OLD-SITE-INVENTORY.md, "Existing review integration");
      this section is built to receive that live feed once the owner
@@ -256,7 +355,7 @@ zeus_section_start(
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 10. Service area -->
+<!-- 12. Service area -->
 <?php
 zeus_section_start(
 	array(
@@ -272,7 +371,7 @@ zeus_section_start(
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 11. FAQ -->
+<!-- 13. FAQ -->
 <?php
 zeus_section_start(
 	array(
@@ -282,6 +381,10 @@ zeus_section_start(
 	)
 );
 $zeus_faqs = array(
+	array(
+		'q' => __( 'Is ZEUS cabinetry custom-made or in stock?', 'zeus' ),
+		'a' => __( 'Both. We stock popular styles and finishes through a central warehouse for fast turnaround, and we also build custom cabinetry and furniture for closets, built-ins, and spaces that need an individual solution.', 'zeus' ),
+	),
 	array(
 		'q' => __( 'Do you have a showroom I can visit?', 'zeus' ),
 		'a' => __( 'ZEUS is a service-area business — we meet with you for a consultation rather than operating a public walk-in showroom.', 'zeus' ),
@@ -310,7 +413,7 @@ $zeus_faqs = array(
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 12. Request Free Consultation CTA/form -->
+<!-- 14. Request Free Consultation CTA/form -->
 <?php
 zeus_section_start(
 	array(

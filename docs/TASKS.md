@@ -227,6 +227,16 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
       of a wiped install would have reproduced the old placeholder copy)
 - [x] Full-repo sweep confirms zero remaining `[Development
       placeholder]`/TODO/lorem-ipsum markers in DB content or templates
+- [x] Internal-link crawl of every edited page (extracted every `href`,
+      checked each for HTTP 200) — zero broken links. Caught two real
+      issues along the way: (1) two duplicate PHP dev-server processes
+      had ended up bound to port 8890 simultaneously, causing
+      intermittent connection failures — cleaned up via
+      `stop-local-env.ps1` + a manual `taskkill` for the process it
+      missed, then a clean `start-local-env.ps1`; (2) WordPress's
+      default "Hello world!" sample post was still published and linked
+      from the Blog page — trashed (not a real placeholder string, but
+      equally inappropriate default filler for a live business site)
 - [ ] Cabinet Styles hub, remaining collection/service/countertop pages:
       spot-checked via curl + a sample of visual screenshots — not
       every single page individually screenshotted at all 3 breakpoints

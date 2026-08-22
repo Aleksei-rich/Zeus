@@ -21,7 +21,11 @@ function zeus_filter_document_title_parts( $parts ) {
 	if ( is_singular() ) {
 		$override = get_post_meta( get_the_ID(), 'zeus_seo_title', true );
 		if ( $override ) {
-			$parts['title'] = $override;
+			// The override string is already a complete, fully-branded title
+			// (it includes its own "| ZEUS..." suffix) -- clear the other
+			// parts so WP's title separator doesn't append the site name a
+			// second time.
+			$parts = array( 'title' => $override );
 		}
 	}
 	return $parts;

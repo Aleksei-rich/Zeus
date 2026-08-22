@@ -12,8 +12,10 @@ while ( have_posts() ) :
 	$zeus_notes        = get_post_meta( $zeus_id, 'zeus_construction_notes', true );
 	$zeus_finishes     = get_the_terms( $zeus_id, 'finish' );
 	$zeus_gallery_ids  = zeus_get_gallery_ids( $zeus_id );
+	$zeus_swatches     = get_post_meta( $zeus_id, 'zeus_finish_swatches', true );
+	$zeus_swatches     = is_array( $zeus_swatches ) ? $zeus_swatches : array();
 	?>
-	<article class="zeus-container zeus-section--tight zeus-section">
+	<article class="zeus-container zeus-container--wide zeus-section--tight zeus-section">
 		<div class="zeus-section__header">
 			<?php if ( $zeus_profile_type ) : ?>
 				<p class="zeus-section__eyebrow"><?php echo esc_html( $zeus_profile_type ); ?></p>
@@ -33,15 +35,20 @@ while ( have_posts() ) :
 		</div>
 
 		<?php if ( $zeus_finishes && ! is_wp_error( $zeus_finishes ) ) : ?>
-			<div style="margin-top: var(--wp--preset--spacing--4);">
+			<div style="margin-top: var(--wp--preset--spacing--5);">
 				<h2><?php esc_html_e( 'Available Finishes', 'zeus' ); ?></h2>
-				<div class="zeus-area-list">
+				<div class="zeus-swatch-grid">
 					<?php foreach ( $zeus_finishes as $zeus_finish ) : ?>
-						<span class="zeus-area-list__chip"><?php echo esc_html( $zeus_finish->name ); ?></span>
+						<div class="zeus-swatch">
+							<?php if ( ! empty( $zeus_swatches[ $zeus_finish->term_id ] ) ) : ?>
+								<?php echo wp_get_attachment_image( $zeus_swatches[ $zeus_finish->term_id ], 'zeus-square', false, array( 'class' => 'zeus-swatch__img' ) ); ?>
+							<?php endif; ?>
+							<span class="zeus-swatch__label"><?php echo esc_html( $zeus_finish->name ); ?></span>
+						</div>
 					<?php endforeach; ?>
 				</div>
 				<?php if ( 'oslo' === get_post_field( 'post_name', $zeus_id ) ) : ?>
-					<p class="zeus-placeholder-note" style="margin-top: var(--wp--preset--spacing--2);">
+					<p style="margin-top: var(--wp--preset--spacing--2); color: var(--wp--preset--color--stone-600);">
 						<?php esc_html_e( 'Oslo is a Slim Shaker profile — a narrower-rail take on the Shaker door, distinct from the traditional Shaker collection. The Walnut finish is the OSLO Classic Walnut Slim Shaker Kitchen Cabinets.', 'zeus' ); ?>
 					</p>
 				<?php endif; ?>

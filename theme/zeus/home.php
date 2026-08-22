@@ -34,7 +34,7 @@ zeus_render_breadcrumbs();
 		</div>
 		<?php the_posts_pagination(); ?>
 	<?php else : ?>
-		<p class="zeus-placeholder-note"><?php esc_html_e( '[Development placeholder: no blog posts published yet.]', 'zeus' ); ?></p>
+		<p><?php esc_html_e( "We haven't published any articles yet — check back soon.", 'zeus' ); ?></p>
 	<?php endif; ?>
 </div>
 <?php get_footer(); ?>

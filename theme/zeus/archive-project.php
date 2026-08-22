@@ -22,7 +22,7 @@ zeus_render_breadcrumbs();
 			?>
 		</div>
 	<?php else : ?>
-		<p class="zeus-placeholder-note"><?php esc_html_e( '[Development placeholder: project case studies are being added. Check back soon, or request a consultation to discuss your project.]', 'zeus' ); ?></p>
+		<p><?php esc_html_e( "We're adding real project photography to this page. In the meantime, request a free consultation to talk through your project and see examples.", 'zeus' ); ?></p>
 	<?php endif; ?>
 </div>
 <?php

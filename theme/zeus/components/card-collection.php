@@ -11,11 +11,11 @@ $zeus_id  = $zeus_post->ID;
 $zeus_url = get_permalink( $zeus_id );
 ?>
 <article class="zeus-card">
-	<div class="zeus-card__media">
-		<?php if ( has_post_thumbnail( $zeus_id ) ) : ?>
+	<?php if ( has_post_thumbnail( $zeus_id ) ) : ?>
+		<div class="zeus-card__media">
 			<?php echo get_the_post_thumbnail( $zeus_id, 'zeus-card', array( 'alt' => esc_attr( get_the_title( $zeus_id ) . ' cabinet collection' ) ) ); ?>
-		<?php endif; ?>
-	</div>
+		</div>
+	<?php endif; ?>
 	<div class="zeus-card__body">
 		<h3 class="zeus-card__title"><a href="<?php echo esc_url( $zeus_url ); ?>"><?php echo esc_html( get_the_title( $zeus_id ) ); ?></a></h3>
 		<p class="zeus-card__desc"><?php echo esc_html( get_the_excerpt( $zeus_id ) ); ?></p>

@@ -14,11 +14,11 @@ $zeus_completed = zeus_project_is_completed( $zeus_id );
 $zeus_location  = get_post_meta( $zeus_id, 'zeus_location', true );
 ?>
 <article class="zeus-card">
-	<div class="zeus-card__media">
-		<?php if ( has_post_thumbnail( $zeus_id ) ) : ?>
+	<?php if ( has_post_thumbnail( $zeus_id ) ) : ?>
+		<div class="zeus-card__media">
 			<?php echo get_the_post_thumbnail( $zeus_id, 'zeus-card', array( 'alt' => esc_attr( get_the_title( $zeus_id ) ) ) ); ?>
-		<?php endif; ?>
-	</div>
+		</div>
+	<?php endif; ?>
 	<div class="zeus-card__body">
 		<span class="zeus-card__badge <?php echo $zeus_completed ? 'zeus-card__badge--completed' : 'zeus-card__badge--concept'; ?>">
 			<?php echo esc_html( zeus_project_status_label( $zeus_id ) ); ?>

@@ -1,7 +1,8 @@
 # Content Migration Plan
 
-Tracks what content/media moved from the old LocalWP ZEUS site into this
-rebuild during Phase 4, what was deliberately left behind, and why. See
+Tracks what content/media moved from the old LocalWP ZEUS site (Phase 4)
+and from the owner-supplied curated media package (Phase 5 / RC2) into
+this rebuild, what was deliberately left behind, and why. See
 `docs/ASSET-PROVENANCE.csv` for the asset-level detail and
 `docs/DECISIONS.md` for the full reasoning behind each judgment call.
 
@@ -10,6 +11,42 @@ old site's files, theme, plugins, and database were never edited,
 deleted, or reconfigured. See `docs/OLD-SITE-INVENTORY.md`, "How this was
 gathered (safety method)" for the copy-first database inspection method
 used.
+
+## Phase 5 / RC2 — curated media import
+
+The owner supplied `ZEUS_RC2_MEDIA_CURATED.zip` (Downloads folder) for
+this phase: 13 square door/finish sample photos, 29 collection lifestyle
+photos (Brooklyn, Shaker, Oslo — kitchen, bathroom, home office, and one
+home-bar scene), 3 floating-shelf photos, an `ASSET_MANIFEST.csv`, and a
+`MEDIA_USE_RULES.txt`. Both were read in full before anything was
+imported.
+
+**Branding safety:** every one of the 45 files was individually opened
+and visually inspected (not just checked by filename) before use. None
+contained any manufacturer name, logo, watermark, or promotional text.
+The package's own filenames were already neutral (no manufacturer
+branding), and were used as-is. Two files' filenames claimed the wrong
+room type — `brooklyn-gray-kitchen-01.webp` is actually a home office,
+`brooklyn-gray-kitchen-02.webp` is actually a bathroom vanity — both
+were used according to their real visible content, with alt text and
+placement corrected accordingly, not their filename.
+
+**Classification:** all 45 files are `dealer-provided lifestyle/product
+media` per `docs/ASSET-PROVENANCE.csv` — the same neutral internal term
+`MEDIA_USE_RULES.txt` itself specifies. None were added to the Portfolio
+post type or labeled as a completed ZEUS project; they're used only for
+collection/service-page presentation (homepage hero and sections,
+Kitchen Cabinets and Bathroom Cabinets inline galleries, Brooklyn/
+Shaker/Oslo collection finish swatches and lifestyle galleries, and the
+homepage's Custom Spaces section).
+
+**Essential series:** confirmed absent from both the curated package and
+the rebuild (repo-wide and database-wide search, zero matches).
+
+**Not migrated this phase:** no imagery exists in the curated package
+for Euro/Flat Panel or the four countertop materials — those pages
+remain clean text-only structure rather than substituting partner-site
+or fabricated imagery, per the brief's explicit instruction.
 
 ## Brand identity — migrated
 
@@ -147,6 +184,22 @@ confirmed for this rebuild.
   and would need owner input on scope before building equivalents.
 - **Old site's own theme/plugin code** — never reused; the rebuild uses
   its own first-party theme + `zeus-core` plugin architecture.
+
+## Phase 5 / RC2 — business positioning and copy corrections
+
+RC1's copy read as custom-cabinetry-only. Rewrote the homepage, Kitchen
+Cabinets, Bathroom Cabinets & Vanities, and About pages so in-stock
+availability (via a central warehouse, for fast turnaround) is presented
+alongside custom cabinetry, not overshadowed by it. "Custom, Not
+Catalog" framing was removed from every page it appeared on.
+
+Mid-phase, two lines were found to assert an unverified fact — that the
+exact same personnel handle every project stage, and that no
+subcontractors are ever used. Neither was ever confirmed, so both were
+replaced with accurate language ("coordinated by ZEUS") that keeps the
+real, verifiable differentiator (one company plans the whole project)
+without the unverifiable staffing claim. See `docs/DECISIONS.md`,
+2026-08-23 entry, point 8.
 
 ## Verification performed on this pass
 

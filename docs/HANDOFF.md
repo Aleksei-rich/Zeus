@@ -154,6 +154,22 @@ screenshots at ≥550px width from this tool; treat anything narrower as
 unverified until checked on a real device/browser, or bisect+diagnose
 before concluding there's a real bug.
 
+**Second headless-Edge screenshot bug (found during Phase 5 / RC2):**
+distinct from the one above. Large, absolutely-positioned full-bleed
+background images (e.g. the homepage hero) sometimes render as a blank/
+missing layer in the `--screenshot` PNG even though the image is fully
+loaded, correctly sized, and visible in the DOM — confirmed via an
+in-page JS diagnostic reading `img.complete`, `img.naturalWidth`, and
+`getBoundingClientRect()`, all of which came back correct while the
+screenshot still showed nothing. This is a compositor-timing issue tied
+to `--virtual-time-budget`, not a real site bug. **Fix:** add the
+`--run-all-compositor-stages-before-draw` flag (forces every compositor
+stage to finish before the frame is captured) — reliably resolved it in
+every case tried. Prefer combining both a generous
+`--virtual-time-budget` (8000–15000ms for image-heavy pages) and this
+flag for any screenshot involving a background/hero image or a page
+with many images loading at once.
+
 ## Git
 
 No global git identity was configured on this machine

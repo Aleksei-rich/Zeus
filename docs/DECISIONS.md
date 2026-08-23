@@ -6,6 +6,129 @@ owner-directed one.
 
 ---
 
+## 2026-08-23 — Phase 5 / RC2: business-positioning correction, curated media import, logo rebuild, factual-claim correction
+
+**Owner feedback that triggered this phase:** RC1 was technically
+accepted but not visually/business-positioning approved. The owner's
+brief identified three problems: (1) the site read as custom-cabinetry-
+only, when ZEUS's business is actually two offerings — in-stock
+collections through a central warehouse, and custom cabinetry for
+non-standard spaces; (2) the visual design was "too weak" for a premium
+cabinetry business; (3) the header logo looked "crooked/awkward" and the
+phone number needed more visual weight.
+
+**1. Business positioning.** Rewrote the homepage (new hero H1 "Kitchen
+Cabinets & Countertops in Orlando & Central Florida," a new "Two Ways to
+Work With ZEUS" section, a new "Why In-Stock Matters" section) and the
+Kitchen Cabinets, Bathroom Cabinets & Vanities, and About pages so
+in-stock is presented first and custom is a clearly-available second
+path, not the whole story. Removed "Custom, Not Catalog" framing
+throughout. See `CONTENT-MIGRATION-PLAN.md` for the page-by-page
+before/after.
+
+**2. Curated media import.** The owner supplied
+`ZEUS_RC2_MEDIA_CURATED.zip` (Downloads folder) containing 45 media
+files: 13 square door/finish samples, 29 collection lifestyle photos
+(Brooklyn/Shaker/Oslo, kitchen+bathroom+other rooms), and 3 floating-
+shelf photos, plus `ASSET_MANIFEST.csv` and `MEDIA_USE_RULES.txt`. Read
+both before importing, per the rules. All 45 files were individually,
+visually inspected (not just checked by filename) before use — zero
+contained manufacturer branding, logos, or watermarks. Two files were
+found to be mislabeled by their neutral filename (`brooklyn-gray-
+kitchen-01`/`-02` actually show a home office and a bathroom
+respectively, not a kitchen) — used according to actual visible content,
+not the filename, with correct alt text. Imported via `wp_insert_
+attachment` + `wp_generate_attachment_metadata`, factual alt text set at
+import time, classified `dealer-provided lifestyle/product media` in
+`ASSET-PROVENANCE.csv` (per `MEDIA_USE_RULES.txt`'s own neutral-wording
+instruction — never "manufacturer-provided"). None of these images were
+added to Portfolio or labeled as a completed ZEUS project — they're used
+for collection/service-page presentation only, consistent with
+`MEDIA_USE_RULES.txt` rule 7.
+
+**3. Essential series — confirmed absent.** Grepped the entire repo and
+the WordPress database (post titles + content) for "Essential" — zero
+matches, before and after this phase's changes. Nothing to remove.
+
+**4. Manufacturer-branding sweep.** Searched all database content
+(pages, collections, projects, attachment alt text) and all theme/
+plugin source for the manufacturer's name/initials (found once, pre-
+existing, in `PROJECT-SPEC.md`'s original mega-brief-derived "similar in
+spirit to" comparison list — an internal planning reference never
+rendered publicly, left as-is since it's Phase-0 foundational
+documentation, not new work) and for local machine paths (`C:\Users`,
+`Downloads`) — none found in any public-facing content or code.
+
+**5. Logo rebuild — real bug found and fixed.** The only available ZEUS
+logo source (the old site's own uploaded brand file) turned out to be a
+designer's presentation board with a permanent golden-ratio construction
+grid, a cursive tagline, and a gradient bar baked into the pixels —
+every previous crop of it (Phase 4 and earlier) inherited the grid
+lines, which is what the owner saw as "crooked." Recovered a clean
+wordmark via morphological opening (erode then dilate with a 3px
+structuring element, which strips anything thinner than the letter
+strokes — i.e. the 1-2px guide lines — while preserving the much thicker
+letterforms) followed by a connected-component size filter to drop
+residual fragments. Rebuilt the header/footer lockups and favicon from
+this cleaned source, and moved "Cabinets + Countertops" out of the
+fragile raster subtitle into real HTML text (it was getting damaged by
+the same erosion pass, since its strokes are nearly as thin as the guide
+lines) so it can never re-acquire artifacts. **Type:** investigate
+before "fixing" — the original ask could have been answered by nudging
+crop coordinates, which would not have solved the actual problem.
+
+**6. Header phone prominence.** Per direct owner instruction, the header
+phone number now uses a two-line "Call or Text" label + large bold
+number treatment (up from a small icon+text utility link), sized to
+visually compete with the Request Free Consultation button without
+duplicating it as a second button.
+
+**7. Collection pages made visual.** Brooklyn/Shaker/Oslo collection
+pages previously showed "Available Finishes" as plain text chips with an
+empty gallery (no gallery content existed). Now show a real finish-
+swatch grid (each finish paired with its actual door-sample photo) and a
+populated lifestyle-photo gallery using the curated import. The shared
+"White" finish taxonomy term (used by all three collections) needed a
+*different* swatch photo per collection, which plain term meta can't
+express — solved with a new `zeus_finish_swatches` post-meta map
+(term_id → attachment_id) stored per collection instead.
+
+**8. Factual-claims correction (mid-phase owner correction).** Two
+lines asserted unverified staffing/subcontracting facts: "the same team
+from consultation through final walkthrough" and "handled by one team,
+not separate subcontractors." Both were replaced with accurate,
+unfalsifiable language ("coordinated by ZEUS") in `front-page.php`, the
+About page, and the matching `zeus-core` seed source — keeping the real,
+verifiable differentiator (ZEUS coordinates the whole project) without
+asserting a specific personnel/subcontracting fact that was never
+confirmed.
+
+**9. Consultation form retested end-to-end** after all changes: valid
+submission → redirects to `/thank-you/`; invalid submission (bad email,
+bad ZIP, short description) → redirects back with all three field-level
+errors displayed, no lead created; valid lead stored as `private` (404
+on direct access) and correctly logged to the local mail-notification
+log; test lead deleted afterward. Zero PHP warnings throughout.
+
+**10. Headless-Edge screenshot fix found.** A second, different
+headless-Edge screenshot artifact was found and root-caused this phase
+(distinct from the narrow-viewport clamping found in Phase 4): large,
+absolutely-positioned hero background images sometimes failed to
+composite into the `--screenshot` output even though an in-page JS
+diagnostic proved they were fully loaded, correctly sized, and visible
+in the DOM (`complete: true`, correct `naturalWidth`, correct
+`getBoundingClientRect()`). Adding `--run-all-compositor-stages-before-
+draw` (a Chromium flag that forces all compositor stages to finish
+before the screenshot is captured) fixed it reliably. Documented in
+`HANDOFF.md` for future sessions.
+
+**Type:** Business-positioning and visual-design changes are owner-
+directed (explicit RC2 brief). The logo investigation, swatch/gallery
+data-model choice, and both tooling-limitation fixes are autonomous
+professional-default calls made to fulfill that brief correctly.
+
+---
+
 ## 2026-08-22 — Phase 4 content pass: real copy for every remaining page, three real bugs found+fixed, and a local tooling limitation identified
 
 **Content:** Wrote fresh, ZEUS-authored copy (replacing every

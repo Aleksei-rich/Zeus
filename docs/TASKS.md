@@ -178,7 +178,7 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
 - [x] `docs/PRIVACY-AND-DATA-RETENTION.md` created for the lead-capture
       data collected by the new consultation form.
 
-## Phase 4 — Real content, visual design & LOCAL RC1 (in progress, started 2026-08-21)
+## Phase 4 — Real content, visual design & LOCAL RC1 (RC1 shipped 2026-08-22; positioning/visual superseded by Phase 5 RC2)
 
 - [x] Real ZEUS brand identity adopted: logo (header/footer variants),
       favicon, navy/gold color tokens derived from the old site's own
@@ -260,6 +260,82 @@ Status values: `todo`, `in-progress`, `done`, `blocked`.
       structural mobile issues (flex-wrap present on CTA rows, grids
       collapse to 1 column, images are `max-width:100%`, no fixed px
       widths found). See `DECISIONS.md`.
+
+## Phase 5 — Business positioning + premium visual redesign + curated media (RC2, done 2026-08-23)
+
+RC1 was technically accepted but not visually/business-positioning
+approved — this phase corrects both. See `docs/DECISIONS.md`,
+2026-08-23 entry, for full reasoning.
+
+- [x] Located and inspected `ZEUS_RC2_MEDIA_CURATED.zip` (Downloads
+      folder); read `MEDIA_USE_RULES.txt` and `ASSET_MANIFEST.csv`
+      before importing anything
+- [x] Visually inspected all 45 curated media files before use — zero
+      contain manufacturer branding/logos/watermarks; 2 files were
+      found mislabeled by filename (room type) and used according to
+      actual content, not the filename
+- [x] Imported all 45 files (13 door/finish samples, 29 collection
+      lifestyle photos, 3 floating-shelf photos) with factual alt text;
+      documented in `ASSET-PROVENANCE.csv` as "dealer-provided
+      lifestyle/product media" per the rules file's own neutral-wording
+      instruction
+- [x] Confirmed Essential series absent from repo and database (zero
+      matches, before and after)
+- [x] Confirmed no manufacturer branding in public content/code (one
+      pre-existing internal-only reference in `PROJECT-SPEC.md`'s
+      original mega-brief comparison list, left as-is — not public,
+      not new work)
+- [x] **Real bug found+fixed:** the only available logo source had a
+      permanent golden-ratio construction grid baked into its pixels
+      (a designer's presentation board, not a clean final asset) — this
+      is what the owner saw as "crooked." Rebuilt a clean wordmark via
+      morphological erosion+dilation, regenerated header/footer/
+      favicon assets, moved the "Cabinets + Countertops" subtitle out
+      of the fragile raster into real HTML text
+- [x] Header phone number made substantially more prominent ("Call or
+      Text" label + large bold number) per direct owner instruction
+- [x] Homepage rebuilt: full-bleed premium hero (curated Oslo Walnut
+      photo), new "Two Ways to Work With ZEUS" (in-stock/custom) split
+      section, new "Why In-Stock Matters" navy section with a door-
+      swatch strip, new "Custom Spaces" section (previously absent from
+      the homepage), new small "Real ZEUS Work" section using the real
+      photos freed up when the hero switched to curated media
+      (previously the homepage hero)
+- [x] Business-positioning copy pass: homepage, Kitchen Cabinets,
+      Bathroom Cabinets & Vanities, About — all rewritten to lead with
+      in-stock availability and present custom as a clear second path,
+      not the only offering. "Custom, Not Catalog" framing removed
+      throughout
+- [x] Brooklyn/Shaker/Oslo collection pages rebuilt with a real visual
+      finish-swatch grid (door-sample photo per finish, via a new
+      per-collection `zeus_finish_swatches` post-meta map since the
+      shared "White" taxonomy term needed a different swatch photo per
+      collection) and a populated lifestyle-photo gallery
+- [x] Euro/Flat Panel and the 4 countertop pages left as clean text-
+      only structure (no curated imagery available for them in this
+      package; no fabricated/partner-site imagery substituted, per the
+      brief)
+- [x] **Factual-claims correction (mid-phase):** removed "the same team
+      from consultation through final walkthrough" and "not separate
+      subcontractors" (unverified staffing/subcontracting claims) from
+      the homepage and About page, replaced with "coordinated by ZEUS"
+- [x] Consultation form retested end-to-end after all changes: valid
+      submission, validation-error path (3 field errors), thank-you
+      redirect, private lead storage, mail-notification log, zero PHP
+      warnings — test lead deleted afterward
+- [x] Full QA re-run: PHP lint (14 changed files, all clean), debug
+      log (no new warnings from real page requests), zero duplicate
+      DOM IDs, zero broken internal links, across all 21 major pages
+- [x] Visual QA at desktop (1440px), tablet (768px), and the narrowest
+      reliably-renderable mobile width (~550px, per the Phase 4 tooling
+      finding) on the homepage and the highest-risk newly-changed pages
+      (Kitchen Cabinets, Oslo) — clean at all three, no overflow, no
+      broken wrapping
+- [x] **Second headless-Edge screenshot bug found+fixed:** large
+      absolutely-positioned hero images sometimes failed to composite
+      into `--screenshot` output despite being fully loaded (proved via
+      an in-page JS diagnostic). `--run-all-compositor-stages-before-
+      draw` fixed it. See `HANDOFF.md`.
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

@@ -81,14 +81,14 @@ $zeus_hero_image_id = 135; // oslo-walnut-kitchen-01
 	</div>
 	<div class="zeus-container">
 		<div class="zeus-hero__content">
-			<p class="zeus-section__eyebrow"><?php esc_html_e( 'Orlando & Central Florida', 'zeus' ); ?></p>
-			<h1><?php esc_html_e( 'Kitchen Cabinets & Countertops in Orlando & Central Florida', 'zeus' ); ?></h1>
+			<p class="zeus-section__eyebrow"><?php esc_html_e( 'In-Stock + Custom Cabinetry', 'zeus' ); ?></p>
+			<h1><?php esc_html_e( 'Kitchen Cabinets & Countertops in Orlando', 'zeus' ); ?></h1>
 			<p class="zeus-hero__lede">
-				<?php esc_html_e( 'Popular cabinet styles and finishes available through our central warehouse for fast turnaround — plus custom cabinetry and built-ins for spaces that need an individual solution.', 'zeus' ); ?>
+				<?php esc_html_e( 'In-stock cabinet collections for fast turnaround, plus custom cabinetry and built-ins throughout Central Florida.', 'zeus' ); ?>
 			</p>
 			<div class="zeus-cta__actions" style="justify-content:flex-start;">
 				<?php get_template_part( 'components/button', null, array( 'label' => __( 'Request Free Consultation', 'zeus' ), 'url' => zeus_consultation_url(), 'variant' => 'primary' ) ); ?>
-				<?php get_template_part( 'components/button', null, array( 'label' => zeus_phone_number_display(), 'url' => zeus_phone_number_href(), 'variant' => 'secondary', 'on_dark' => true ) ); ?>
+				<?php get_template_part( 'components/button', null, array( 'label' => __( 'View Cabinet Styles', 'zeus' ), 'url' => home_url( '/cabinet-styles/' ), 'variant' => 'secondary', 'on_dark' => true ) ); ?>
 			</div>
 		</div>
 	</div>

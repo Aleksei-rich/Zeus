@@ -116,7 +116,7 @@ a:hover { text-decoration: underline; }
 .zeus-hero__scrim {
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(100deg, rgba(7,31,52,0.90) 0%, rgba(7,31,52,0.78) 32%, rgba(7,31,52,0.42) 58%, rgba(7,31,52,0.12) 78%, rgba(7,31,52,0) 100%);
+	background: linear-gradient(100deg, rgba(7,31,52,0.78) 0%, rgba(7,31,52,0.67) 32%, rgba(7,31,52,0.36) 58%, rgba(7,31,52,0.10) 78%, rgba(7,31,52,0) 100%);
 }
 .zeus-hero > .zeus-container { position: relative; }
 .zeus-hero__content { max-width: 620px; color: var(--wp--preset--color--base); }
@@ -276,7 +276,7 @@ a:hover { text-decoration: underline; }
 	max-width: 100%;
 }
 @media (min-width: 768px) {
-	.zeus-logo__img { height: 42px; }
+	.zeus-logo__img { height: 47px; }
 }
 .zeus-logo__subtitle {
 	font-size: 0.62rem;

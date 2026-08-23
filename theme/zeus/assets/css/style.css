@@ -43,7 +43,15 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0 0 var(--wp--preset--spacing--2);
 	overflow-wrap: break-word;
 }
-p { margin: 0 0 var(--wp--preset--spacing--2); }
+/* A consistent type scale for h1-h4 sitewide -- previously undefined,
+   so headings fell back to uncontrolled browser-default relative
+   sizing, which read as heavy/inconsistent across sections and cards.
+   .zeus-hero__content h1 overrides h1 with its own larger size. */
+h1 { font-size: var(--wp--preset--font-size--xx-large); }
+h2 { font-size: var(--wp--preset--font-size--x-large); }
+h3 { font-size: var(--wp--preset--font-size--large); }
+h4 { font-size: var(--wp--preset--font-size--medium); }
+p { margin: 0 0 var(--wp--preset--spacing--2); max-width: 68ch; }
 
 a {
 	color: var(--wp--preset--color--gold-dark);
@@ -83,6 +91,7 @@ a:hover { text-decoration: underline; }
 	padding-block: var(--wp--preset--spacing--6);
 }
 .zeus-section--tight { padding-block: var(--wp--preset--spacing--4); }
+.zeus-section--compact { padding-block: var(--wp--preset--spacing--5); }
 .zeus-section--stone { background: var(--wp--preset--color--stone-50); }
 .zeus-section--navy { background: var(--wp--preset--color--navy); color: var(--wp--preset--color--base); }
 
@@ -196,6 +205,11 @@ a:hover { text-decoration: underline; }
 	gap: var(--wp--preset--spacing--3);
 	grid-template-columns: 1fr;
 }
+/* Prevents grid stretch from leaving dead whitespace in image-less
+   cards when a grid row mixes cards with and without a featured image
+   (e.g. Custom Spaces: only Home Office currently has a photo). */
+.zeus-grid--align-start { align-items: start; }
+.zeus-grid--align-start .zeus-card { height: auto; }
 @media (min-width: 768px) {
 	.zeus-grid--2 { grid-template-columns: repeat(2, 1fr); }
 	.zeus-grid--3 { grid-template-columns: repeat(3, 1fr); }
@@ -276,7 +290,7 @@ a:hover { text-decoration: underline; }
 	max-width: 100%;
 }
 @media (min-width: 768px) {
-	.zeus-logo__img { height: 47px; }
+	.zeus-logo__img { height: 54px; }
 }
 .zeus-logo__subtitle {
 	font-size: 0.62rem;
@@ -552,6 +566,22 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 .zeus-two-paths__card .zeus-card__body { gap: var(--wp--preset--spacing--2); }
 .zeus-two-paths__card .zeus-btn { align-self: flex-start; margin-top: var(--wp--preset--spacing--1); }
 
+.zeus-door-strip__note {
+	color: rgba(255,255,255,0.75);
+	font-size: var(--wp--preset--font-size--small);
+	margin-bottom: var(--wp--preset--spacing--3);
+}
+.zeus-door-strip {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: var(--wp--preset--spacing--3);
+}
+@media (min-width: 700px) {
+	.zeus-door-strip { grid-template-columns: repeat(6, 1fr); }
+}
+.zeus-door-strip__item { display: flex; flex-direction: column; align-items: center; gap: var(--wp--preset--spacing--1); text-align: center; }
+.zeus-door-strip__label { color: rgba(255,255,255,0.85); font-size: var(--wp--preset--font-size--small); font-weight: 600; }
+
 .zeus-door-strip__item img,
 .zeus-floating-shelf img,
 .zeus-real-photo img {
@@ -563,6 +593,26 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 .zeus-door-strip__item img { aspect-ratio: 1 / 1; object-fit: cover; }
 .zeus-floating-shelf img,
 .zeus-real-photo img { aspect-ratio: 4 / 3; object-fit: cover; }
+.zeus-floating-shelf__label,
+.zeus-real-photo__label {
+	display: block;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 600;
+	color: var(--wp--preset--color--stone-600);
+	margin-top: var(--wp--preset--spacing--1);
+}
+.zeus-real-photo__label { color: var(--wp--preset--color--gold-dark); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; }
+
+.zeus-why-zeus__item { display: flex; flex-direction: column; }
+.zeus-why-zeus__item svg {
+	width: 2rem;
+	height: 2rem;
+	padding: 0.4rem;
+	border-radius: 50%;
+	background: var(--wp--preset--color--gold);
+	color: var(--wp--preset--color--navy);
+	margin-bottom: var(--wp--preset--spacing--1);
+}
 
 .zeus-process { counter-reset: zeus-step; }
 .zeus-process__step { position: relative; padding-left: 3rem; }
@@ -583,15 +633,34 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 	font-weight: 700;
 }
 
-.zeus-area-list { display: flex; flex-wrap: wrap; gap: var(--wp--preset--spacing--2); }
-.zeus-area-list__chip {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.35rem;
-	padding: 0.4rem 0.9rem;
-	border-radius: 999px;
-	background: var(--wp--preset--color--stone-50);
-	border: 1px solid var(--wp--preset--color--stone-200);
+.zeus-service-area {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--wp--preset--spacing--4);
+}
+@media (min-width: 600px) {
+	.zeus-service-area { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+	.zeus-service-area { grid-template-columns: repeat(4, 1fr); }
+}
+.zeus-service-area__group:first-child {
+	padding-left: var(--wp--preset--spacing--2);
+	border-left: 3px solid var(--wp--preset--color--gold);
+}
+.zeus-service-area__group h3 {
+	font-size: var(--wp--preset--font-size--medium);
+	margin-bottom: var(--wp--preset--spacing--1);
+}
+.zeus-service-area__group ul { margin: 0; padding: 0; list-style: none; }
+.zeus-service-area__group li {
+	padding-block: 0.25rem;
+	color: var(--wp--preset--color--stone-600);
+	border-bottom: 1px solid var(--wp--preset--color--stone-200);
+}
+.zeus-service-area__group li:last-child { border-bottom: none; }
+.zeus-service-area__note {
+	margin-top: var(--wp--preset--spacing--4);
 	font-weight: 600;
 }
 

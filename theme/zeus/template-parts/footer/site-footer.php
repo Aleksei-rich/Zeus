@@ -15,7 +15,7 @@ $zeus_social = zeus_social_links();
 				</picture>
 				<span class="zeus-logo__subtitle"><?php esc_html_e( 'Cabinets + Countertops', 'zeus' ); ?></span>
 			</a>
-			<p><?php esc_html_e( 'Custom cabinetry and countertops for Orlando and Central Florida. Service-area business — consultations by appointment.', 'zeus' ); ?></p>
+			<p><?php esc_html_e( 'In-stock and custom cabinetry, countertops, delivery and installation for Orlando & Central Florida. Service-area business — consultations by appointment.', 'zeus' ); ?></p>
 			<p>
 				<a href="<?php echo esc_attr( zeus_phone_number_href() ); ?>"><?php echo esc_html( zeus_phone_number_display() ); ?></a><br>
 				<a href="mailto:<?php echo esc_attr( zeus_email_address() ); ?>"><?php echo esc_html( zeus_email_address() ); ?></a>

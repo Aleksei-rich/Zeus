@@ -88,13 +88,15 @@ function zeus_social_links() {
  * container markup used by every homepage/landing section.
  */
 function zeus_section_start( $args = array() ) {
-	$variant   = $args['variant'] ?? ''; // '', 'stone', 'navy', 'tight'
+	$variant   = $args['variant'] ?? ''; // '', 'stone', 'navy', 'tight' -- space-separated to combine, e.g. 'stone compact'
 	$container = $args['container'] ?? ''; // '', 'narrow', 'wide'
 	$id        = $args['id'] ?? '';
 
 	$section_classes = array( 'zeus-section' );
-	if ( $variant ) {
-		$section_classes[] = 'zeus-section--' . sanitize_html_class( $variant );
+	foreach ( preg_split( '/\s+/', trim( $variant ) ) as $zeus_variant_part ) {
+		if ( $zeus_variant_part ) {
+			$section_classes[] = 'zeus-section--' . sanitize_html_class( $zeus_variant_part );
+		}
 	}
 	$container_classes = array( 'zeus-container' );
 	if ( $container ) {

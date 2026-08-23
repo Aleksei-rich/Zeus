@@ -186,7 +186,7 @@ zeus_section_start(
 	<div class="zeus-grid zeus-grid--3" style="margin-top: var(--wp--preset--spacing--4);">
 		<div><h3><?php esc_html_e( 'Wide Selection', 'zeus' ); ?></h3><p><?php esc_html_e( 'Multiple styles and finishes available without waiting on a full custom order.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Faster Delivery', 'zeus' ); ?></h3><p><?php esc_html_e( 'In-stock cabinetry moves from selection to delivery faster than made-to-order fabrication.', 'zeus' ); ?></p></div>
-		<div><h3><?php esc_html_e( 'Professional Installation', 'zeus' ); ?></h3><p><?php esc_html_e( 'We deliver and install — the same team from consultation through final walkthrough.', 'zeus' ); ?></p></div>
+		<div><h3><?php esc_html_e( 'Professional Installation', 'zeus' ); ?></h3><p><?php esc_html_e( 'Professional delivery and installation coordinated by ZEUS.', 'zeus' ); ?></p></div>
 	</div>
 <?php zeus_section_end(); ?>
 
@@ -329,7 +329,7 @@ zeus_section_start(
 ?>
 	<div class="zeus-grid zeus-grid--4">
 		<div><h3><?php esc_html_e( 'In Stock or Custom', 'zeus' ); ?></h3><p><?php esc_html_e( 'Popular styles ship fast from our warehouse; custom cabinetry covers everything else.', 'zeus' ); ?></p></div>
-		<div><h3><?php esc_html_e( 'One Team, Start to Finish', 'zeus' ); ?></h3><p><?php esc_html_e( 'Design, cabinetry, and countertops handled by one team, not separate subcontractors.', 'zeus' ); ?></p></div>
+		<div><h3><?php esc_html_e( 'Coordinated Start to Finish', 'zeus' ); ?></h3><p><?php esc_html_e( 'Design, cabinetry, and countertops planned and coordinated together by ZEUS.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Clear Pricing Up Front', 'zeus' ); ?></h3><p><?php esc_html_e( 'You get a clear estimate before work begins, so there are no surprises on the final invoice.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Local to Central Florida', 'zeus' ); ?></h3><p><?php esc_html_e( 'Focused on the Orlando area rather than spread across the whole state.', 'zeus' ); ?></p></div>
 	</div>

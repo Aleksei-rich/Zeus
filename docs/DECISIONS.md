@@ -6,6 +6,64 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4B-POLISH: Bathroom Cabinets & Vanities visual-context correction
+
+**Decision:** Corrected two sections of `page-bathroom-cabinets-vanities.php`
+that were showing kitchen-context imagery on the bathroom-specific
+landing page, per explicit owner review. (1) "Explore Cabinet Styles
+for Your Bathroom" previously rendered via
+`get_template_part('components/card-collection', ...)`, which pulls
+each `cabinet_collection` post's own global featured image -- Brooklyn/
+Shaker/Oslo/Euro-Flat-Panel's featured images are all kitchen
+photography (shared sitewide, e.g. on `/cabinet-styles/` and the
+Kitchen Cabinets page). Rather than changing those global featured
+images (which would have regressed the Kitchen Cabinets page and the
+Cabinet Styles hub) or editing the shared `card-collection.php`
+component, this section now uses page-specific inline markup (same
+visual structure/CSS as `card-collection.php`, real collection
+titles/excerpts/permalinks preserved) with a bathroom-context image
+override: Brooklyn->119 (Brooklyn Pearl Bathroom), Shaker->130 (Shaker
+Moss Bathroom, chosen over 128 for a stronger composition), Oslo->134
+(Oslo Oak Bathroom, chosen over 137 for a stronger composition and a
+clearer view of the narrow-rail Slim Shaker door profile), Euro/Flat
+Panel->160 (new). (2) The countertop cross-sell image (previously
+attachment 159, "Marble Countertop Kitchen" -- a kitchen island) was
+replaced with new attachment 161, a bathroom vanity/countertop scene.
+
+**New media:** Two images from owner-supplied
+`ZEUS_RC4B_BATHROOM_MEDIA.zip` (Downloads folder) -- AI-generated
+category/lifestyle visuals, not sourced from any manufacturer or third
+party. Both visually inspected before import (no text/logo/watermark/
+manufacturer branding found). Processed identically to the RC3B
+workflow: re-encoded PNG->WebP via PHP GD (strips metadata, ~94% size
+reduction, no upscale), imported via `wp_insert_attachment` +
+`wp_generate_attachment_metadata`, alt text set at import,
+`zeus_media_provenance=generated_category_lifestyle` postmeta flag set.
+Attachment 160 ("Euro Flat Panel Bathroom Vanity") and attachment 161
+("Bathroom Vanity Countertop") -- both classified in
+`docs/ASSET-PROVENANCE.csv` as generated category/lifestyle media,
+explicitly barred from Real ZEUS Work, Portfolio, before/after, or any
+attributed-project context, matching the RC3B rule. The countertop
+image's exact stone type is not confirmed from the generated visual, so
+no specific material claim was added to on-page copy (existing "Marble
+and quartz are both common vanity-top choices..." copy was left as
+general guidance, not a claim about this specific image).
+
+**Reasoning:** Owner visual review after RC4B shipped, delivered as a
+scoped "RC4B-POLISH" brief limited to these two sections; hero, trust
+strip, Two Ways section (which already used bathroom-context images
+137/128), in-stock message, process, Real ZEUS section, Service Area,
+FAQ, consultation form, and every other page were explicitly out of
+scope and not touched.
+
+**Type:** Owner-directed (explicit RC4B-POLISH brief, including the
+required file names inside the media package); Shaker/Oslo image choice
+between the two named alternatives, and the page-specific-override
+implementation approach (vs. changing global featured images), were
+autonomous professional defaults within that brief.
+
+---
+
 ## 2026-08-26 — RC4A-POLISH: Kitchen Cabinets page visual/content polish
 
 **Decision:** Five targeted, owner-reviewed changes to

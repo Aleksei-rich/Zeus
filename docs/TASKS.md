@@ -417,6 +417,15 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
 - [x] Visual QA at 1440/1280/1150/1024/768/550px — clean at every
       width
 - [ ] Deferred: no new landing pages or new media created in this pass
+- [x] RC4B-POLISH (2026-08-26): owner visual-review pass correcting
+      kitchen-context imagery on the Bathroom page only — "Explore
+      Cabinet Styles for Your Bathroom" 4 cards now use page-specific
+      bathroom images (119/130/134/160, not the collections' shared
+      global featured images) and the countertop cross-sell image was
+      replaced (159 kitchen island -> 161 new bathroom vanity scene).
+      Two new generated category/lifestyle images imported (160, 161)
+      following the RC3B WebP workflow. See 2026-08-26 DECISIONS.md
+      entry ("RC4B-POLISH"). No other page or shared component touched.
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

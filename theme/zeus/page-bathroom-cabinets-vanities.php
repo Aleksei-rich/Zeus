@@ -138,11 +138,44 @@ zeus_section_start(
 		'intro'   => __( 'Vanities are available in the same four collections as our kitchen cabinetry, so your bathroom can match or intentionally contrast with the rest of your home.', 'zeus' ),
 	)
 );
+// Page-specific bathroom-context imagery (RC4B-POLISH): the
+// cabinet_collection posts' own featured images are kitchen
+// photography (shared sitewide -- e.g. on /cabinet-styles/ and the
+// Kitchen Cabinets page), which read as kitchen-context on this
+// bathroom-specific landing page. This maps each collection to an
+// approved bathroom-context image for THIS page only; the collections'
+// own global featured images, titles, excerpts, and permalinks are
+// untouched, and components/card-collection.php is not modified. See
+// docs/ASSET-PROVENANCE.csv.
+$zeus_bath_collection_images = array(
+	'brooklyn'        => 119, // Brooklyn Pearl Bathroom (dealer-provided lifestyle)
+	'shaker'          => 130, // Shaker Moss Bathroom (dealer-provided lifestyle)
+	'oslo'            => 134, // Oslo Oak Bathroom (dealer-provided lifestyle)
+	'euro-flat-panel' => 160, // Euro Flat Panel Bathroom Vanity (RC4B generated category/lifestyle visual)
+);
 ?>
 	<?php if ( $zeus_collections ) : ?>
 		<div class="zeus-grid zeus-grid--4">
 			<?php foreach ( $zeus_collections as $zeus_collection_post ) : ?>
-				<?php get_template_part( 'components/card-collection', null, array( 'post' => $zeus_collection_post ) ); ?>
+				<?php $zeus_bath_image_id = $zeus_bath_collection_images[ $zeus_collection_post->post_name ] ?? 0; ?>
+				<article class="zeus-card">
+					<?php if ( $zeus_bath_image_id ) : ?>
+						<div class="zeus-card__media">
+							<?php
+							echo wp_get_attachment_image(
+								$zeus_bath_image_id,
+								'zeus-card',
+								false,
+								array( 'alt' => get_the_title( $zeus_collection_post ) . ' bathroom vanity cabinetry' )
+							);
+							?>
+						</div>
+					<?php endif; ?>
+					<div class="zeus-card__body">
+						<h3 class="zeus-card__title"><a href="<?php echo esc_url( get_permalink( $zeus_collection_post ) ); ?>"><?php echo esc_html( get_the_title( $zeus_collection_post ) ); ?></a></h3>
+						<p class="zeus-card__desc"><?php echo esc_html( get_the_excerpt( $zeus_collection_post ) ); ?></p>
+					</div>
+				</article>
 			<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
@@ -249,7 +282,7 @@ zeus_section_start(
 <?php zeus_section_start( array( 'variant' => 'compact' ) ); ?>
 	<div class="zeus-grid zeus-grid--2" style="align-items:center;">
 		<div>
-			<?php echo wp_get_attachment_image( 159, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;' ) ); ?>
+			<?php echo wp_get_attachment_image( 161, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;', 'alt' => 'Bathroom vanity with light stone countertop and undermount sink' ) ); ?>
 		</div>
 		<div>
 			<p class="zeus-section__eyebrow"><?php esc_html_e( 'Countertops', 'zeus' ); ?></p>

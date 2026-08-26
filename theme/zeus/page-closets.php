@@ -6,9 +6,12 @@
  * Purely custom cabinetry positioning -- no in-stock messaging. No
  * independently-verified real ZEUS closet installation photo exists in
  * the approved media library, so this page has no "Real ZEUS Work"
- * section (see docs/ASSET-PROVENANCE.csv) -- attachment 154 is a
- * generated category/lifestyle visual and must never be presented as a
- * completed ZEUS project.
+ * section (see docs/ASSET-PROVENANCE.csv) -- attachments 154 and 162
+ * are both generated category/lifestyle visuals and must never be
+ * presented as a completed ZEUS project. Attachment 154 is used only in
+ * the hero; attachment 162 (RC4C-POLISH) is a second, visually distinct
+ * generated closet image used in the "Planned Around the Room, Not a
+ * Kit" section so the same photo doesn't repeat twice on one page.
  */
 get_header();
 zeus_render_breadcrumbs();
@@ -82,7 +85,7 @@ zeus_section_start(
 ?>
 	<div class="zeus-grid zeus-grid--2" style="align-items:center;">
 		<div>
-			<?php echo wp_get_attachment_image( 154, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;', 'alt' => 'Custom closet island with drawer storage and integrated lighting' ) ); ?>
+			<?php echo wp_get_attachment_image( 162, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;', 'alt' => 'Custom walk-in closet with built-in cabinetry, island and integrated storage' ) ); ?>
 		</div>
 		<div>
 			<p><?php esc_html_e( 'We start with the room itself: available wall space, room dimensions, and how you move through the space. From there we plan storage priorities — what needs to be visible and reachable versus what can be tucked away — for a clean, integrated look rather than a stack of stock units.', 'zeus' ); ?></p>

@@ -6,6 +6,42 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4C-POLISH: Closets page image repetition fixed
+
+**Decision:** The Closets page (`page-closets.php`, page ID 68) reused
+attachment 154 in both the hero and the "Planned Around the Room, Not a
+Kit" section. Imported a new generated closet image (attachment 162,
+"Custom Walk-In Closet Design" -- gray/taupe cabinetry, brass hardware,
+stone-top island, window seat, visually distinct palette from
+attachment 154's lighter oak tone) and used it only in the second
+section; the hero keeps attachment 154 unchanged.
+
+**Source:** The newest PNG in the owner's Downloads folder at the time
+of this task (`ChatGPT Image Aug 26, 2026, 03_46_02 PM.png`), visually
+inspected before use -- no text, logos, watermarks, or manufacturer
+branding, landscape format, no people, clearly a walk-in closet.
+Processed via the same workflow as prior generated-media imports:
+re-encoded PNG->WebP via PHP GD (~91% size reduction, no upscale),
+saved under the neutral public filename
+`zeus-custom-walk-in-closet-design.webp`, imported via
+`wp_insert_attachment` + `wp_generate_attachment_metadata`, alt text set
+at import, `zeus_media_provenance=generated_category_lifestyle` postmeta
+flag set. Classified in `docs/ASSET-PROVENANCE.csv` as generated
+category/lifestyle media, explicitly barred from Real ZEUS Work,
+Portfolio, before/after, or attributed-project use, matching the RC3B/
+RC4B rule.
+
+**Reasoning:** Owner visual review after RC4C shipped, delivered as a
+scoped "RC4C-POLISH" brief limited to this one image swap; hero, H1,
+title, meta description, canonical, breadcrumbs, section order, section
+copy, CTA, FAQ, process, service area, and every other page were
+explicitly out of scope and not touched.
+
+**Type:** Owner-directed (explicit RC4C-POLISH brief, including which
+file to locate and how to process it).
+
+---
+
 ## 2026-08-26 — RC4C: Custom Spaces hub + Closets/Laundry & Pantry/Home Office pages built
 
 **Decision:** Built four new page templates -- `page-custom-spaces.php`

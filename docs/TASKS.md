@@ -456,6 +456,12 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       working on each page
 - [ ] Deferred: no new landing pages beyond the four specified URLs; no
       new media generated or imported
+- [x] RC4C-POLISH (2026-08-26): owner visual-review pass fixing image
+      repetition on the Closets page only — attachment 154 was used in
+      both the hero and the "Planned Around the Room, Not a Kit"
+      section; imported a new generated closet image (attachment 162)
+      for the second section, hero unchanged. See 2026-08-26
+      DECISIONS.md entry ("RC4C-POLISH"). No other page touched.
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

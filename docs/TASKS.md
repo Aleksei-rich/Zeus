@@ -469,6 +469,16 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       (attachment 163) for the Pantry section only, hero/Laundry
       section unchanged. See 2026-08-26 DECISIONS.md entry
       ("RC4C-POLISH: Laundry & Pantry"). No other page touched.
+- [x] RC4C Home Office completion (2026-08-26): added the missing "Why
+      ZEUS for Your Home Office" trust section (4 claims, all reusing
+      already-vetted language from the homepage and Custom Spaces hub)
+      to bring the page in line with the full expected section set.
+      Reused the existing approved hero image (attachment 120) — no
+      new media imported. SEO title/meta/canonical/featured image were
+      already correctly set from the original RC4C build and confirmed
+      unchanged. RC4C is now fully complete across all four Custom
+      Spaces URLs. See 2026-08-26 DECISIONS.md entry ("RC4C: Home
+      Office page completed").
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

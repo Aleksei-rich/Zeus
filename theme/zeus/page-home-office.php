@@ -13,7 +13,11 @@
  * office -- its underlying file is named brooklyn-gray-kitchen-01,
  * which risks reading as a kitchen-image leak on this page; a text-only
  * "Style & Function" section was used instead rather than risk that
- * ambiguity.
+ * ambiguity. A "Why ZEUS" trust section was added (RC4C, second pass)
+ * to round out the page to the full set of expected sections; its
+ * claims reuse language already established and vetted elsewhere on
+ * the site (Custom Spaces hub "One Point of Contact", homepage "Local
+ * to Central Florida") rather than introducing new, unverified claims.
  */
 get_header();
 zeus_render_breadcrumbs();
@@ -125,6 +129,24 @@ zeus_section_start(
 		<div class="zeus-process__step"><h3><?php esc_html_e( 'Measure', 'zeus' ); ?></h3><p><?php esc_html_e( 'Exact room dimensions and available wall space.', 'zeus' ); ?></p></div>
 		<div class="zeus-process__step"><h3><?php esc_html_e( 'Design', 'zeus' ); ?></h3><p><?php esc_html_e( 'A layout planned around your equipment, storage, and workflow.', 'zeus' ); ?></p></div>
 		<div class="zeus-process__step"><h3><?php esc_html_e( 'Installation', 'zeus' ); ?></h3><p><?php esc_html_e( 'Professional delivery and installation coordinated by ZEUS.', 'zeus' ); ?></p></div>
+	</div>
+<?php zeus_section_end(); ?>
+
+<!-- 5b. Why ZEUS -->
+<?php
+zeus_section_start(
+	array(
+		'variant' => 'compact',
+		'eyebrow' => __( 'Why ZEUS', 'zeus' ),
+		'heading' => __( 'Why ZEUS for Your Home Office', 'zeus' ),
+	)
+);
+?>
+	<div class="zeus-grid zeus-grid--4 zeus-why-zeus">
+		<div class="zeus-why-zeus__item"><?php echo zeus_icon( 'check' ); // phpcs:ignore ?><h3><?php esc_html_e( 'Designed Around How You Work', 'zeus' ); ?></h3><p><?php esc_html_e( 'Cabinetry planned around your equipment, storage, and workflow, not a generic desk-and-shelf kit.', 'zeus' ); ?></p></div>
+		<div class="zeus-why-zeus__item"><?php echo zeus_icon( 'check' ); // phpcs:ignore ?><h3><?php esc_html_e( 'One Point of Contact', 'zeus' ); ?></h3><p><?php esc_html_e( 'Design, cabinetry, and installation planned and coordinated together by ZEUS.', 'zeus' ); ?></p></div>
+		<div class="zeus-why-zeus__item"><?php echo zeus_icon( 'check' ); // phpcs:ignore ?><h3><?php esc_html_e( 'Built to Fit, Not Adjusted to Fit', 'zeus' ); ?></h3><p><?php esc_html_e( 'Measured and built for your exact room, including small or unusually-shaped spaces.', 'zeus' ); ?></p></div>
+		<div class="zeus-why-zeus__item"><?php echo zeus_icon( 'check' ); // phpcs:ignore ?><h3><?php esc_html_e( 'Local to Central Florida', 'zeus' ); ?></h3><p><?php esc_html_e( 'Focused on the Orlando area rather than spread across the whole state.', 'zeus' ); ?></p></div>
 	</div>
 <?php zeus_section_end(); ?>
 

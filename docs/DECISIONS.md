@@ -6,6 +6,44 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4C: Home Office page completed with a "Why ZEUS" trust section
+
+**Decision:** The Home Office page (`page-home-office.php`, page ID 20)
+already existed from the original RC4C build (commit c510f39) with a
+hero, Workspace Design, Style & Function, Use Cases, Process, Service
+Area, FAQ, and final CTA -- but had no explicit trust/"Why ZEUS"
+section. A follow-up brief asked for the page to be "built" against a
+9-item section checklist that included one; rather than discard and
+rebuild the existing, already-QA'd page, the gap was identified by
+comparing the checklist against the live file, and only that one
+section was added. No image change was needed or made -- the brief's
+own instruction was to reuse an already-approved image if one exists,
+and attachment 120 (Brooklyn Pearl Home Office, dealer-provided
+lifestyle media, already the page's hero/featured image) satisfied
+that.
+
+**"Why ZEUS" content:** Four claims, all reusing language already
+established and vetted elsewhere on the site rather than introducing
+new claims: "Designed Around How You Work" and "Built to Fit, Not
+Adjusted to Fit" restate this page's own existing positioning; "One
+Point of Contact" reuses the Custom Spaces hub's existing "Why Custom"
+copy; "Local to Central Florida" reuses the homepage's existing "Why
+Homeowners Choose ZEUS" copy verbatim. Same markup/CSS classes as the
+homepage's equivalent section (`zeus-why-zeus`, gold checkmark badges)
+so it visually matches the established design system.
+
+**Reasoning:** Owner-directed brief explicitly listing a "Why ZEUS /
+trust section" as required content for this page, with an explicit
+instruction not to generate new media if an approved image already
+exists.
+
+**Type:** Owner-directed (explicit section-by-section brief); exact
+"Why ZEUS" copy and section placement were autonomous professional
+defaults, deliberately reusing already-approved claim language rather
+than writing new unverified claims.
+
+---
+
 ## 2026-08-26 — RC4C-POLISH: Laundry & Pantry page given a true pantry-specific visual
 
 **Decision:** The Laundry & Pantry page (`page-laundry-pantry.php`, page

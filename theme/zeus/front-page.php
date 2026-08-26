@@ -219,16 +219,17 @@ zeus_section_start(
 	<div class="zeus-grid zeus-grid--4">
 		<?php
 		$zeus_materials = array(
-			array( 'title' => __( 'Quartz', 'zeus' ), 'page' => $zeus_page_quartz, 'slug' => 'quartz' ),
-			array( 'title' => __( 'Granite', 'zeus' ), 'page' => $zeus_page_granite, 'slug' => 'granite' ),
-			array( 'title' => __( 'Porcelain', 'zeus' ), 'page' => $zeus_page_porcelain, 'slug' => 'porcelain' ),
-			array( 'title' => __( 'Marble', 'zeus' ), 'page' => $zeus_page_marble, 'slug' => 'marble' ),
+			array( 'title' => __( 'Quartz', 'zeus' ), 'page' => $zeus_page_quartz, 'slug' => 'quartz', 'image_id' => 156 ),
+			array( 'title' => __( 'Granite', 'zeus' ), 'page' => $zeus_page_granite, 'slug' => 'granite', 'image_id' => 157 ),
+			array( 'title' => __( 'Porcelain', 'zeus' ), 'page' => $zeus_page_porcelain, 'slug' => 'porcelain', 'image_id' => 158 ),
+			array( 'title' => __( 'Marble', 'zeus' ), 'page' => $zeus_page_marble, 'slug' => 'marble', 'image_id' => 159 ),
 		);
 		foreach ( $zeus_materials as $zeus_material ) :
 			get_template_part( 'components/card-service', null, array(
-				'title' => $zeus_material['title'],
-				'desc'  => get_the_excerpt( $zeus_material['page'] ) ? get_the_excerpt( $zeus_material['page'] ) : '',
-				'url'   => $zeus_material['page'] ? get_permalink( $zeus_material['page'] ) : home_url( '/countertops/' . $zeus_material['slug'] . '/' ),
+				'title'    => $zeus_material['title'],
+				'desc'     => get_the_excerpt( $zeus_material['page'] ) ? get_the_excerpt( $zeus_material['page'] ) : '',
+				'url'      => $zeus_material['page'] ? get_permalink( $zeus_material['page'] ) : home_url( '/countertops/' . $zeus_material['slug'] . '/' ),
+				'image_id' => $zeus_material['image_id'],
 			) );
 		endforeach;
 		?>
@@ -249,14 +250,16 @@ zeus_section_start(
 	<div class="zeus-grid zeus-grid--3 zeus-grid--align-start">
 		<?php
 		get_template_part( 'components/card-service', null, array(
-			'title' => __( 'Custom Closets', 'zeus' ),
-			'desc'  => __( 'Reach-in and walk-in storage systems built around what you actually own.', 'zeus' ),
-			'url'   => $zeus_page_closets ? get_permalink( $zeus_page_closets ) : home_url( '/custom-spaces/closets/' ),
+			'title'    => __( 'Custom Closets', 'zeus' ),
+			'desc'     => __( 'Reach-in and walk-in storage systems built around what you actually own.', 'zeus' ),
+			'url'      => $zeus_page_closets ? get_permalink( $zeus_page_closets ) : home_url( '/custom-spaces/closets/' ),
+			'image_id' => 154,
 		) );
 		get_template_part( 'components/card-service', null, array(
-			'title' => __( 'Laundry & Pantry', 'zeus' ),
-			'desc'  => __( 'Built-in storage planned around your appliances and everyday routine.', 'zeus' ),
-			'url'   => $zeus_page_laundry ? get_permalink( $zeus_page_laundry ) : home_url( '/custom-spaces/laundry-pantry/' ),
+			'title'    => __( 'Laundry & Pantry', 'zeus' ),
+			'desc'     => __( 'Built-in storage planned around your appliances and everyday routine.', 'zeus' ),
+			'url'      => $zeus_page_laundry ? get_permalink( $zeus_page_laundry ) : home_url( '/custom-spaces/laundry-pantry/' ),
+			'image_id' => 155,
 		) );
 		get_template_part( 'components/card-service', null, array(
 			'title'    => __( 'Home Office', 'zeus' ),

@@ -6,6 +6,62 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4A: Kitchen Cabinets page rebuilt as a dedicated landing page
+
+**Decision:** Replaced the thin, `page.php`-rendered Kitchen Cabinets
+page (`/cabinets/kitchen-cabinets/`, page ID 10 -- previously a handful
+of paragraphs plus an inline `<img>` gallery in `post_content`) with a
+dedicated `page-kitchen-cabinets.php` template, picked up automatically
+by WordPress's `page-{slug}.php` template hierarchy (no post-meta
+template assignment needed, so this is a pure theme-file change). The
+template follows the same section-based pattern established by
+`front-page.php` (`zeus_section_start()`/`zeus_section_end()`,
+`components/card-*`, the consultation form partial) rather than
+introducing a new pattern.
+
+**Content/SEO:** New SEO title "Kitchen Cabinets Orlando, FL | In-Stock
+& Custom | ZEUS", meta description, and featured image (now attachment
+75, a real verified ZEUS kitchen photo, replacing the old thumbnail 131
+which was dealer lifestyle media) set via the existing `zeus_seo_title`
+/ `zeus_seo_description` / `_thumbnail_id` postmeta -- no new SEO
+plumbing needed. Canonical, Open Graph, and BreadcrumbList output all
+worked automatically once the page existed, confirmed live (Home >
+Cabinets > Kitchen Cabinets).
+
+**Positioning:** Rewritten to present in-stock and custom kitchen
+cabinetry as equally real offerings (matching the sitewide RC2
+positioning correction), explicitly avoiding "stocked locally in
+Orlando," "same/one team," "no subcontractors," guaranteed lead times,
+and unsupported warranty/licensing/material claims per the owner's
+brief.
+
+**Media:** Hero uses attachment 114 (Brooklyn Midnight kitchen,
+dealer-provided lifestyle media, deliberately different from the
+homepage's Oslo Walnut hero). The "Real ZEUS Kitchen Installations"
+section uses attachments 75/74/77, all independently verified real
+completed-project photos (see docs/ASSET-PROVENANCE.csv) -- the same
+standard already applied to the homepage's "Real ZEUS Work" section, not
+a new rule. Collection cards reuse the four `cabinet_collection` posts'
+own featured images and excerpts (the Oslo excerpt already reads "The
+Oslo Slim Shaker collection...", so the brief's "must clearly
+communicate Oslo Slim Shaker" requirement was satisfied without
+modifying the shared `card-collection.php` component). No new images
+were generated; no shared component or homepage file was modified.
+`docs/ASSET-PROVENANCE.csv` usage-location fields updated for the
+images newly used on this page (114, 121, 123, 75).
+
+**Reasoning:** Owner-directed RC4A brief: turn the Kitchen Cabinets page
+into a strong, commercial, image-led landing page supporting both users
+and SEO for "Kitchen Cabinets Orlando" and related secondary intents,
+without creating new landing pages or touching the approved homepage
+baseline (commit 3151019) in this pass.
+
+**Type:** Owner-directed (explicit RC4A brief), implementation choices
+(image selection, exact section copy, template pattern reuse) made as
+autonomous professional defaults within that brief.
+
+---
+
 ## 2026-08-26 — Header nav breakpoint raised 1024px → 1280px (supersedes part of the 2026-08-22 overflow-fix decision)
 
 **Decision:** The desktop-vs-mobile header switch (`.zeus-primary-nav`,

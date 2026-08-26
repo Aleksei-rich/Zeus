@@ -364,6 +364,31 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       logo, full CTA visible from 1280px up, correct mobile hamburger
       layout below it
 
+## Phase 5E — Inner-page refinement (RC4A, done 2026-08-26)
+
+- [x] RC4A: Kitchen Cabinets page (`/cabinets/kitchen-cabinets/`)
+      rebuilt as a dedicated image-led landing page via new
+      `page-kitchen-cabinets.php` template (auto-selected by WP's
+      page-slug template hierarchy) — hero, trust strip, two-paths
+      section, 4-collection style grid, in-stock message, process,
+      real-ZEUS trust section, countertop cross-sell, service area,
+      page-specific FAQ, final CTA/consultation form. See 2026-08-26
+      DECISIONS.md entry for positioning/media/SEO details.
+- [x] SEO title/meta description/featured image updated via existing
+      postmeta pattern; canonical, Open Graph, and BreadcrumbList
+      (Home > Cabinets > Kitchen Cabinets) verified live, no new SEO
+      plumbing needed
+- [x] QA: PHP lint clean, zero debug-log warnings, zero duplicate DOM
+      IDs, all 8 required internal links return 200, no manufacturer
+      branding in the new hero image, homepage untouched (git status
+      shows only the one new template file)
+- [x] Visual QA at 1440/1280/1150/1024/768/550px — clean at every
+      width, header breakpoint fix from RC3D confirmed working on this
+      inner page too
+- [ ] Deferred (per brief, out of RC4A scope): `/in-stock-kitchen-
+      cabinets/` landing page, additional SEO landing pages, Bathroom
+      Cabinets & Vanities page refinement
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

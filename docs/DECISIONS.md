@@ -6,6 +6,46 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4C-POLISH: Laundry & Pantry page given a true pantry-specific visual
+
+**Decision:** The Laundry & Pantry page (`page-laundry-pantry.php`, page
+ID 19) used attachment 155 in the hero, the "Make the Laundry Room Work
+Harder" section, and the "Pantry Storage That Uses the Space Better"
+section -- but 155 visually reads primarily as a laundry room (visible
+washer/dryer), so the Pantry section had no true pantry-specific image.
+Imported a new generated pantry image (attachment 163, "Custom Pantry
+Cabinetry" -- bright white/light butler's-pantry with open shelving,
+food-storage jars, baskets, tall cabinetry, a small-appliance worktop,
+and brass hardware) and used it only in the Pantry section; the hero and
+Laundry section keep attachment 155 unchanged.
+
+**Source:** The newest PNG in the owner's Downloads folder at the time
+of this task (`ChatGPT Image Aug 26, 2026, 04_18_54 PM.png` -- newer
+than the closet image used in the prior RC4C-POLISH pass, so not
+confused with it), visually inspected before use, including a close
+zoom on the stand mixer and beverage-fridge appliances specifically to
+rule out visible brand markings. No text, logos, watermarks, or
+manufacturer branding found; clearly reads as a pantry, not a kitchen or
+laundry room. Processed via the same workflow as prior generated-media
+imports: PNG->WebP re-encode via PHP GD (~90% size reduction, no
+upscale), neutral public filename `zeus-custom-pantry-cabinetry.webp`,
+`zeus_media_provenance=generated_category_lifestyle` postmeta flag set.
+Classified in `docs/ASSET-PROVENANCE.csv` as generated category/
+lifestyle media, explicitly barred from Real ZEUS Work, Portfolio,
+before/after, completed-project, client-project, or attributed-
+installation use.
+
+**Reasoning:** Owner visual review after the prior RC4C-POLISH (Closets)
+pass shipped, delivered as a scoped brief limited to this one image
+swap; hero, H1, title, meta description, canonical, breadcrumbs, section
+order, section copy, CTA, FAQ, process, service area, and every other
+page were explicitly out of scope and not touched.
+
+**Type:** Owner-directed (explicit RC4C-POLISH brief, including which
+file to locate and how to process it).
+
+---
+
 ## 2026-08-26 — RC4C-POLISH: Closets page image repetition fixed
 
 **Decision:** The Closets page (`page-closets.php`, page ID 68) reused

@@ -462,6 +462,13 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       section; imported a new generated closet image (attachment 162)
       for the second section, hero unchanged. See 2026-08-26
       DECISIONS.md entry ("RC4C-POLISH"). No other page touched.
+- [x] RC4C-POLISH (2026-08-26): owner visual-review pass giving the
+      Laundry & Pantry page a true pantry-specific visual — attachment
+      155 (reads primarily as laundry) was reused for both the Laundry
+      and Pantry sections; imported a new generated pantry image
+      (attachment 163) for the Pantry section only, hero/Laundry
+      section unchanged. See 2026-08-26 DECISIONS.md entry
+      ("RC4C-POLISH: Laundry & Pantry"). No other page touched.
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

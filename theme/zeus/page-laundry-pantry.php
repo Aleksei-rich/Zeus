@@ -6,9 +6,13 @@
  * assignment needed. Purely custom cabinetry positioning -- no in-stock
  * messaging. No independently-verified real ZEUS laundry/pantry photo
  * exists in the approved media library, so this page has no "Real ZEUS
- * Work" section -- attachment 155 is a generated category/lifestyle
- * visual and must never be presented as a completed ZEUS project (see
- * docs/ASSET-PROVENANCE.csv).
+ * Work" section -- attachments 155 and 163 are both generated category/
+ * lifestyle visuals and must never be presented as a completed ZEUS
+ * project (see docs/ASSET-PROVENANCE.csv). Attachment 155 (hero +
+ * Laundry section) visually reads as a laundry room; attachment 163
+ * (RC4C-POLISH) is a separate, pantry-specific generated image used in
+ * the "Pantry Storage That Uses the Space Better" section so Laundry
+ * and Pantry no longer share the same photo.
  */
 get_header();
 zeus_render_breadcrumbs();
@@ -84,7 +88,7 @@ zeus_section_start(
 ?>
 	<div class="zeus-grid zeus-grid--2" style="align-items:center;">
 		<div>
-			<?php echo wp_get_attachment_image( 155, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;', 'alt' => 'Built-in cabinetry and shelving used for laundry and pantry storage' ) ); ?>
+			<?php echo wp_get_attachment_image( 163, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;', 'alt' => 'Custom pantry cabinetry with open shelving, drawers and organized storage' ) ); ?>
 		</div>
 		<div>
 			<p><?php esc_html_e( 'Whether it\'s a dedicated pantry room or cabinetry built into a laundry or kitchen-adjacent space, the goal is the same: shelving and drawers sized to what you actually store, so nothing gets lost at the back of a deep shelf.', 'zeus' ); ?></p>

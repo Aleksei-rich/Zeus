@@ -5,13 +5,9 @@
  */
 ?>
 <header class="zeus-header">
-	<div class="zeus-container zeus-header__inner">
+	<div class="zeus-container zeus-container--wide zeus-header__inner">
 		<a class="zeus-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-			<picture>
-				<source srcset="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-header.webp' ); ?>" type="image/webp">
-				<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-header.png' ); ?>" width="981" height="240" alt="ZEUS" class="zeus-logo__img">
-			</picture>
-			<span class="zeus-logo__subtitle"><?php esc_html_e( 'Cabinets + Countertops', 'zeus' ); ?></span>
+			<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-header-brand.png' ); ?>" width="1429" height="578" alt="<?php esc_attr_e( 'ZEUS Cabinets & Countertops', 'zeus' ); ?>" class="zeus-logo__img">
 		</a>
 
 		<nav class="zeus-primary-nav" aria-label="<?php esc_attr_e( 'Primary', 'zeus' ); ?>">

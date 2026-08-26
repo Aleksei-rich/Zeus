@@ -277,35 +277,38 @@ a:hover { text-decoration: underline; }
 }
 .zeus-logo {
 	display: inline-flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 2px;
+	align-items: center;
 	min-width: 0;
 	flex: 0 1 auto;
 }
 .zeus-logo:hover { text-decoration: none; }
+/* Authentic brand lockup (RC3C) -- controlled by width, not a fixed
+   height, so the full ZEUS/tagline/subtitle/bar artwork never
+   stretches or crops. object-fit:contain is a safety net in case a
+   height constraint is ever reintroduced. */
 .zeus-logo__img {
-	height: 34px;
-	width: auto;
+	width: 185px;
+	height: auto;
 	max-width: 100%;
+	object-fit: contain;
 }
 @media (min-width: 768px) {
-	.zeus-logo__img { height: 54px; }
+	.zeus-logo__img { width: 200px; }
 }
-.zeus-logo__subtitle {
-	font-size: 0.62rem;
-	letter-spacing: 0.15em;
-	text-transform: uppercase;
-	font-weight: 600;
-	color: var(--wp--preset--color--stone-600);
-	white-space: nowrap;
+/* Between 1024-1439px the desktop nav + phone + CTA already need
+   nearly the full container width (pre-existing tightness, not
+   introduced here), so the logo gets a smaller intermediate size in
+   that band to avoid flex-shrink crushing it; at >=1440px the header
+   uses the wide container (see site-header.php) and there is
+   comfortable room for the full-size lockup. */
+@media (min-width: 1024px) {
+	.zeus-logo__img { width: 150px; }
 }
-@media (min-width: 768px) {
-	.zeus-logo__subtitle { font-size: 0.7rem; }
+@media (min-width: 1440px) {
+	.zeus-logo__img { width: 250px; }
 }
-.zeus-footer .zeus-logo { margin-bottom: var(--wp--preset--spacing--2); }
-.zeus-footer .zeus-logo__img { height: 38px; }
-.zeus-footer .zeus-logo__subtitle { color: rgba(255,255,255,0.75); }
+.zeus-footer .zeus-logo { margin-bottom: var(--wp--preset--spacing--3); }
+.zeus-footer .zeus-logo__img { width: 280px; }
 
 .zeus-primary-nav { display: none; }
 @media (min-width: 1024px) {

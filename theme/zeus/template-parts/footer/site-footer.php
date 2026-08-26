@@ -9,11 +9,7 @@ $zeus_social = zeus_social_links();
 	<div class="zeus-container zeus-footer__grid">
 		<div class="zeus-footer__brand">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="zeus-logo">
-				<picture>
-					<source srcset="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer.webp' ); ?>" type="image/webp">
-					<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer.png' ); ?>" width="981" height="240" alt="ZEUS" class="zeus-logo__img">
-				</picture>
-				<span class="zeus-logo__subtitle"><?php esc_html_e( 'Cabinets + Countertops', 'zeus' ); ?></span>
+				<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer-brand.png' ); ?>" width="1429" height="578" alt="<?php esc_attr_e( 'ZEUS Cabinets & Countertops', 'zeus' ); ?>" class="zeus-logo__img">
 			</a>
 			<p><?php esc_html_e( 'In-stock and custom cabinetry, countertops, delivery and installation for Orlando & Central Florida. Service-area business — consultations by appointment.', 'zeus' ); ?></p>
 			<p>

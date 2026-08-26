@@ -18,6 +18,12 @@
  * claims reuse language already established and vetted elsewhere on
  * the site (Custom Spaces hub "One Point of Contact", homepage "Local
  * to Central Florida") rather than introducing new, unverified claims.
+ * A "Home Office Styles We Design" section was added (RC4C-POLISH,
+ * third pass) using two new generated images (164, 165) plus the
+ * existing attachment 120, to show three genuinely different design
+ * directions rather than implying ZEUS only builds one look. All three
+ * cards are illustrative style examples, not attributed real projects
+ * -- none is labeled Real ZEUS/Project/Installation/Before-After.
  */
 get_header();
 zeus_render_breadcrumbs();
@@ -94,6 +100,47 @@ zeus_section_start(
 		<div><h3><?php esc_html_e( 'Coordinated Finish', 'zeus' ); ?></h3><p><?php esc_html_e( 'Match your home\'s existing cabinetry, or choose a finish that stands on its own.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Glass-Front or Closed', 'zeus' ); ?></h3><p><?php esc_html_e( 'Display shelving behind glass, fully closed storage, or a mix of both.', 'zeus' ); ?></p></div>
 		<div><h3><?php esc_html_e( 'Integrated Desk Surface', 'zeus' ); ?></h3><p><?php esc_html_e( 'A desk built into the cabinetry run rather than a separate piece of furniture.', 'zeus' ); ?></p></div>
+	</div>
+<?php zeus_section_end(); ?>
+
+<!-- 3b. Home office styles we design -->
+<?php
+zeus_section_start(
+	array(
+		'eyebrow' => __( 'Design Options', 'zeus' ),
+		'heading' => __( 'Home Office Styles We Design', 'zeus' ),
+		'intro'   => __( 'Home office cabinetry can be tailored not only to the room and workflow, but also to the look of your home — from clean Euro flat-panel cabinetry to warmer built-in designs and more traditional framed styles.', 'zeus' ),
+	)
+);
+?>
+	<div class="zeus-grid zeus-grid--3">
+		<article class="zeus-card">
+			<div class="zeus-card__media">
+				<?php echo wp_get_attachment_image( 164, 'zeus-card', false, array( 'alt' => 'Modern home office with light Euro flat-panel built-in cabinetry' ) ); ?>
+			</div>
+			<div class="zeus-card__body">
+				<h3 class="zeus-card__title"><?php esc_html_e( 'Euro / Flat Panel', 'zeus' ); ?></h3>
+				<p class="zeus-card__desc"><?php esc_html_e( 'Clean slab fronts, minimal lines, and an integrated modern workspace.', 'zeus' ); ?></p>
+			</div>
+		</article>
+		<article class="zeus-card">
+			<div class="zeus-card__media">
+				<?php echo wp_get_attachment_image( 165, 'zeus-card', false, array( 'alt' => 'Two-person home office with warm wood and dark flat-panel built-in cabinetry' ) ); ?>
+			</div>
+			<div class="zeus-card__body">
+				<h3 class="zeus-card__title"><?php esc_html_e( 'Modern Two-Person Built-In', 'zeus' ); ?></h3>
+				<p class="zeus-card__desc"><?php esc_html_e( 'A shared workspace with built-in storage, shelving, and cabinetry designed for two.', 'zeus' ); ?></p>
+			</div>
+		</article>
+		<article class="zeus-card">
+			<div class="zeus-card__media">
+				<?php echo wp_get_attachment_image( 120, 'zeus-card', false, array( 'alt' => 'Traditional framed home office cabinetry with a built-in desk and glass-front storage' ) ); ?>
+			</div>
+			<div class="zeus-card__body">
+				<h3 class="zeus-card__title"><?php esc_html_e( 'Shaker / Transitional', 'zeus' ); ?></h3>
+				<p class="zeus-card__desc"><?php esc_html_e( 'A more framed, architectural cabinetry look with built-in desk and storage.', 'zeus' ); ?></p>
+			</div>
+		</article>
 	</div>
 <?php zeus_section_end(); ?>
 

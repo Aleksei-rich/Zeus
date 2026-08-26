@@ -6,6 +6,48 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4C-POLISH: Home Office page given a style-range section
+
+**Decision:** The Home Office page previously showed only one cabinetry
+style (attachment 120, a traditional glass-front symmetrical office),
+which risked implying ZEUS only builds that one look. Added a new
+"Home Office Styles We Design" section, placed after "Style & Function"
+and before "Use Cases" (the concept-then-example flow reads most
+naturally there), presenting three visibly distinct design directions
+as illustrative style examples: Euro / Flat Panel (new attachment 164),
+Modern Two-Person Built-In (new attachment 165), and Shaker /
+Transitional (existing attachment 120, reused). None of the three cards
+is labeled Real ZEUS, Project, Installation, or Before/After -- the
+section explicitly presents style range, not attributed completed
+projects.
+
+**New media:** Two images from owner-supplied
+`ZEUS_HOME_OFFICE_STYLES.zip` (Downloads folder) -- AI-generated
+category/lifestyle visuals, not sourced from any manufacturer or third
+party. Both visually inspected before import, including a close check
+of the laptop (image 1) and dual monitors (image 2) specifically for
+brand markings -- none found. Processed via the same workflow as prior
+generated-media imports: PNG->WebP re-encode via PHP GD (no upscale),
+neutral public filenames matching the source package's own naming,
+`zeus_media_provenance=generated_category_lifestyle` postmeta flag set.
+Classified in `docs/ASSET-PROVENANCE.csv` as generated category/
+lifestyle media, explicitly barred from Real ZEUS Work, Portfolio,
+before/after, completed-project, client-project, or attributed-
+installation use.
+
+**Reasoning:** Owner visual review after the Home Office page's prior
+RC4C pass shipped, delivered as a scoped brief limited to adding this
+one section; hero, H1, title, meta description, canonical, breadcrumbs,
+existing hero image, Workspace Design, existing Why ZEUS section,
+service area, process, FAQ, final CTA, and every other page were
+explicitly out of scope and not touched.
+
+**Type:** Owner-directed (explicit brief, including which file to
+locate, the three required cards, and exactly what not to claim about
+them).
+
+---
+
 ## 2026-08-26 — RC4C: Home Office page completed with a "Why ZEUS" trust section
 
 **Decision:** The Home Office page (`page-home-office.php`, page ID 20)

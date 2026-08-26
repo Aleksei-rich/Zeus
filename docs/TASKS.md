@@ -479,6 +479,15 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       unchanged. RC4C is now fully complete across all four Custom
       Spaces URLs. See 2026-08-26 DECISIONS.md entry ("RC4C: Home
       Office page completed").
+- [x] RC4C-POLISH (2026-08-26): owner visual-review pass adding a
+      "Home Office Styles We Design" section — the page previously
+      showed only one cabinetry style; added 3 style-range cards (Euro
+      / Flat Panel using new attachment 164, Modern Two-Person Built-In
+      using new attachment 165, Shaker / Transitional reusing existing
+      attachment 120), all explicitly labeled as illustrative style
+      examples, none as Real ZEUS/Project/Installation. See 2026-08-26
+      DECISIONS.md entry ("RC4C-POLISH: Home Office style-range
+      section"). No other page touched.
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

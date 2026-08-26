@@ -6,6 +6,43 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4D resumed after session/machine interruption; responsive QA technique note
+
+**Decision:** RC4D (Countertops hub + Quartz/Granite/Porcelain/Marble
+pages) was left mid-way through final responsive visual QA when the
+previous session hit the Claude session limit, after which the machine
+restarted. This session resumed from the existing working tree exactly
+as instructed: did not restart RC4D, did not recreate any of the five
+templates, did not reset/checkout/discard anything. Verified HEAD was
+still at the approved baseline (`c1b4b29`) with only the expected
+untracked/modified RC4D files present, then restarted the local dev
+environment (MariaDB + PHP dev server via `tools/start-local-env.ps1`)
+since both had stopped across the restart, and continued only with the
+remaining QA/fix/commit work.
+**Reasoning:** Directly instructed by the owner's resume prompt; matches
+CLAUDE.md's production-safety and git-discipline rules (never discard
+in-progress work, only restart the local environment, never touch
+staging/production).
+**Type:** Owner-directed (explicit instruction).
+
+**Technical note for future sessions:** the Chrome browser automation
+`resize_window` tool did not actually change the tab's viewport on this
+machine (window stayed at its existing maximized size regardless of the
+requested dimensions, confirmed via `window.innerWidth` before/after).
+Worked around this by loading each URL inside a full-page `<iframe>`
+harness (injected via `javascript_tool`, replacing `document.body`) with
+its own explicit CSS width/height, then reading/scrolling
+`iframe.contentWindow`/`contentDocument` directly — this reproduces a
+real, independent viewport per breakpoint (including correct `position:
+fixed` behavior for the mobile conversion bar, and real
+`scrollWidth`/`clientWidth` overflow detection), as long as the iframe's
+own CSS height is set close to the visible browser viewport height
+rather than to the full page's content height (a too-tall iframe stops
+having its own internal scroll, which breaks `position: fixed` children
+inside it). No fix was needed in the theme/plugin code itself — this is
+purely a note on how to drive the browser tool when `resize_window`
+doesn't take effect.
+
 ## 2026-08-26 — RC4C-POLISH: Home Office page given a style-range section
 
 **Decision:** The Home Office page previously showed only one cabinetry

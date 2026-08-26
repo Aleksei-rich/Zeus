@@ -489,6 +489,56 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       DECISIONS.md entry ("RC4C-POLISH: Home Office style-range
       section"). No other page touched.
 
+## Phase 5G — Countertops hub + material pages (RC4D, done 2026-08-26)
+
+- [x] Built five new page templates via WordPress's `page-{slug}.php`
+      template hierarchy: `page-countertops.php` (hub, page ID 12),
+      `page-quartz.php` (13), `page-granite.php` (14),
+      `page-porcelain.php` (15), `page-marble.php` (16) — hero, material
+      grid/individual "why this material" sections, a shared
+      Quartz/Granite/Porcelain/Marble comparison table (hub only),
+      cabinetry cross-sell, process, service area, page-specific FAQ,
+      final CTA/consultation form. Reused existing generated
+      category/lifestyle attachments 156-159 (one per material) and 161
+      (bathroom vanity, for the cross-sell image) — no new media
+      imported. No "Real ZEUS Work" section on any of the five pages —
+      no independently-verified real ZEUS countertop-specific
+      installation photo exists, and inferring a material from a real
+      photo would be an unverified claim. No exaggerated/absolute
+      material claims (indestructible, maintenance-free, scratch/stain/
+      heat-proof, "best material", guaranteed lead times) anywhere.
+- [x] Added `.zeus-compare-wrap` / `.zeus-compare-table` CSS (hub-only
+      comparison table, horizontally scrollable within its own container
+      below ~640px so it never causes page-level overflow).
+- [x] SEO title/meta description/featured image set per page; canonical,
+      Open Graph, and BreadcrumbList verified live and correct on all
+      five (Home > Countertops [> Quartz / Granite / Porcelain /
+      Marble]).
+- [x] QA: PHP lint clean (5 files), zero new debug-log warnings, zero
+      duplicate DOM IDs on any page, all internal links 200, no KCD/
+      manufacturer/Essential leaks, no showroom language, no secrets/
+      local paths in rendered output, homepage/Kitchen Cabinets/
+      Bathroom Cabinets & Vanities/Custom Spaces hub spot-checked 200
+      OK, git status shows only the five new template files + the CSS
+      diff.
+- [x] Visual QA at 1440/1280/1150/1024/768/550px on all five pages —
+      hero crops, material cards, comparison table, cabinetry cross-
+      sell, process grid, FAQ, and final CTA all clean at every width;
+      header breakpoint fix (RC3D) confirmed working; mobile conversion
+      bar confirmed sticking correctly with reserved footer padding (no
+      overlap) at every width below 1280px; comparison table confirmed
+      scrolling within its own container (not the page) at 550px with
+      no page-level horizontal overflow. Session was interrupted by a
+      Claude session limit + machine restart mid-QA and resumed from the
+      existing working tree without redoing completed work — see
+      2026-08-26 DECISIONS.md entry ("RC4D resumed after session/
+      machine interruption").
+- [x] Updated `docs/ASSET-PROVENANCE.csv` to record the new RC4D usage
+      contexts for attachments 156, 157, 158, 159, and 161.
+- [ ] Deferred (per brief, out of RC4D scope): no new landing pages
+      beyond the five specified URLs; no new media generated or
+      imported.
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

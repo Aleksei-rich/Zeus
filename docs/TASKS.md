@@ -386,8 +386,29 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       width, header breakpoint fix from RC3D confirmed working on this
       inner page too
 - [ ] Deferred (per brief, out of RC4A scope): `/in-stock-kitchen-
-      cabinets/` landing page, additional SEO landing pages, Bathroom
-      Cabinets & Vanities page refinement
+      cabinets/` landing page, additional SEO landing pages
+
+## Phase 5F — Inner-page refinement (RC4B, done 2026-08-26)
+
+- [x] RC4B: Bathroom Cabinets & Vanities page
+      (`/cabinets/bathroom-cabinets-vanities/`) rebuilt via new
+      `page-bathroom-cabinets-vanities.php` template, mirroring the
+      RC4A pattern — hero, trust strip, two-paths section, 4-collection
+      style grid, in-stock message, process, real-ZEUS trust section
+      (single-photo callout — only one verified real bathroom photo
+      exists), countertop cross-sell, service area, page-specific FAQ,
+      final CTA/consultation form. See 2026-08-26 DECISIONS.md entry.
+- [x] SEO title/meta description/featured image updated via existing
+      postmeta pattern; canonical, Open Graph, and BreadcrumbList
+      (Home > Cabinets > Bathroom Cabinets & Vanities) verified live
+- [x] QA: PHP lint clean, zero debug-log warnings, zero duplicate DOM
+      IDs, all 8 required internal links return 200, no manufacturer
+      branding in the hero image, homepage + Kitchen Cabinets page both
+      spot-checked 200 OK, git status shows only the one new template
+      file
+- [x] Visual QA at 1440/1280/1150/1024/768/550px — clean at every
+      width
+- [ ] Deferred: no new landing pages or new media created in this pass
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

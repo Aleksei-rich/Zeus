@@ -6,6 +6,51 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4B: Bathroom Cabinets & Vanities page rebuilt, mirroring RC4A
+
+**Decision:** Replaced the thin, `page.php`-rendered Bathroom Cabinets &
+Vanities page (`/cabinets/bathroom-cabinets-vanities/`, page ID 11) with
+a dedicated `page-bathroom-cabinets-vanities.php` template, picked up
+automatically via WordPress's `page-{slug}.php` template hierarchy. This
+was an autonomous continuation of RC4A ("Continue autonomously to RC4B")
+with no new written brief, so the RC4A brief's structure and rules were
+applied by analogy: same section pattern
+(`theme/zeus/page-kitchen-cabinets.php`), same positioning rules
+(in-stock and custom both real offerings, no "same/one team" or
+guaranteed-lead-time language), same SEO-postmeta mechanism, same media
+provenance discipline.
+
+**SEO:** Title "Bathroom Cabinets & Vanities Orlando, FL | In-Stock &
+Custom | ZEUS", new meta description, featured image set to attachment
+76 (a real verified ZEUS bathroom photo, replacing the old dealer-
+lifestyle thumbnail 134). Canonical/OG/BreadcrumbList confirmed live
+(Home > Cabinets > Bathroom Cabinets & Vanities).
+
+**Media:** Hero uses attachment 119 (Brooklyn Pearl bathroom, bright
+white/gold palette) -- deliberately different from the Kitchen Cabinets
+page's navy hero (114) so the two service pages don't read as repeats
+of each other. Two-paths cards use 137 (Oslo Walnut) and 128 (Shaker
+Kodiak); in-stock door-sample row uses 98/105/107, a different subset
+than the homepage and Kitchen Cabinets page use. **Real-photo trust
+section deliberately scaled down to one photo, not three:** only one
+independently-verified real bathroom installation photo (attachment 76)
+currently exists in the approved media library, versus three for
+kitchens. Padding a 3-photo grid with unrelated real kitchen photos, or
+using non-real lifestyle images labeled as real, would have violated the
+project's real-vs-lifestyle labeling rule -- so the section was built as
+a single restrained callout instead, an honest reflection of what media
+actually exists rather than a forced template match to the kitchen page.
+No new images were generated or imported.
+
+**Reasoning:** Direct continuation of the RC4A pattern to the sibling
+service page, per the owner's "Continue autonomously to RC4B" instruction.
+
+**Type:** Owner-directed (continuation instruction naming RC4B and the
+target page); section structure, exact copy, and media selection made as
+autonomous professional defaults, consistent with the RC4A precedent.
+
+---
+
 ## 2026-08-26 — RC4A: Kitchen Cabinets page rebuilt as a dedicated landing page
 
 **Decision:** Replaced the thin, `page.php`-rendered Kitchen Cabinets

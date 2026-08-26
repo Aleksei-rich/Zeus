@@ -337,6 +337,33 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       an in-page JS diagnostic). `--run-all-compositor-stages-before-
       draw` fixed it. See `HANDOFF.md`.
 
+## Phase 5A-D — Homepage refinement passes (RC3A/B/C/D, done 2026-08-26)
+
+- [x] RC3A: homepage structural/content polish (in-stock door grid
+      relabel, geography-grouped Service Area, footer positioning fix,
+      typography scale, unverified staffing-claim correction — see
+      2026-08-23 DECISIONS.md entries)
+- [x] RC3B: homepage media integration (Euro/Flat Panel, Custom Closets,
+      Laundry & Pantry, and 4 Countertop Material cards filled with
+      owner-supplied AI-generated category visuals; strict provenance
+      labeling so none can be mistaken for a completed ZEUS project)
+- [x] RC3C: brand logo correction — replaced the earlier (mistaken)
+      "cleaned" logo with the owner-supplied authentic brand lockup,
+      unmodified, checksum-verified; controlled by width not fixed
+      height
+- [x] RC3D: fixed a real header overflow bug found during routine
+      owner QA screenshots at 1024px/1150px — primary CTA button was
+      clipping off-screen and the logo was crushed to 0 width in the
+      1024-1279px band. Raised the desktop-nav/mobile-hamburger
+      breakpoint from 1024px to 1280px (verified headroom), removed the
+      now-unneeded intermediate logo-width tier. See 2026-08-26
+      DECISIONS.md entry.
+- [x] Re-verified via `--screenshot` (not `--dump-dom`, reconfirmed
+      unreliable for width diagnostics) at 768/1024/1150/1200/1279/
+      1280/1366/1440px — clean at every width, no overflow, no crushed
+      logo, full CTA visible from 1280px up, correct mobile hamburger
+      layout below it
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

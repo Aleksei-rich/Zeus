@@ -295,15 +295,6 @@ a:hover { text-decoration: underline; }
 @media (min-width: 768px) {
 	.zeus-logo__img { width: 200px; }
 }
-/* Between 1024-1439px the desktop nav + phone + CTA already need
-   nearly the full container width (pre-existing tightness, not
-   introduced here), so the logo gets a smaller intermediate size in
-   that band to avoid flex-shrink crushing it; at >=1440px the header
-   uses the wide container (see site-header.php) and there is
-   comfortable room for the full-size lockup. */
-@media (min-width: 1024px) {
-	.zeus-logo__img { width: 150px; }
-}
 @media (min-width: 1440px) {
 	.zeus-logo__img { width: 250px; }
 }
@@ -311,7 +302,14 @@ a:hover { text-decoration: underline; }
 .zeus-footer .zeus-logo__img { width: 280px; }
 
 .zeus-primary-nav { display: none; }
-@media (min-width: 1024px) {
+/* Raised from 1024px (RC3D): at 1024-1279px the full nav + phone + header
+   CTA content genuinely does not fit in the available container width
+   (verified via screenshot -- CTA button was clipping off-screen and the
+   logo was being crushed to 0). The mobile hamburger drawer already
+   contains the full nav plus its own "Request Free Consultation" button,
+   so this range now gets that proven mobile layout instead of a broken
+   hybrid. */
+@media (min-width: 1280px) {
 	.zeus-primary-nav { display: block; }
 }
 .zeus-primary-nav ul { display: flex; align-items: center; gap: var(--wp--preset--spacing--3); }
@@ -367,7 +365,7 @@ a:hover { text-decoration: underline; }
 	font-weight: 700;
 	color: var(--wp--preset--color--navy);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
 	.zeus-header__phone-number { font-size: 1.2rem; }
 }
 .zeus-header__phone:hover .zeus-header__phone-number,
@@ -379,7 +377,7 @@ a:hover { text-decoration: underline; }
    here too caused horizontal overflow at narrow widths (logo + phone +
    button + hamburger all forced onto one non-wrapping row). */
 .zeus-header__actions > .zeus-btn--primary { display: none; }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
 	.zeus-header__actions > .zeus-btn--primary { display: inline-flex; }
 }
 
@@ -393,7 +391,7 @@ a:hover { text-decoration: underline; }
 	border: 1px solid var(--wp--preset--color--stone-200);
 	border-radius: var(--wp--custom--radius--medium);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
 	.zeus-menu-toggle { display: none; }
 }
 
@@ -430,7 +428,7 @@ a:hover { text-decoration: underline; }
 	background: var(--wp--preset--color--navy);
 	box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
 	.zeus-mobile-bar { display: none; }
 }
 .zeus-mobile-bar a {
@@ -446,7 +444,7 @@ a:hover { text-decoration: underline; }
 .zeus-mobile-bar a:hover { background: rgba(255,255,255,0.08); text-decoration: none; }
 /* Reserve space so the fixed bar never overlaps footer content / causes CLS */
 body.zeus-has-mobile-bar { padding-bottom: 56px; }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
 	body.zeus-has-mobile-bar { padding-bottom: 0; }
 }
 

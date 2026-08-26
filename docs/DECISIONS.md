@@ -6,6 +6,61 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — Header nav breakpoint raised 1024px → 1280px (supersedes part of the 2026-08-22 overflow-fix decision)
+
+**Decision:** The desktop-vs-mobile header switch (`.zeus-primary-nav`,
+the header's own "Request Free Consultation" button, the hamburger
+toggle, and the persistent bottom mobile conversion bar) now all flip at
+`min-width: 1280px` instead of `1024px`. The `.zeus-logo__img` mid-tier
+width rule (150px, added in RC3C for the 1024-1439px band) was removed
+since it's no longer the tight zone; the logo now holds at 200px through
+1024-1439px and steps up to 250px only at >=1440px.
+
+**What broke:** Owner-requested QA screenshots at 1024px and 1150px
+(routine follow-up after the RC3C logo-brand-correction commit) showed
+the header logo rendering at 0 width, and at exactly 1024px the primary
+"Request Free Consultation" CTA button was clipped off the right edge of
+the viewport entirely. Verified with real `--screenshot` captures (not
+`--dump-dom`, which this session re-confirmed is unreliable for
+viewport-width diagnostics) and a raw pixel scan of the header row: at
+1024px the full nav + phone + CTA content needs roughly 1101px but only
+~992px of container width is available, an overflow that exists even
+with the logo shrunk to 0 — so no amount of further logo-shrinking could
+have fixed it.
+
+**Reasoning:** This re-opens the breakpoint chosen in the 2026-08-22
+"real bug found and fixed — horizontal overflow at narrow widths" entry
+below, which picked `lg` (1024px) as the split and verified "zero
+horizontal overflow at 320/375/768/1024/1440px." That verification
+checked discrete widths, not the 1024-1279px band as a range, and predates
+RC3C's wider authentic-brand logo — the combination of the wider logo and
+the unchanged 1024px threshold is what recreated overflow in a new form.
+Rather than trying to further compress nav/phone/CTA content to survive a
+genuinely too-narrow band (which risks a worse redesign under the RC3C
+"branding only" and RC3A "structural polish only" scoping this project
+has otherwise followed), the fix moves the switch to a width with
+verified real headroom (1280px, confirmed clean via screenshot at 1280,
+1366, and 1440px) and lets the already-built, already-correct mobile
+hamburger drawer (full nav + its own "Request Free Consultation" button)
+cover the 1024-1279px band instead — the same pattern already used below
+1024px, just extended slightly further up.
+
+**Also reconfirmed:** headless Edge's `--window-size` remains unreliable
+below ~480-500px on this machine (this session observed
+`window.innerWidth` pinned at 492px regardless of a requested 390px or
+500px size) — consistent with, and a refinement of, the tooling
+limitation already on record in `docs/HANDOFF.md` and the 2026-08-22
+entry below. No site-side change was made for this; it's a capture-tool
+limitation, not a layout defect (confirmed the mobile hamburger renders
+correctly once capture width matches actual layout width).
+
+**Type:** Autonomous professional default (real functional bug —
+primary conversion CTA clipped off-screen — found during a routine
+owner-requested screenshot check; fixed per CLAUDE.md §15's "pick the
+safest professional default... don't ask" for non-subjective defects).
+
+---
+
 ## 2026-08-23 — Phase 5 / RC2: business-positioning correction, curated media import, logo rebuild, factual-claim correction
 
 **Owner feedback that triggered this phase:** RC1 was technically

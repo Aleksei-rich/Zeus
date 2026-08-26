@@ -427,6 +427,36 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       following the RC3B WebP workflow. See 2026-08-26 DECISIONS.md
       entry ("RC4B-POLISH"). No other page or shared component touched.
 
+## Phase 5G — Inner-page refinement (RC4C, done 2026-08-26)
+
+- [x] RC4C: Custom Spaces hub (`/custom-spaces/`) and three child
+      service pages (`/custom-spaces/closets/`, `/custom-spaces/
+      laundry-pantry/`, `/custom-spaces/home-office/`) built via four
+      new page templates (auto-selected by WP's page-slug template
+      hierarchy). Pure custom-cabinetry positioning throughout — no
+      in-stock messaging, no navy door-strip, unlike Kitchen/Bathroom.
+      See 2026-08-26 DECISIONS.md entry ("RC4C") for media/positioning
+      reasoning.
+- [x] No "Real ZEUS Work" section on any of the four pages — no
+      independently-verified real completed-project photo exists for
+      closets/laundry/pantry/home office; omitted per explicit
+      instruction rather than mislabel generated or dealer-lifestyle
+      imagery.
+- [x] SEO title/meta description/featured image set per page; canonical,
+      Open Graph, and BreadcrumbList verified live and correct on all
+      four (Home > Custom Spaces [> Custom Closets / Laundry & Pantry /
+      Home Office])
+- [x] QA: PHP lint clean (4 files), zero debug-log warnings, zero
+      duplicate DOM IDs on any page, all internal links 200, no KCD/
+      manufacturer/Essential leaks, hub↔children linking confirmed both
+      directions, homepage/Kitchen/Bathroom spot-checked 200 OK, git
+      status shows only the four new template files
+- [x] Visual QA at 1440/1280/1150/1024/768/550px on all four pages —
+      clean at every width, header breakpoint fix (RC3D) confirmed
+      working on each page
+- [ ] Deferred: no new landing pages beyond the four specified URLs; no
+      new media generated or imported
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

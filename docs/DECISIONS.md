@@ -6,6 +6,75 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4C: Custom Spaces hub + Closets/Laundry & Pantry/Home Office pages built
+
+**Decision:** Built four new page templates -- `page-custom-spaces.php`
+(hub, page ID 17), `page-closets.php` (ID 68), `page-laundry-pantry.php`
+(ID 19), `page-home-office.php` (ID 20) -- auto-selected by WordPress's
+`page-{slug}.php` template hierarchy, replacing the previous thin
+`page.php`-rendered content on all four URLs. Unlike Kitchen/Bathroom,
+these pages carry **no in-stock messaging** -- Custom Spaces is a
+purely custom-cabinetry/built-in offering, so there is no "Two Ways"
+in-stock-vs-custom section, no navy door-strip, and no in-stock advantage
+copy anywhere on these four pages.
+
+**No Real ZEUS section on any of the four pages:** no independently-
+verified real completed-project photo exists in the approved media
+library for closets, laundry/pantry, or home office (the only verified-
+real photos on record are kitchen/bathroom-specific: 74/75/77/76). Per
+the owner's explicit instruction, this was treated as a reason to omit
+the section entirely on all four pages rather than build one using
+generated (154/155) or dealer-lifestyle (120) imagery, which would have
+mislabeled it.
+
+**Media:** Hub hero and Closets hero both use attachment 154 (Custom
+Closet, generated category/lifestyle, RC3B) -- chosen for the hub per
+explicit instruction ("strongest broad custom-cabinetry impression").
+Laundry & Pantry hero uses attachment 155 (generated category/lifestyle,
+RC3B) -- this image shows a closet nook and a laundry area with visible
+washer/dryer, so it reads primarily as "laundry"; no other approved
+asset shows a pantry specifically, so the Pantry section on that page
+reuses the same image with pantry-focused surrounding copy rather than
+substituting a kitchen-context image that would visually read as a
+kitchen (explicitly against the brief). Home Office hero uses attachment
+120 (Brooklyn Pearl Home Office, dealer-provided lifestyle). Floating-
+shelf attachments 139/140/141 were deliberately NOT used on any of these
+four pages despite being suggested as candidates -- all three visually
+show a kitchen scene (range, island, cane chairs) as their setting, and
+using them here would have reintroduced exactly the kind of kitchen-
+context leak the owner corrected in RC4B-POLISH.
+
+**Excluded a second Home Office image over a filename risk:**
+attachment 112 ("Brooklyn Gray Home Office") was initially planned as a
+secondary image for the Home Office page's "Style & Function" section --
+it visually shows an office, not a kitchen -- but its underlying file is
+named `brooklyn-gray-kitchen-01.webp`. Given the owner's demonstrated
+sensitivity to kitchen-image leaks on non-kitchen pages, this was judged
+too easy to misread during review (a filename check would flag "kitchen"
+on the Home Office page even though the pixels are correct), so that
+section was rebuilt as text-only (three short points) instead of
+forcing an image with an ambiguous name. See the file header comment in
+`page-home-office.php` for the same note.
+
+**SEO:** Titles, meta descriptions, and featured images set per page via
+the existing `zeus_seo_title`/`zeus_seo_description`/`_thumbnail_id`
+postmeta pattern -- no new SEO plumbing. Canonical, Open Graph, and
+BreadcrumbList all verified live and correct: Home > Custom Spaces; Home
+> Custom Spaces > Custom Closets; Home > Custom Spaces > Laundry &
+Pantry; Home > Custom Spaces > Home Office.
+
+**Reasoning:** Owner-directed RC4C brief, explicit about differentiating
+these pages from Kitchen/Bathroom (no in-stock messaging, no forced
+"Real ZEUS" section, room-appropriate imagery only) and about which
+existing pages/components must not be touched.
+
+**Type:** Owner-directed (explicit RC4C brief); the Home Office
+secondary-image substitution, the Laundry vs. Pantry shared-image
+handling, and the floating-shelf exclusion were autonomous professional
+defaults applied within that brief's media-provenance rules.
+
+---
+
 ## 2026-08-26 — RC4B-POLISH: Bathroom Cabinets & Vanities visual-context correction
 
 **Decision:** Corrected two sections of `page-bathroom-cabinets-vanities.php`

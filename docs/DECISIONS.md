@@ -6,6 +6,50 @@ owner-directed one.
 
 ---
 
+## 2026-08-26 — RC4A-POLISH: Kitchen Cabinets page visual/content polish
+
+**Decision:** Five targeted, owner-reviewed changes to
+`theme/zeus/page-kitchen-cabinets.php` only -- no other file touched, no
+redesign. (1) The in-stock navy section now shows 6 representative
+finishes instead of 3 (Brooklyn White, Shaker White, Oslo White,
+Brooklyn Midnight, Shaker Moss, Oslo Walnut -- white finishes first),
+reusing the exact same six door-sample attachments (100/103/107/99/106/
+109) already approved and used in this same order on the homepage's
+"Why In-Stock Matters" section, for sitewide consistency. (2) "Two Ways
+to Build Your Kitchen" intro copy no longer says "Both are real ZEUS
+offerings" (internal-sounding phrasing) -- replaced with "Choose the
+approach that best fits your space, timeline, and design needs."
+(3) The Custom Kitchen Cabinetry card image was swapped from attachment
+121 (Brooklyn Slate Kitchen) to attachment 122 (Brooklyn Slate Kitchen
+2, same collection/finish) -- 122 shows a wall-to-wall run with a tall,
+built-in, ceiling-height appliance surround and a non-standard angled-
+ceiling/stone-accent-wall composition, a visibly closer match to "custom/
+tailored" than 121's more conventional L-shape layout. Both images were
+already approved (dealer-provided lifestyle media, RC2 import, no
+branding). (4) The "Real ZEUS Kitchen Installations" section gained a
+section-level supporting line ("Actual installation photos from ZEUS
+projects.") and the three repeated per-photo "Real ZEUS Installation"
+labels were removed, since the heading + new supporting line already
+establish provenance once rather than three times -- the underlying
+photos (74/75/77) and their documented real-completed-project status are
+unchanged. (5) The Service Area section was rebalanced from a single
+narrow paragraph into a two-column layout: existing copy on the left, a
+compact card on the right ("Serving Orlando & surrounding communities" +
+phone number) using the existing `.zeus-card`/`.zeus-card__body` classes
+-- no new CSS, no second competing large CTA button.
+
+**Reasoning:** Owner visual review after RC4A/RC4B shipped, delivered as
+a scoped "RC4A-POLISH" brief explicitly listing five changes and
+explicitly excluding hero, trust strip, collection cards, process,
+countertop cross-sell, FAQ, consultation form, footer, SEO
+title/description/canonical/breadcrumbs, and any other page.
+
+**Type:** Owner-directed (explicit RC4A-POLISH brief); exact door
+selection, replacement image choice, and markup approach were autonomous
+professional defaults within that brief's stated preferences.
+
+---
+
 ## 2026-08-26 — RC4B: Bathroom Cabinets & Vanities page rebuilt, mirroring RC4A
 
 **Decision:** Replaced the thin, `page.php`-rendered Bathroom Cabinets &

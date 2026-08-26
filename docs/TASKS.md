@@ -366,6 +366,14 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
 
 ## Phase 5E — Inner-page refinement (RC4A, done 2026-08-26)
 
+- [x] RC4A-POLISH (2026-08-26): owner visual-review pass on the Kitchen
+      Cabinets page only — 6-door in-stock section (white first),
+      removed internal-sounding "Both are real ZEUS offerings" line,
+      swapped Custom Cabinetry card image to a more tailored/built-in
+      composition (121→122), decluttered Real ZEUS Installations
+      section (one section-level line instead of 3 repeated labels),
+      two-column Service Area layout. See 2026-08-26 DECISIONS.md
+      entry ("RC4A-POLISH"). No other page touched.
 - [x] RC4A: Kitchen Cabinets page (`/cabinets/kitchen-cabinets/`)
       rebuilt as a dedicated image-led landing page via new
       `page-kitchen-cabinets.php` template (auto-selected by WP's

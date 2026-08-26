@@ -96,7 +96,7 @@ zeus_section_start(
 		'variant' => 'stone',
 		'eyebrow' => __( 'Two Paths', 'zeus' ),
 		'heading' => __( 'Two Ways to Build Your Kitchen', 'zeus' ),
-		'intro'   => __( 'Most kitchens move fastest with an in-stock collection. Some need cabinetry built to fit. Both are real ZEUS offerings.', 'zeus' ),
+		'intro'   => __( 'Most kitchens move fastest with an in-stock collection. Some need cabinetry built to fit. Choose the approach that best fits your space, timeline, and design needs.', 'zeus' ),
 	)
 );
 ?>
@@ -113,7 +113,7 @@ zeus_section_start(
 		</article>
 		<article class="zeus-card zeus-two-paths__card">
 			<div class="zeus-card__media">
-				<?php echo wp_get_attachment_image( 121, 'zeus-card', false, array( 'alt' => 'Brooklyn Slate custom kitchen cabinetry with a tailored vent hood surround' ) ); ?>
+				<?php echo wp_get_attachment_image( 122, 'zeus-card', false, array( 'alt' => 'Brooklyn Slate custom kitchen cabinetry with wall-to-wall cabinetry and a built-in, ceiling-height appliance surround' ) ); ?>
 			</div>
 			<div class="zeus-card__body">
 				<h3><?php esc_html_e( 'Custom Kitchen Cabinetry', 'zeus' ); ?></h3>
@@ -153,13 +153,16 @@ zeus_section_start(
 	)
 );
 ?>
-	<p class="zeus-door-strip__note"><?php esc_html_e( 'A few examples of the finishes available through our warehouse — not the complete assortment.', 'zeus' ); ?></p>
+	<p class="zeus-door-strip__note"><?php esc_html_e( 'A few representative examples of the finishes available through our warehouse — not the complete assortment.', 'zeus' ); ?></p>
 	<div class="zeus-door-strip">
 		<?php
 		$zeus_kitchen_doors = array(
-			101 => __( 'Brooklyn Pearl', 'zeus' ),
-			104 => __( 'Shaker Sand', 'zeus' ),
-			108 => __( 'Oslo Oak', 'zeus' ),
+			100 => __( 'Brooklyn White', 'zeus' ),
+			103 => __( 'Shaker White', 'zeus' ),
+			107 => __( 'Oslo White', 'zeus' ),
+			99  => __( 'Brooklyn Midnight', 'zeus' ),
+			106 => __( 'Shaker Moss', 'zeus' ),
+			109 => __( 'Oslo Walnut', 'zeus' ),
 		);
 		foreach ( $zeus_kitchen_doors as $zeus_door_id => $zeus_door_label ) :
 			?>
@@ -223,6 +226,7 @@ zeus_section_start(
 		'variant' => 'stone',
 		'eyebrow' => __( 'Real ZEUS Work', 'zeus' ),
 		'heading' => __( 'Real ZEUS Kitchen Installations', 'zeus' ),
+		'intro'   => __( 'Actual installation photos from ZEUS projects.', 'zeus' ),
 	)
 );
 ?>
@@ -230,7 +234,6 @@ zeus_section_start(
 		<?php foreach ( array( 75, 74, 77 ) as $zeus_real_photo_id ) : ?>
 			<div class="zeus-real-photo">
 				<?php echo wp_get_attachment_image( $zeus_real_photo_id, 'zeus-card' ); ?>
-				<span class="zeus-real-photo__label"><?php esc_html_e( 'Real ZEUS Installation', 'zeus' ); ?></span>
 			</div>
 		<?php endforeach; ?>
 	</div>
@@ -261,18 +264,26 @@ zeus_section_start(
 	)
 );
 ?>
-	<p>
-		<?php
-		esc_html_e(
-			'ZEUS installs in-stock and custom kitchen cabinets for homeowners throughout Orlando, and in nearby communities including Windermere, Winter Garden, Horizon West, Dr. Phillips, Clermont, and Lake Nona.',
-			'zeus'
-		);
-		?>
-	</p>
-	<p class="zeus-service-area__note">
-		<?php esc_html_e( "Not sure if you're in our service area?", 'zeus' ); ?>
-		<a href="<?php echo esc_url( zeus_phone_number_href() ); ?>"><?php esc_html_e( 'Call or text us.', 'zeus' ); ?></a>
-	</p>
+	<div class="zeus-grid zeus-grid--2" style="align-items:center;">
+		<p style="margin:0;">
+			<?php
+			esc_html_e(
+				'ZEUS installs in-stock and custom kitchen cabinets for homeowners throughout Orlando, and in nearby communities including Windermere, Winter Garden, Horizon West, Dr. Phillips, Clermont, and Lake Nona.',
+				'zeus'
+			);
+			?>
+		</p>
+		<div class="zeus-card">
+			<div class="zeus-card__body">
+				<p style="margin:0; font-weight:700;"><?php esc_html_e( 'Serving Orlando & surrounding communities', 'zeus' ); ?></p>
+				<p style="margin:0;">
+					<?php esc_html_e( 'Call or text us to confirm service for your location.', 'zeus' ); ?>
+					<br>
+					<a href="<?php echo esc_url( zeus_phone_number_href() ); ?>"><?php echo esc_html( zeus_phone_number_display() ); ?></a>
+				</p>
+			</div>
+		</div>
+	</div>
 <?php zeus_section_end(); ?>
 
 <!-- 10. Page-specific FAQ -->

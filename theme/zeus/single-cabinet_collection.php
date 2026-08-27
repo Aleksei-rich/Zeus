@@ -62,8 +62,8 @@ while ( have_posts() ) :
 			'eyebrow'      => __( 'Oslo — Slim Shaker', 'zeus' ),
 			'h1'           => __( 'Oslo Slim Shaker Cabinets in Orlando', 'zeus' ),
 			'lede'         => __( 'A modern framed cabinet style with a slimmer visual profile than traditional Shaker cabinetry.', 'zeus' ),
-			'hero_id'      => 136,
-			'hero_alt'     => __( 'OSLO Classic Walnut Slim Shaker kitchen cabinets', 'zeus' ),
+			'hero_id'      => 132,
+			'hero_alt'     => __( 'Oslo White Slim Shaker bathroom vanity cabinetry', 'zeus' ),
 			'finish_order' => array( 'White', 'Oak', 'Walnut' ),
 		),
 		'euro-flat-panel' => array(

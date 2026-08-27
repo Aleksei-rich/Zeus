@@ -46,8 +46,8 @@ while ( have_posts() ) :
 			'eyebrow'      => __( 'Brooklyn Collection', 'zeus' ),
 			'h1'           => __( 'Brooklyn Cabinet Collection', 'zeus' ),
 			'lede'         => __( 'A full-overlay, transitional cabinet collection — doors cover most of the cabinet\'s face frame for a clean, minimal, continuous line across a run of cabinetry.', 'zeus' ),
-			'hero_id'      => 118,
-			'hero_alt'     => __( 'Brooklyn Pearl kitchen cabinets', 'zeus' ),
+			'hero_id'      => 110,
+			'hero_alt'     => __( 'Brooklyn Fawn two-tone kitchen cabinets with a light oak island', 'zeus' ),
 			'finish_order' => array( 'White', 'Pearl', 'Fawn', 'Gray', 'Slate', 'Midnight' ),
 		),
 		'shaker'          => array(

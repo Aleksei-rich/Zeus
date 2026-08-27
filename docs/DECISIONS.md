@@ -6,6 +6,83 @@ owner-directed one.
 
 ---
 
+## 2026-08-27 — RC4E: Cabinet Styles hub built on the existing `cabinet_collection` CPT, not new Pages
+
+**Decision:** Unlike Countertops (RC4D), the five Cabinet Styles URLs
+(`/cabinet-styles/`, `/cabinet-styles/brooklyn/`, `/shaker/`, `/oslo/`,
+`/euro-flat-panel/`) already existed as WordPress's native post-type-
+archive + single routing for the `cabinet_collection` CPT (registered in
+Phase 3.5 — see `inc/post-types.php`), with the four collections already
+published, already carrying real finish-swatch and gallery imagery
+(`zeus_finish_swatches`, `zeus_gallery` postmeta) from an earlier RC2/RC3
+media import. RC4E substantially rewrote `archive-cabinet_collection.php`
+(hub) and `single-cabinet_collection.php` (shared by all four
+collections — WordPress has no per-slug template rung for custom post
+types, so per-collection copy/imagery lives in a slug-keyed PHP array
+inside the one template, matching the pattern the file already used for
+its one Oslo-specific note) rather than creating new Page templates.
+**Reasoning:** The URLs, content model, and media were already real and
+already carried finish/taxonomy data matching the approved business
+catalog (Brooklyn: Fawn/Gray/Midnight/White/Pearl/Slate; Shaker:
+White/Sand/Kodiak/Moss; Oslo: White/Oak/Walnut; Euro: no fixed finish
+list) — recreating them as flat Pages would have thrown away real,
+already-vetted structured data and duplicated the CPT unnecessarily.
+**Type:** Autonomous professional default, discovered during the
+required pre-implementation media/content audit.
+
+## 2026-08-27 — RC4E: post-type-archive title/meta/canonical added to `inc/seo.php`
+
+**Decision:** WordPress core's `rel_canonical()` only fires for
+`is_singular()` queries, and the theme's existing SEO title/description
+override only checked `is_singular()` too — meaning the Cabinet Styles
+hub (a post-type archive, the only archive template among all RC4-series
+pages) got no canonical tag and a generic fallback title/description.
+Added an `is_post_type_archive( 'cabinet_collection' )` branch to
+`zeus_filter_document_title_parts()` and `zeus_output_head_meta()` in
+`theme/zeus/inc/seo.php` with the hub's exact hardcoded title/
+description (no post exists to hold this as postmeta), plus a
+self-referencing `<link rel="canonical">`.
+**Reasoning:** Required by `.claude/rules/seo.md` ("every new page/
+template gets... canonical URL") and this was a genuine, previously-
+unexercised gap in the shared SEO plumbing, scoped tightly to the one
+archive template in question — no other page's SEO behavior changes.
+**Type:** Autonomous professional default, following an explicit
+project-wide SEO rule.
+
+## 2026-08-27 — RC4E: updated `zeus_seo_title`/`zeus_seo_description` postmeta for the four collections
+
+**Decision:** Updated the SEO title and meta description postmeta for
+Brooklyn, Shaker, Oslo, and Euro / Flat Panel (post IDs 5-8) to the
+copy specified in the RC4E brief, replacing earlier RC2/RC3-era values.
+This is a database content change, applied via WP-CLI against the local
+`zeus_rebuild` database — not tracked by git.
+**Reasoning:** The brief specified exact, more targeted SEO copy per
+collection page than what existed from the earlier import; postmeta is
+the theme's established mechanism for per-post SEO overrides (see
+`inc/seo.php`), so no code change was needed, only a content update.
+**Type:** Owner-directed (explicit brief copy).
+
+## 2026-08-27 — RC4E: no new cabinet-style media generated; Euro / Flat Panel keeps no fixed finish list
+
+**Decision:** All imagery used across the five Cabinet Styles pages was
+already-imported, already-provenance-verified media from RC2/RC3/RC4C
+(dealer-provided finish swatches and lifestyle photos for Brooklyn/
+Shaker/Oslo; generated category/lifestyle visuals for Euro / Flat
+Panel) — no new images were generated or imported. Euro / Flat Panel
+deliberately shows three imagery-backed "design directions" (light/
+white, warm wood, darker contrast) instead of a fixed finish list,
+since no documented Euro finish catalog exists (the collection's own
+`finish` taxonomy assignment is empty, matching the original RC2 seed
+data).
+**Reasoning:** Explicit brief instruction: never invent a fixed color
+list for Euro / Flat Panel, and never generate new media without
+flagging a genuine gap first. No gap was found — every required
+collection/finish for Brooklyn, Shaker, and Oslo had at least one
+correctly-labeled, provenance-verified image (see
+`docs/ASSET-PROVENANCE.csv`).
+**Type:** Owner-directed (explicit brief rule), confirmed via the
+required pre-implementation media audit.
+
 ## 2026-08-26 — RC4D resumed after session/machine interruption; responsive QA technique note
 
 **Decision:** RC4D (Countertops hub + Quartz/Granite/Porcelain/Marble

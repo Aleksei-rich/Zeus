@@ -27,6 +27,10 @@ function zeus_filter_document_title_parts( $parts ) {
 			// second time.
 			$parts = array( 'title' => $override );
 		}
+	} elseif ( is_post_type_archive( 'cabinet_collection' ) ) {
+		// No singular post backs the Cabinet Styles hub, so its title has
+		// nowhere to live as postmeta -- set directly (RC4E).
+		$parts = array( 'title' => __( 'Cabinet Styles Orlando, FL | Shaker, Slim Shaker & Flat Panel | ZEUS', 'zeus' ) );
 	}
 	return $parts;
 }
@@ -58,6 +62,9 @@ function zeus_output_head_meta() {
 	} elseif ( is_front_page() ) {
 		$description = get_bloginfo( 'description' );
 		$url         = home_url( '/' );
+	} elseif ( is_post_type_archive( 'cabinet_collection' ) ) {
+		$description = __( 'Explore Shaker, Slim Shaker, Brooklyn and Euro flat-panel cabinet styles for Orlando kitchens, bathrooms and custom spaces, with selection and installation coordinated through ZEUS.', 'zeus' );
+		$url         = get_post_type_archive_link( 'cabinet_collection' );
 	} else {
 		$url = home_url( add_query_arg( array(), $GLOBALS['wp']->request ) );
 	}
@@ -75,6 +82,13 @@ function zeus_output_head_meta() {
 
 	if ( $description ) {
 		printf( '<meta name="description" content="%s">' . "\n", esc_attr( $description ) );
+	}
+
+	// WordPress core's rel_canonical() only handles is_singular() queries,
+	// so post type archives (only the Cabinet Styles hub, currently) get
+	// no canonical at all by default -- add a self-referencing one here.
+	if ( is_post_type_archive( 'cabinet_collection' ) && $url ) {
+		printf( '<link rel="canonical" href="%s">' . "\n", esc_url( $url ) );
 	}
 
 	printf( '<meta property="og:type" content="website">' . "\n" );

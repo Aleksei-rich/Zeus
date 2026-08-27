@@ -539,6 +539,69 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       beyond the five specified URLs; no new media generated or
       imported.
 
+## Phase 5H — Cabinet Styles hub + collection pages (RC4E, done 2026-08-27)
+
+- [x] Substantially rewrote `archive-cabinet_collection.php` (hub,
+      `/cabinet-styles/`) and `single-cabinet_collection.php` (shared by
+      all four collections — Brooklyn/Shaker/Oslo/Euro at post IDs
+      5-8) rather than creating new Page templates, since the URLs,
+      CPT, and real finish/gallery media already existed from Phase
+      3.5/RC2/RC3. See 2026-08-27 DECISIONS.md entry ("RC4E: Cabinet
+      Styles hub built on the existing `cabinet_collection` CPT").
+- [x] Hub: hero, four style-path cards (card-collection component,
+      menu_order Brooklyn/Shaker/Oslo/Euro), a Standard-Shaker vs.
+      Slim-Shaker vs. Flat-Panel comparison table (reusing the
+      `.zeus-compare-table` CSS from RC4D), an in-stock door strip
+      (white/neutral/dark), a custom-cabinetry cross-sell, process,
+      service area, FAQ, and the consultation form.
+- [x] Detail pages: per-slug hero/copy, an ordered color/finish swatch
+      grid (White always first, with a new `.zeus-swatch--featured`
+      gold-highlight CSS treatment so White is never buried), and a
+      page-specific differentiation section — Brooklyn's "How the
+      Colors Change the Look" grouping, Shaker-vs-Oslo, Oslo's three-way
+      Slim-Shaker/Traditional-Shaker/Flat-Panel comparison (with OSLO
+      Classic Walnut named per the approved product wording), and
+      Euro's "design directions, not a fixed finish list" framing —
+      plus applications, a curated gallery (excluding the hero image),
+      process, service area, FAQ, and the consultation form.
+- [x] Added `is_post_type_archive( 'cabinet_collection' )` handling to
+      `theme/zeus/inc/seo.php` (title, meta description, and a
+      self-referencing canonical) since WP core's `rel_canonical()` and
+      the theme's existing SEO override only fire for `is_singular()` —
+      the hub is the only post-type-archive template in the RC4 series
+      and had none of these before. See 2026-08-27 DECISIONS.md entry.
+- [x] Updated `zeus_seo_title`/`zeus_seo_description` postmeta for the
+      four collections via WP-CLI to match the brief's copy (DB content
+      change, not tracked by git — see 2026-08-27 DECISIONS.md entry).
+- [x] Pre-implementation media audit: confirmed all approved finishes
+      for Brooklyn (6), Shaker (4), and Oslo (3) already have a
+      correctly-labeled, provenance-verified door-sample swatch and at
+      least one room-context gallery photo; Euro / Flat Panel has no
+      finish taxonomy data (matches original seed) and no fixed color
+      list was invented — three already-approved lifestyle images
+      (kitchen + two home-office built-ins) are shown as labeled
+      "design directions" instead. No missing-media stop condition was
+      hit; no new media generated or imported.
+- [x] QA: PHP lint clean (4 touched files), zero new debug-log warnings,
+      zero duplicate DOM IDs, no KCD/KCDUS/manufacturer/Essential/
+      showroom leaks, no brittle "guaranteed"/"same-day"/"stocked
+      locally" claims, no secrets/local paths, all internal links 200,
+      homepage/Kitchen Cabinets/Bathroom Cabinets & Vanities/Custom
+      Spaces/Countertops spot-checked 200, git status shows only the
+      four expected modified files.
+- [x] Visual QA at 1440/1280*/1150/1024*/768/550px (*structurally
+      covered via shared components already proven at those widths on
+      the hub/Euro pages, not independently re-shot on every detail
+      page) — hero crops, color/finish galleries, White prominence,
+      Shaker/Slim-Shaker/Flat-Panel differentiation, the comparison
+      table's own horizontal scroll at narrow widths (never page-level
+      overflow), mobile stacking, the RC3D header breakpoint, and the
+      mobile conversion bar all confirmed clean on all five pages.
+- [x] Updated `docs/ASSET-PROVENANCE.csv` to record the new RC4E usage
+      contexts for the reused finish-swatch, hero, and design-direction
+      attachments (no new rows needed — all media was already
+      documented from earlier RC phases).
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

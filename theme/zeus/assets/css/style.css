@@ -162,6 +162,9 @@ a:hover { text-decoration: underline; }
 	box-shadow: var(--wp--custom--shadow--card);
 }
 .zeus-swatch__label { font-size: var(--wp--preset--font-size--small); font-weight: 600; }
+/* ---- Featured swatch (RC4E) -- keeps White easy to find, never buried ---------------- */
+.zeus-swatch--featured .zeus-swatch__img { box-shadow: 0 0 0 3px var(--wp--preset--color--gold), var(--wp--custom--shadow--card); }
+.zeus-swatch--featured .zeus-swatch__label { color: var(--wp--preset--color--navy); }
 
 .zeus-inline-gallery {
 	display: grid;

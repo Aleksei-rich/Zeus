@@ -54,8 +54,8 @@ while ( have_posts() ) :
 			'eyebrow'      => __( 'Shaker Cabinets', 'zeus' ),
 			'h1'           => __( 'Shaker Cabinets in Orlando', 'zeus' ),
 			'lede'         => __( 'A framed, five-piece recessed-panel cabinet style with a clean, versatile look that works across traditional, transitional and modern interiors.', 'zeus' ),
-			'hero_id'      => 123,
-			'hero_alt'     => __( 'Shaker White kitchen cabinets', 'zeus' ),
+			'hero_id'      => 129,
+			'hero_alt'     => __( 'Shaker Moss kitchen cabinets with a marble slab backsplash and wood range hood', 'zeus' ),
 			'finish_order' => array( 'White', 'Sand', 'Kodiak', 'Moss' ),
 		),
 		'oslo'            => array(

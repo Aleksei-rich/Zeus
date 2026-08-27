@@ -6,6 +6,38 @@ owner-directed one.
 
 ---
 
+## 2026-08-27 — RC4E Shaker visual polish: hero (123 → 129) and first gallery image (124 → 128) replaced
+
+**Decision:** Replaced the Shaker collection page's hero image, attachment
+123 (Shaker White Kitchen), with attachment 129 (Shaker Moss Kitchen).
+Also replaced the page's first below-hero gallery image, attachment 124
+(Shaker White Kitchen 2), with attachment 128 (Shaker Kodiak Bathroom).
+The hero change was a one-line PHP edit (`single-cabinet_collection.php`,
+Shaker's `hero_id`/`hero_alt`). The gallery-order change required
+updating the `zeus_gallery` postmeta on the Shaker `cabinet_collection`
+post (ID 6) via WP-CLI (`wp eval`) to `[128, 125, 126, 127, 130]` --
+removing 123 and 124 from the array entirely rather than just excluding
+them positionally, since the template's gallery display already
+auto-excludes whatever the current hero ID is and otherwise renders the
+stored array in order. This is a database content change, not tracked by
+git. Attachment 127 (Shaker's featured/OG image) was deliberately left
+unchanged.
+**Reasoning:** The owner rejected both 123 and 124 during visual review
+as reading inexpensive/builder-grade/real-estate-listing, inconsistent
+with the site's premium direction -- the same verdict 124 had already
+received once before when briefly used as the Cabinet Styles hub hero.
+129 and 128 were selected from a labeled candidate contact sheet as the
+strongest available premium, wide, cabinetry-dominant alternatives, in
+different rooms from each other and from the heroes already used on
+/cabinet-styles/, /cabinet-styles/brooklyn/, /cabinets/kitchen-cabinets/,
+and /cabinets/bathroom-cabinets-vanities/. No new media was generated;
+White remains first and visually highlighted in the finish grid even
+though no premium White gallery photo currently exists for Shaker (a
+gap noted during the visual review, left unaddressed per instruction
+not to substitute a weak image just to cover it).
+**Type:** Owner-directed (explicit rejection + explicit selection from
+the presented candidates).
+
 ## 2026-08-27 — RC4E hero polish: Cabinet Styles hub hero replaced (124 → 118)
 
 **Decision:** Replaced the Cabinet Styles hub hero image, attachment 124

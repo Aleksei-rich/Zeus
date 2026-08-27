@@ -32,10 +32,11 @@ $zeus_collections = get_posts(
 $zeus_page_custom_spaces = zeus_get_post_by_slug( 'custom-spaces', 'page' );
 $zeus_page_kitchen       = zeus_get_post_by_slug( 'kitchen-cabinets', 'page' );
 
-// Hero: Shaker White Kitchen 2 (attachment 124) -- a full-size, unused-
-// as-hero White image, chosen so White prominence starts on the very
-// first fold of the hub, per docs/DECISIONS.md ("RC4E").
-$zeus_hero_image_id = 124;
+// Hero: Brooklyn Pearl Kitchen (attachment 118) -- premium, broadly
+// representative cabinetry lifestyle image, chosen after the owner
+// rejected attachment 124 (read as inexpensive/builder-grade). See
+// docs/DECISIONS.md ("RC4E hero polish").
+$zeus_hero_image_id = 118;
 ?>
 
 <!-- 1. Hero -->
@@ -51,7 +52,7 @@ $zeus_hero_image_id = 124;
 					'loading'       => 'eager',
 					'fetchpriority' => 'high',
 					'class'         => 'zeus-hero__img',
-					'alt'           => __( 'Shaker White kitchen cabinets', 'zeus' ),
+					'alt'           => __( 'Brooklyn Pearl kitchen cabinets with marble countertops and a walnut range hood', 'zeus' ),
 				)
 			);
 			?>

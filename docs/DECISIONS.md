@@ -6,6 +6,25 @@ owner-directed one.
 
 ---
 
+## 2026-08-27 — RC4E hero polish: Cabinet Styles hub hero replaced (124 → 118)
+
+**Decision:** Replaced the Cabinet Styles hub hero image, attachment 124
+(Shaker White Kitchen 2), with attachment 118 (Brooklyn Pearl Kitchen).
+Scoped to only the hero image ID and its alt text in
+`archive-cabinet_collection.php` — H1, lede, CTAs, and all SEO/meta/
+canonical output were left untouched. Selection was made by visually
+inspecting six already-approved candidate images (a labeled contact
+sheet was shown to the owner) against a "premium architectural, White-
+adjacent but general-cabinet-styles" brief.
+**Reasoning:** The owner rejected attachment 124 as reading inexpensive/
+dated/builder-grade, inconsistent with the site's premium visual
+direction. Attachment 118 was the strongest broadly-representative
+candidate — warm neutral palette, marble backsplash, walnut range hood,
+brass fixtures — without over-committing the hub's opening image to any
+one collection's narrow identity.
+**Type:** Owner-directed (explicit rejection + explicit selection from
+the presented candidates).
+
 ## 2026-08-27 — RC4E: Cabinet Styles hub built on the existing `cabinet_collection` CPT, not new Pages
 
 **Decision:** Unlike Countertops (RC4D), the five Cabinet Styles URLs

@@ -602,6 +602,49 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       attachments (no new rows needed — all media was already
       documented from earlier RC phases).
 
+## Phase 5I — Cabinets hub (RC4F, done 2026-08-28)
+
+- [x] Created `theme/zeus/page-cabinets.php` (new file -- `/cabinets/`,
+      page ID 9, previously rendered by generic `page.php`), matching the
+      premium hub pattern already established by Countertops and Cabinet
+      Styles: hero; "Two Ways to Build Your Cabinetry" (in-stock vs.
+      custom cards); Cabinet Project Types (Kitchen Cabinets/Bathroom
+      Cabinets & Vanities/Cabinet Styles cards); Popular Cabinet Styles
+      (the four `cabinet_collection` posts via `card-collection`); Why
+      In-Stock Cabinetry (six-swatch door strip + three benefit
+      callouts); custom-cabinetry cross-sell; cabinets-and-countertops
+      cross-sell; process; Real ZEUS Cabinetry Installations; service
+      area; FAQ; and the consultation form. See 2026-08-28 DECISIONS.md
+      entry ("RC4F: Cabinets hub built as a new page-cabinets.php
+      template").
+- [x] Hero uses attachment 137 (Oslo Walnut Bathroom) as a **provisional
+      pick** pending owner visual review -- see 2026-08-28 DECISIONS.md
+      entry. WordPress featured image for page ID 9 also set to 137.
+- [x] QA: PHP lint clean; zero new debug-log warnings; zero duplicate DOM
+      IDs; no KCD/Essential/manufacturer/showroom leaks; no "stocked
+      locally in Orlando" claim; no unsupported lead-time or same-team/
+      no-subcontractors claims; SEO title/meta/canonical preserved; H1
+      "Cabinets in Orlando" confirmed; all internal links (Kitchen
+      Cabinets, Bathroom Cabinets & Vanities, Custom Spaces, Countertops,
+      Cabinet Styles) return 200; git status shows only the one new file.
+- [x] Visual QA at 1440 (full page, including FAQ/consultation
+      form/footer) and responsive QA at 1280/1150/1024/768/550px (hero
+      crop/text, section stacking/spacing, image crops, cards, heading
+      wrapping, CTAs, the door strip, FAQ accordion, form field stacking,
+      footer, the RC3D header breakpoint, and the mobile conversion bar)
+      -- all confirmed clean, no horizontal overflow, no giant
+      whitespace at any tested width. Responsive checks used a
+      same-origin iframe harness (rather than resizing the actual browser
+      window, which this environment's window manager does not honor)
+      so real CSS media queries apply to the embedded page.
+- [x] Updated `docs/ASSET-PROVENANCE.csv` usage-location fields for every
+      attachment reused on the new page (74/75/76/77 Real ZEUS section;
+      127/118/136/153 in-stock cards and Popular Cabinet Styles grid;
+      139 custom-cabinetry card; 112 "When Custom Cabinetry Makes Sense";
+      156 cabinets-and-countertops cross-sell; 114/119 Cabinet Project
+      Types cards; 100/103/107/104/99/109 door strip; 137 hero, flagged
+      provisional) -- no new media imported.
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

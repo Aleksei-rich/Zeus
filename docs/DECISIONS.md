@@ -6,6 +6,44 @@ owner-directed one.
 
 ---
 
+## 2026-08-28 — RC4F: Cabinets hub built as a new page-cabinets.php template, hero is a provisional pick pending owner review
+
+**Decision:** `/cabinets/` (page ID 9, previously rendered generically by
+`page.php`) now has a dedicated `theme/zeus/page-cabinets.php` template
+matching the premium hub pattern already established by Countertops and
+Cabinet Styles: hero, "Two Ways to Build" (in-stock vs. custom), Cabinet
+Project Types (Kitchen/Bathroom/Cabinet Styles cards), Popular Cabinet
+Styles (the four `cabinet_collection` posts), Why In-Stock Cabinetry (door
+strip + three benefit callouts), custom-cabinetry cross-sell, a
+cabinets-and-countertops cross-sell, process, Real ZEUS Cabinetry
+Installations (attachments 74/75/76/77, all independently verified real
+completed-project photos, not attributed to a specific named/dated
+project), service area, FAQ, and the consultation form. The hero image is
+attachment 137 (Oslo Walnut Bathroom), a **provisional pick** from a
+4-candidate contact sheet -- premium, wide, and cabinetry-dominant, and
+not already used as a hero elsewhere on the site -- selected as the best
+available option but explicitly flagged for the owner's visual review
+before being treated as final, consistent with how RC4E heroes were
+handled. No "same team / no subcontractors" claim, no exact lead-time
+promise, and no "stocked locally in Orlando" claim were used anywhere on
+the page (all three appear in the brief's list of claims ZEUS cannot
+currently support).
+**Reasoning:** `/cabinets/` is a top-level nav item and one of the
+highest-intent pages on the site (it's the parent of Kitchen Cabinets,
+Bathroom Cabinets & Vanities, and Cabinet Styles), so it should not be
+left on the generic thin `page.php` template while every sibling/child
+page already has a purpose-built one. Building it as a real template
+(rather than a Page-builder-style block layout) keeps it consistent with
+every other RC4 hub and avoids introducing a second content-authoring
+pattern this late in the rebuild.
+**Type:** Autonomous professional default for the template/IA work
+(explicitly in scope per Phase 4/5's page-inventory); the hero image
+choice specifically is flagged for owner confirmation rather than treated
+as decided, per the same visual-judgment-call carve-out used for RC4E
+hero selections.
+
+---
+
 ## 2026-08-27 — RC4E Shaker visual polish: hero (123 → 129) and first gallery image (124 → 128) replaced
 
 **Decision:** Replaced the Shaker collection page's hero image, attachment

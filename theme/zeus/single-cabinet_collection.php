@@ -229,7 +229,7 @@ while ( have_posts() ) :
 					<p><?php esc_html_e( 'Not every flat-panel cabinet uses identical construction or materials — we\'ll go over the specific options and hardware together during your consultation.', 'zeus' ); ?></p>
 				</div>
 				<div>
-					<?php echo wp_get_attachment_image( 153, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;', 'alt' => 'Modern Euro flat panel kitchen cabinetry in warm white and walnut' ) ); ?>
+					<?php echo wp_get_attachment_image( 160, 'zeus-card', false, array( 'style' => 'border-radius:var(--wp--custom--radius--medium); width:100%; height:auto;', 'alt' => 'Modern flat-panel white bathroom vanity with floating cabinetry and walk-in glass shower' ) ); ?>
 				</div>
 			</div>
 		<?php zeus_section_end(); ?>

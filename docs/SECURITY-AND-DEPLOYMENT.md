@@ -75,6 +75,22 @@ not something to attempt speculatively.
 - [ ] When real hero photography is added, confirm it loads eager +
       `fetchpriority="high"` (it will be the LCP element) rather than
       the default lazy-loading behavior
+- [ ] Google Reviews (see 2026-09-03 DECISIONS.md,
+      `plugins/zeus-core/inc/google-reviews.php`): create the real
+      credentials file at
+      `/home/zeusiwpo/zeus-google-oauth-credentials.php` (**outside the
+      public web root** — never inside `public_html`/the WordPress
+      install itself), defining `ZEUS_GOOGLE_CLIENT_ID`,
+      `ZEUS_GOOGLE_CLIENT_SECRET`, `ZEUS_GOOGLE_REFRESH_TOKEN`,
+      `ZEUS_GOOGLE_ACCOUNT_ID`, `ZEUS_GOOGLE_LOCATION_ID` as PHP
+      constants. Add a conditional require for that exact path to
+      production's own `wp-config.php` (not tracked in this repo):
+      `if ( file_exists( '/home/zeusiwpo/zeus-google-oauth-credentials.php' ) ) { require '/home/zeusiwpo/zeus-google-oauth-credentials.php'; }`.
+      The plugin itself never hardcodes or requires this path — it only
+      checks whether the 5 constants are defined, so it stays
+      hosting-agnostic. This file must never be committed to git, never
+      placed under `public_html`, and must not be world-readable on the
+      production filesystem.
 
 Production launch requires explicit owner approval regardless of how
 complete this checklist is.

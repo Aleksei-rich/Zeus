@@ -28,6 +28,7 @@ $zeus_core_includes = array(
 	'inc/admin-tools-page.php',
 	'inc/leads.php',
 	'inc/consultation-form.php',
+	'inc/google-reviews.php',
 );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -69,6 +70,9 @@ function zeus_core_on_activation() {
 register_activation_hook( __FILE__, 'zeus_core_on_activation' );
 
 function zeus_core_on_deactivation() {
+	if ( function_exists( 'zeus_google_reviews_deactivate' ) ) {
+		zeus_google_reviews_deactivate();
+	}
 	flush_rewrite_rules();
 }
 register_deactivation_hook( __FILE__, 'zeus_core_on_deactivation' );

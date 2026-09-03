@@ -6,6 +6,232 @@ owner-directed one.
 
 ---
 
+## 2026-09-03 — Automated Google Reviews implemented via Google Business Profile API (not Places API)
+
+**Correction from the same day's earlier plan:** the previously proposed
+architecture recommended Places API (New) with a `reviewsSort=newest`
+parameter to guarantee the freshest reviews. The owner independently
+verified against current Google docs that this parameter does not exist
+for Place Details (New) — it only exists on the Legacy API — and that
+Place Details (New) is hard-capped at 5 reviews, sorted by relevance
+only, with no way to change either. Re-verified this directly against
+Google's own reference pages before writing any code; the owner's
+correction was accurate. Architecture changed to the Google Business
+Profile API (`accounts.locations.reviews.list`) instead, which supports
+`pageSize=3`+`orderBy=updateTime desc` and returns `averageRating`/
+`totalReviewCount` in the same response — a real newest-3 guarantee, not
+an approximation.
+**Implemented (code only — no real credentials, nothing committed):**
+- `plugins/zeus-core/inc/google-reviews.php` (new): the entire
+  integration. Read side (`zeus_get_google_reviews_data()`) only ever
+  reads a cached `wp_options` row — zero network calls during front-end
+  rendering, by construction (there is exactly one function in this file
+  that calls Google, `zeus_google_reviews_fetch_from_api()`, and it is
+  only ever invoked by the cron hook or the CLI `sync` command, never by
+  anything reachable from a page request). Sync side does: OAuth
+  refresh-token → access-token exchange (`oauth2.googleapis.com/token`,
+  via `wp_remote_post`), the `reviews.list` call (`pageSize=3`,
+  `orderBy=updateTime desc`, via `wp_remote_get`, 15s timeout), response
+  validation (HTTP status + `is_array()` JSON check) before touching
+  anything. **Corrected in a same-day compliance-review pass (see
+  addendum below): API-provided text is never rewritten before
+  caching** — no `sanitize_text_field()`/truncation/normalization on
+  reviewer names or review text; values are type-validated
+  (`is_string()`) and cached exactly as Google returned them, escaped
+  only at render time (`esc_html()`). The star-rating enum, average
+  rating, and review count are likewise cached in Google's own raw
+  form and only mapped/formatted (enum → 1-5 int, rounded to 1 decimal)
+  at read time, in `zeus_get_google_reviews_data()` — never at
+  fetch/store time.
+- **OAuth, per instruction:** this file only *consumes* an existing
+  refresh token — it does not implement any authorization-code flow
+  (no OOB/Desktop-app copy-paste flow, no CLI `authorize` command). The
+  refresh token itself will be minted separately via Google's OAuth
+  Playground against a Web Application OAuth client, entirely outside
+  this codebase, and handed over as one of 5 constants.
+- **Storage/29-day policy:** Google's Business Profile APIs content
+  policy permits temporary storage "to improve performance," capped at
+  30 calendar days — verified directly against
+  `developers.google.com/my-business/content/policies` before
+  implementing. `ZEUS_GOOGLE_REVIEWS_MAX_AGE_DAYS = 29` (a 1-day safety
+  margin under Google's own cap). **Corrected in the same-day
+  compliance pass:** the first implementation only stopped *displaying*
+  expired cached data past 29 days, which doesn't satisfy a storage
+  policy — Content sitting untouched in `wp_options` past the cap is
+  still a policy violation even if nothing renders it. Added
+  `zeus_google_reviews_purge_expired_content()`, which actively removes
+  the cached Google Content (review text, names, star ratings,
+  averageRating, totalReviewCount) — `unset()`, not merely ignored —
+  once it's past the window, leaving only non-Content sync metadata
+  (`last_attempt_at`/`last_status`/`last_error`/`purged_at`) behind.
+  Called from **both** the read path (`zeus_get_google_reviews_data()`
+  purges-then-returns-`false` if it encounters expired data) and the
+  sync path (`zeus_google_reviews_sync()` purges unconditionally at the
+  top of every run, before even checking whether credentials are
+  configured) — so expired Content cannot survive even if Google API
+  access has been broken (every sync failing) for a month. See
+  Verification below for direct proof this actually removes the data
+  from the database, not just from what's displayed.
+- **Cache design — a `wp_options` row, not a transient:** a transient is
+  explicitly ephemeral by WP's own design (can be evicted by object-cache
+  behavior at any time) — wrong tool for "must survive until we
+  explicitly decide it's too old." An option persists until overwritten,
+  which gives "keep last-known-good on failure" for free: the sync
+  function only calls `update_option()` with new review data on a fully
+  successful fetch; on any failure (`zeus_google_reviews_record_attempt()`)
+  it updates only status/error metadata in the same option, leaving
+  the last successful `data`/`fetched_at` completely untouched. No new
+  database table — one option, **non-autoloaded** (corrected in the
+  same-day compliance pass — this data has no reason to load on every
+  single WP request the way autoloaded options do; written via a small
+  `zeus_google_reviews_write_cache()` helper that uses `add_option(...,
+  '', false)` on first creation rather than relying solely on
+  `update_option()`'s autoload parameter, whose behavior on an
+  already-existing option has differed across WP core versions —
+  guarantees non-autoloaded status regardless of WP version).
+- **Scheduling:** a custom `cron_schedules` entry (`zeus_twenty_minutes`,
+  20 × `MINUTE_IN_SECONDS`) plus an idempotent `wp_next_scheduled()`
+  check on `init` (not activation-hook-only — this survives a plain code
+  deploy without a deactivate/reactivate cycle, which activation-only
+  scheduling would not). Per instruction, this file's top comment is
+  explicit that WP-Cron fires on ordinary page-load traffic and does not
+  guarantee wall-clock cadence, and documents the production path (a
+  real cPanel cron calling the same hook) as a drop-in future upgrade
+  needing zero code changes.
+- **Config/secrets:** 5 constants (`ZEUS_GOOGLE_CLIENT_ID/CLIENT_SECRET/
+  REFRESH_TOKEN/ACCOUNT_ID/LOCATION_ID`), checked via
+  `zeus_google_reviews_configured()`. This file never requires or knows
+  about any specific credentials-file path — that's deliberately left to
+  the *hosting environment's* own `wp-config.php` (production's intended
+  path, `/home/zeusiwpo/zeus-google-oauth-credentials.php`, outside the
+  web root, is documented in `docs/SECURITY-AND-DEPLOYMENT.md`, not
+  hardcoded into plugin code) — keeps the plugin itself hosting-agnostic.
+  **No such file was created this session, real or fake; no secrets of
+  any kind were added anywhere in this repository.**
+- **Fail-safe by construction:** every function that touches the network
+  checks `zeus_google_reviews_configured()` first and returns a
+  `WP_Error` (never a fatal) when unconfigured. `theme/zeus/front-page.php`
+  guards the plugin call with `function_exists()`, so the homepage
+  cannot fatal even with `zeus-core` fully deactivated. Verified locally
+  by running the full flow with zero real credentials configured (see
+  Verification below) — every failure path degraded cleanly to the
+  existing static content, never a broken page.
+- **Attribution — checked, not assumed:** re-verified this program's own
+  content policy page rather than reusing the (much more prescriptive)
+  Places API attribution requirements from the earlier same-day plan.
+  The Business Profile APIs policy only requires displaying "Brand
+  Features or other attribution... as provided... or as described in the
+  [] documentation" — it does not mandate a Google logo, per-review
+  profile links, or an ordering-disclosure line the way the Places API
+  policy explicitly does. Reviewer name + star rating + text (all of
+  which the API response itself provides as core review content, not
+  decoration) plus the existing "Google review" source label already
+  satisfies this. No new attribution UI was added — the existing card
+  design is unchanged, satisfying "preserve the current ZEUS visual
+  design" with zero tension this time.
+- **`theme/zeus/front-page.php`:** the hardcoded array/static "4.9"/"21"
+  are now the explicit *fallback*, used only when
+  `zeus_get_google_reviews_data()` returns `false` (unconfigured, never
+  synced yet, or the 29-day window has lapsed). Markup/CSS classes are
+  byte-for-byte unchanged; only the data source and (necessarily) the
+  per-card star count are now dynamic — a real review's star count can
+  be less than 5, and the card now renders exactly that many filled
+  stars rather than always rendering 5, which is more accurate to the
+  underlying data than the previous static-only version could be.
+  `theme/zeus/assets/css/style.css` needed **zero changes** — same
+  classes, same visual output.
+- **`plugins/zeus-core/inc/cli.php`:** `wp zeus google-reviews sync` and
+  `wp zeus google-reviews status`, both class-based
+  (`Zeus_Google_Reviews_Command`) matching the existing `Zeus_Seed_Command`
+  pattern already in this file.
+**Verification performed locally (no real credentials, nothing
+committed):**
+- PHP lint clean on all 4 touched/new PHP files.
+- `wp zeus google-reviews status`/`sync` with zero credentials configured:
+  both fail cleanly (`WP_CLI::error`, no fatal, no secrets in output);
+  `status` correctly reports "Configured: no" / "No sync attempt has run
+  yet," then correctly reports an "unconfigured" attempt once WP-Cron's
+  `init`-time scheduling fired the event on its own during normal local
+  testing (real end-to-end proof the cron wiring works, not just the
+  code reading correctly).
+- Confirmed the homepage renders **exactly** the pre-existing static
+  content/markup with zero credentials configured (diffed the rendered
+  HTML against the prior version).
+- Temporarily seeded the local `wp_options` cache directly (this
+  project's own disposable local dev database, not production) with
+  fake multi-rating test data (4/5/3-star reviews) to prove the *live*
+  rendering path end-to-end: confirmed the rating/count/reviewer
+  text/names update correctly and — critically — that each card renders
+  the exact number of star icons matching that review's own rating (4,
+  5, 3 respectively), not a hardcoded 5. Then aged that same cached data
+  to exactly 30 days old and confirmed the homepage reverted to the
+  static fallback automatically, with zero code changes needed to make
+  that happen — proving the 29-day cutoff works in the running site, not
+  just in code review. Deleted the test option afterward, restoring the
+  local environment to its natural pre-test (never-synced) state.
+- Zero new PHP warnings/notices/fatals in the local debug log across all
+  of the above.
+- Confirmed via `git diff`/`git status` that no secrets, credentials, or
+  the real production file path's *contents* (only its path, which is
+  not sensitive) appear anywhere in the change set.
+
+**Additional verification for the same-day compliance-review fixes
+above** (purge, no-rewrite storage, non-autoloaded option) — each
+re-tested directly against the running local site and the raw database
+row, not just read in code review:
+- Seeded mocked API text deliberately containing double-spaces and a
+  literal `<b>tag-looking</b>` fragment — exactly the kind of input
+  `sanitize_text_field()` would alter (collapsed whitespace, stripped
+  tags) if it were still being applied. Confirmed the rendered homepage
+  shows the double-spaces preserved and the tag fragment HTML-escaped
+  (`&lt;b&gt;...&lt;/b&gt;`) rather than stripped — proof the raw text
+  was cached unmodified and only `esc_html()`-escaped at render time,
+  not sanitized at store time.
+- `wp option list --search=zeus_google_reviews_cache --fields=autoload`
+  confirmed `autoload: off`, tested through **both** code paths — the
+  option's first-ever creation (`add_option()` branch) and a subsequent
+  update to an already-existing option (`update_option()` branch).
+- Aged seeded cache data to exactly 30 days old, then called
+  `zeus_get_google_reviews_data()` directly and dumped the raw option
+  before/after: before, the option's `data`/`fetched_at` keys were
+  present; the function returned `false` as expected; after, `var_export`
+  of the raw option showed `data`/`fetched_at` **entirely absent** —
+  only `last_attempt_at`/`last_status`/`last_error`/`purged_at`
+  remained — direct proof the Content was removed from the database,
+  not merely filtered from what's displayed.
+- Seeded fresh (non-expired) cache data, ran `wp zeus google-reviews
+  sync` (fails, no real credentials configured), and confirmed via a
+  raw `var_export` of the option that `data`/`fetched_at` were
+  completely untouched by the failed attempt — only
+  `last_attempt_at`/`last_status`/`last_error` changed. Then aged that
+  same data past 30 days and ran the sync again (still failing, no
+  credentials): confirmed the expired Content was purged anyway (the
+  unconditional purge-first call at the top of
+  `zeus_google_reviews_sync()`), leaving only metadata — direct proof a
+  broken/failing API connection cannot keep expired Content alive past
+  the policy window.
+- `wp zeus google-reviews status` output checked at each stage above
+  and confirmed to describe the actual state accurately, including a
+  distinct "Cached Google Content was purged..." message rather than
+  conflating "purged" with "never synced."
+- Deleted all test option data afterward; re-confirmed the homepage
+  renders the untouched static fallback and `status` reports "No sync
+  attempt has run yet" — local environment fully restored to its
+  natural, never-synced state.
+**Reasoning:** every design choice above (option vs. transient, `init`-time
+idempotent scheduling, fail-safe `WP_Error` returns, hosting-agnostic
+credential loading, re-verifying attribution rather than reusing the
+Places API answer, the 29-day margin) was specified directly by the
+owner's brief; the concrete code/implementation is the autonomous part.
+**Type:** Owner-directed (the architecture switch to Business Profile
+API, the exact OAuth/consumption model, the 29-day/option/cron design,
+the exact file list, the "no CLI authorize flow" constraint, the
+production credentials path); autonomous professional default for the
+specific PHP implementation, WP-CLI command shape, and the local
+verification method.
+
+---
+
 ## 2026-09-03 — Homepage Google Reviews section implemented (real Place ID, real reviews)
 
 **Decision:** Replaced the homepage's commented-out Reviews placeholder

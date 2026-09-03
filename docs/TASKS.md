@@ -719,6 +719,81 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       `.zeus-grid--3` breakpoint) confirmed at 320/375/768/1440px with
       zero horizontal overflow at any width.
 
+## Phase 5L — Automated Google Reviews via Business Profile API (2026-09-03, code done; awaiting real credentials + Google approval)
+
+- [x] **Compliance-review fixes (same day, before any commit):** (1) the
+      29-day policy is now enforced as actual *storage removal*
+      (`zeus_google_reviews_purge_expired_content()` unsets the cached
+      Google Content — text/names/ratings/counts — from `wp_options`,
+      called from both the read and sync paths, not just a
+      display-side check), (2) API-provided reviewer names/text are no
+      longer run through `sanitize_text_field()` or otherwise altered
+      before caching — stored exactly as Google returns them, escaped
+      only at render time; the star-rating enum/averageRating/
+      totalReviewCount are likewise cached raw and only mapped/formatted
+      at read time, (3) the cache option is now explicitly
+      non-autoloaded (verified via `wp option list ... autoload`, both
+      on first creation and on update). All three re-verified directly
+      against the running local site and the raw database row — see
+      2026-09-03 DECISIONS.md entry for the full verification trail
+      (including proof the Content is actually removed from
+      `wp_options`, not merely hidden, and that a failing sync after
+      expiry still purges).
+- [x] Corrected the same-day architecture plan: Places API (New) cannot
+      guarantee newest reviews (owner independently verified no
+      `reviewsSort` parameter exists there, capped at 5, relevance-only
+      sort) — re-verified against current Google docs, switched to the
+      Google Business Profile API (`accounts.locations.reviews.list`,
+      `pageSize=3`, `orderBy=updateTime desc`), which is what's actually
+      implemented. See 2026-09-03 DECISIONS.md entry for the full
+      writeup and verification trail.
+- [x] `plugins/zeus-core/inc/google-reviews.php` (new): background-only
+      sync (WP-Cron ~20min custom schedule + `wp zeus google-reviews
+      sync`/`status` CLI commands), reads via
+      `zeus_get_google_reviews_data()` (zero network calls from
+      front-end rendering), `wp_options`-based cache (not a transient)
+      with last-known-good preserved on any sync failure, hard 29-day
+      display cutoff (Google's own policy cap is 30 days). Fails safe
+      (`WP_Error`, never fatal) whenever the 5 required config constants
+      are absent.
+- [x] `theme/zeus/front-page.php`: reviews section now reads live data
+      with the existing static content as an explicit, documented
+      fallback (unconfigured / never synced / cache older than 29 days).
+      Markup/CSS byte-for-byte unchanged — `theme/zeus/assets/css/
+      style.css` needed zero edits.
+- [x] `plugins/zeus-core/inc/cli.php`: added `wp zeus google-reviews
+      sync` and `wp zeus google-reviews status`.
+- [x] OAuth, per explicit instruction: no CLI `authorize` command, no
+      OOB/copy-paste flow in this codebase — the refresh token will be
+      minted separately via Google's OAuth Playground and handed over as
+      one of 5 config constants; this plugin only ever consumes it.
+- [x] Verified locally with **zero real credentials** (none were added
+      anywhere): PHP lint clean; `wp zeus google-reviews sync`/`status`
+      both fail cleanly with no fatal and no secrets in output;
+      confirmed the homepage renders identically to before with no
+      config present; temporarily seeded fake multi-rating test data
+      into the local (disposable) dev database to prove the live-data
+      path renders correctly (including per-review star counts matching
+      each review's own rating, not a hardcoded 5) and that data aged
+      past 30 days correctly reverts to the static fallback — then
+      deleted the test data, restoring a clean local state. Zero new PHP
+      warnings/notices in the local debug log.
+- [x] Confirmed no secrets/credentials anywhere in the change set
+      (`git diff` reviewed).
+- [ ] **Not committed/pushed yet** — awaiting approval.
+- [ ] **Open, external, not blocking further local work:** owner needs
+      to (1) create the Web Application OAuth client + mint a refresh
+      token via OAuth Playground, (2) submit the Business Profile API
+      access request (~14 days) and OAuth consent-screen verification
+      (separate process — required because the `business.manage` scope
+      is Google-classified Sensitive, and refresh tokens issued while a
+      consent screen is in Testing status expire after 7 days, which
+      would break unattended cron sync — see 2026-09-03 DECISIONS.md),
+      (3) create the real credentials file at
+      `/home/zeusiwpo/zeus-google-oauth-credentials.php` on production
+      only (never in this repo), (4) add a conditional `require` for
+      that path in production's own `wp-config.php`.
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

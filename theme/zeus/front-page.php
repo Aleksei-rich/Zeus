@@ -370,12 +370,19 @@ zeus_section_start(
 <?php zeus_section_end(); ?>
 
 <!-- 11. Reviews (Google) — real Place ID + real reviews, owner-confirmed
-     2026-09-03 (see docs/DECISIONS.md). Static HTML/CSS only: no widget,
-     iframe, JS feed, API key, tracking script, or structured data
-     (deliberately no AggregateRating/Review schema — see
-     docs/SEO-STRATEGY.md, "never fabricate review/rating markup"; this
-     content is real, so the omission is about not adding schema without
-     an API-verified live feed behind it, not about hiding anything). -->
+     2026-09-03 (see docs/DECISIONS.md). Rating/count/3 reviews are
+     normally live data synced in the background from the Google
+     Business Profile API (plugins/zeus-core/inc/google-reviews.php) —
+     never fetched during this page's own rendering. The array below is
+     ONLY the static fallback, used before the first successful sync or
+     whenever cached API data exceeds the 29-day policy window (see
+     zeus_get_google_reviews_data()) — it is not always what renders.
+     Static HTML/CSS only either way: no widget, iframe, JS feed,
+     tracking script, or structured data (deliberately no
+     AggregateRating/Review schema — see docs/SEO-STRATEGY.md, "never
+     fabricate review/rating markup"; this content is real, so the
+     omission is about not adding schema without a stronger factual
+     guarantee behind it, not about hiding anything). -->
 <?php
 zeus_section_start(
 	array(
@@ -384,35 +391,49 @@ zeus_section_start(
 		'heading' => __( 'What Our Clients Say', 'zeus' ),
 	)
 );
-$zeus_google_place_id      = 'ChIJtdJnWgaB54gR3r3aq3XNibA';
-$zeus_google_reviews_url   = 'https://www.google.com/maps/search/?api=1&query=ZEUS%20Cabinets%20%26%20Countertops&query_place_id=' . $zeus_google_place_id;
-$zeus_google_write_url     = 'https://search.google.com/local/writereview?placeid=' . $zeus_google_place_id;
-$zeus_google_reviews_shown = array(
-	array(
-		'name' => 'Darryl Chedd',
-		'text' => __( 'Everything was completed on time, cleanly, and with excellent quality.', 'zeus' ),
-	),
-	array(
-		'name' => 'Gabriel Logan',
-		'text' => __( 'I really enjoyed working with this team.', 'zeus' ),
-	),
-	array(
-		'name' => 'Jamil A',
-		'text' => __( 'Excellent work and reasonable pricing.', 'zeus' ),
-	),
-);
+$zeus_google_place_id    = 'ChIJtdJnWgaB54gR3r3aq3XNibA'; // Maps Place ID -- for the public Maps links below only, not the GBP reviews API (which is keyed by account/location ID instead).
+$zeus_google_reviews_url = 'https://www.google.com/maps/search/?api=1&query=ZEUS%20Cabinets%20%26%20Countertops&query_place_id=' . $zeus_google_place_id;
+$zeus_google_write_url   = 'https://search.google.com/local/writereview?placeid=' . $zeus_google_place_id;
+
+$zeus_reviews_live = function_exists( 'zeus_get_google_reviews_data' ) ? zeus_get_google_reviews_data() : false;
+
+if ( $zeus_reviews_live ) {
+	$zeus_reviews_rating = $zeus_reviews_live['rating'];
+	$zeus_reviews_count  = $zeus_reviews_live['count'];
+	$zeus_reviews_shown  = $zeus_reviews_live['reviews']; // Each: name, stars (1-5), text.
+} else {
+	$zeus_reviews_rating = '4.9';
+	$zeus_reviews_count  = 21;
+	$zeus_reviews_shown  = array(
+		array(
+			'name'  => 'Darryl Chedd',
+			'stars' => 5,
+			'text'  => __( 'Everything was completed on time, cleanly, and with excellent quality.', 'zeus' ),
+		),
+		array(
+			'name'  => 'Gabriel Logan',
+			'stars' => 5,
+			'text'  => __( 'I really enjoyed working with this team.', 'zeus' ),
+		),
+		array(
+			'name'  => 'Jamil A',
+			'stars' => 5,
+			'text'  => __( 'Excellent work and reasonable pricing.', 'zeus' ),
+		),
+	);
+}
 ?>
 	<div class="zeus-reviews-summary">
-		<span class="zeus-reviews-summary__score"><?php echo esc_html__( '4.9', 'zeus' ); ?></span>
+		<span class="zeus-reviews-summary__score"><?php echo esc_html( $zeus_reviews_rating ); ?></span>
 		<span class="zeus-reviews-summary__stars" aria-hidden="true"><?php echo str_repeat( zeus_icon( 'star' ), 5 ); // phpcs:ignore ?></span>
-		<span class="zeus-visually-hidden"><?php esc_html_e( 'Rated 4.9 out of 5 stars', 'zeus' ); ?></span>
-		<span class="zeus-reviews-summary__count"><?php esc_html_e( 'Based on 21 Google reviews', 'zeus' ); ?></span>
+		<span class="zeus-visually-hidden"><?php echo esc_html( sprintf( /* translators: %s: numeric rating out of 5, e.g. "4.9" */ __( 'Rated %s out of 5 stars', 'zeus' ), $zeus_reviews_rating ) ); ?></span>
+		<span class="zeus-reviews-summary__count"><?php echo esc_html( sprintf( /* translators: %d: total Google review count */ __( 'Based on %d Google reviews', 'zeus' ), $zeus_reviews_count ) ); ?></span>
 	</div>
 	<div class="zeus-grid zeus-grid--3">
-		<?php foreach ( $zeus_google_reviews_shown as $zeus_review ) : ?>
+		<?php foreach ( $zeus_reviews_shown as $zeus_review ) : ?>
 			<div class="zeus-review-card">
-				<span class="zeus-review-card__stars" aria-hidden="true"><?php echo str_repeat( zeus_icon( 'star' ), 5 ); // phpcs:ignore ?></span>
-				<span class="zeus-visually-hidden"><?php esc_html_e( '5 out of 5 stars', 'zeus' ); ?></span>
+				<span class="zeus-review-card__stars" aria-hidden="true"><?php echo str_repeat( zeus_icon( 'star' ), max( 0, min( 5, (int) $zeus_review['stars'] ) ) ); // phpcs:ignore ?></span>
+				<span class="zeus-visually-hidden"><?php echo esc_html( sprintf( /* translators: %d: star rating out of 5 */ __( '%d out of 5 stars', 'zeus' ), $zeus_review['stars'] ) ); ?></span>
 				<p class="zeus-review-card__text">&ldquo;<?php echo esc_html( $zeus_review['text'] ); ?>&rdquo;</p>
 				<p class="zeus-review-card__name"><?php echo esc_html( $zeus_review['name'] ); ?></p>
 				<p class="zeus-review-card__source"><?php esc_html_e( 'Google review', 'zeus' ); ?></p>

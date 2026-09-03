@@ -645,6 +645,36 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       Types cards; 100/103/107/104/99/109 door strip; 137 hero, flagged
       provisional) -- no new media imported.
 
+## Phase 5J — About page: family-owned wording + cabinetry in-stock rule + Meet Our Team (staged, 2026-09-02, NOT applied to DB)
+
+- [x] Drafted revised About page content (intro now states family-owned;
+      new sentence under "How We Work" stating the exact cabinetry
+      in-stock rule; new "Meet Our Team" section, 4 people with photos) at
+      `docs/content/about-page-21.html`; `plugins/zeus-core/inc/
+      seeding.php`'s `about` entry updated to match. **Per explicit owner
+      instruction, the database was NOT modified** — this is staged
+      content only, not yet live on page ID 21.
+- [x] Added `.zeus-team-grid`/`.zeus-team-card*` CSS to
+      `theme/zeus/assets/css/style.css` — 1 col mobile / 2 col tablet
+      (600px+) / 4 col desktop (1024px+), corrected 2026-09-02 to match
+      the owner's exact required breakpoints.
+- [x] Team photos: confirmed these URLs point to the same live ZEUS
+      production site page 21 will eventually be applied to (existing
+      media library attachments 173–176, not external hotlinks) — not an
+      open item, kept exactly as supplied, not imported/modified.
+- [x] Verified via a temporary in-memory preview (no DB write, script
+      deleted after each use): renders correctly through the real theme,
+      zero console errors, zero horizontal overflow at true 375/768/
+      1024/1440px widths (same-origin iframe harness), correct 1/2/4
+      column behavior, correct heading hierarchy, cabinetry in-stock
+      sentence renders correctly. See 2026-09-02 DECISIONS.md entry for
+      full method.
+- [x] PHP lint clean on the touched `seeding.php`; `git status`/`diff`
+      reviewed — only the expected files modified.
+- [ ] **Open/blocked:** applying this to the local database (`wp post
+      update 21 ...`) was intentionally not done this session — needs a
+      go-ahead.
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

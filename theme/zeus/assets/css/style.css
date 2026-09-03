@@ -723,6 +723,40 @@ body.zeus-has-mobile-bar { padding-bottom: 56px; }
 }
 .zeus-compare-table td { color: var(--wp--preset--color--stone-600); }
 
+/* ---- Team (About page) ---------------------------------------------------------------- */
+.zeus-team-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--wp--preset--spacing--3);
+	margin-block: var(--wp--preset--spacing--3);
+}
+@media (min-width: 600px) {
+	.zeus-team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+	.zeus-team-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.zeus-team-card { text-align: center; }
+.zeus-team-card__photo {
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	border-radius: var(--wp--custom--radius--medium);
+	box-shadow: var(--wp--custom--shadow--card);
+	margin-bottom: var(--wp--preset--spacing--1);
+}
+.zeus-team-card__name {
+	font-size: var(--wp--preset--font-size--medium);
+	font-weight: 700;
+	color: var(--wp--preset--color--navy);
+	margin: 0;
+}
+.zeus-team-card__role {
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--wp--preset--color--stone-600);
+	margin: 0;
+}
+
 /* ---- Utility ------------------------------------------------------------------------ */
 .zeus-visually-hidden {
 	position: absolute !important;

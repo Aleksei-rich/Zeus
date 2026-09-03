@@ -12,20 +12,28 @@ $zeus_social = zeus_social_links();
 				<img src="<?php echo esc_url( ZEUS_THEME_URI . '/assets/img/logo-footer-brand.png' ); ?>" width="1429" height="578" alt="<?php esc_attr_e( 'ZEUS Cabinets & Countertops', 'zeus' ); ?>" class="zeus-logo__img">
 			</a>
 			<p><?php esc_html_e( 'In-stock and custom cabinetry, countertops, delivery and installation for Orlando & Central Florida. Service-area business — consultations by appointment.', 'zeus' ); ?></p>
+			<?php if ( $zeus_social ) : ?>
+				<?php $zeus_social_labels = zeus_social_labels(); ?>
+				<div class="zeus-footer__social">
+					<p class="zeus-footer__heading"><?php esc_html_e( 'Follow Us', 'zeus' ); ?></p>
+					<ul class="zeus-footer__social-list">
+						<?php foreach ( $zeus_social as $zeus_platform => $zeus_url ) : ?>
+							<?php if ( ! empty( $zeus_url ) && ! empty( $zeus_social_labels[ $zeus_platform ] ) ) : ?>
+								<li class="zeus-footer__social-item">
+									<a class="zeus-footer__social-link" href="<?php echo esc_url( $zeus_url ); ?>" target="_blank" rel="noopener noreferrer">
+										<?php echo zeus_icon( $zeus_platform ); // phpcs:ignore WordPress.Security.EscapeOutput -- fixed, hand-authored inline SVG, no user input. ?>
+										<span><?php echo esc_html( $zeus_social_labels[ $zeus_platform ] ); ?></span>
+									</a>
+								</li>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 			<p>
 				<a href="<?php echo esc_attr( zeus_phone_number_href() ); ?>"><?php echo esc_html( zeus_phone_number_display() ); ?></a><br>
 				<a href="mailto:<?php echo esc_attr( zeus_email_address() ); ?>"><?php echo esc_html( zeus_email_address() ); ?></a>
 			</p>
-			<?php if ( $zeus_social ) : ?>
-				<?php $zeus_social_labels = zeus_social_labels(); ?>
-				<p class="zeus-footer__social">
-					<?php foreach ( $zeus_social as $zeus_platform => $zeus_url ) : ?>
-						<?php if ( ! empty( $zeus_url ) && ! empty( $zeus_social_labels[ $zeus_platform ] ) ) : ?>
-							<a href="<?php echo esc_url( $zeus_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $zeus_social_labels[ $zeus_platform ] ); ?></a>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</p>
-			<?php endif; ?>
 		</div>
 
 		<div>

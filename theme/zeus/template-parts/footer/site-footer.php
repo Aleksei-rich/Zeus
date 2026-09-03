@@ -64,5 +64,6 @@ $zeus_social = zeus_social_links();
 
 	<div class="zeus-container zeus-footer__bottom">
 		<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></span>
+		<a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'zeus' ); ?></a>
 	</div>
 </footer>

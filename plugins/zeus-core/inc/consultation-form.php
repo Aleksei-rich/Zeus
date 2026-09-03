@@ -94,14 +94,14 @@ function zeus_handle_consultation_submission() {
 	}
 
 	$values['project_type'] = isset( $_POST['project_type'] ) ? sanitize_text_field( wp_unslash( $_POST['project_type'] ) ) : '';
-	if ( ! array_key_exists( $values['project_type'], zeus_consultation_project_types() ) ) {
-		$errors['project_type'] = __( 'Choose a project type.', 'zeus-core' );
-	}
+	if ( '' !== $values['project_type'] && ! array_key_exists( $values['project_type'], zeus_consultation_project_types() ) ) {
+                $errors['project_type'] = __( 'Choose a valid project type.', 'zeus-core' );
+        }
 
 	$values['description'] = isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '';
-	if ( strlen( trim( $values['description'] ) ) < 10 ) {
-		$errors['description'] = __( 'Please add a few details about your project (at least 10 characters).', 'zeus-core' );
-	} elseif ( strlen( $values['description'] ) > 5000 ) {
+	if ( '' === trim( $values['description'] ) ) {
+                $errors['description'] = __( 'Please enter a message.', 'zeus-core' );
+        } elseif ( strlen( $values['description'] ) > 5000 ) {
 		$errors['description'] = __( 'Please shorten your description.', 'zeus-core' );
 	}
 
@@ -217,29 +217,51 @@ function zeus_store_lead_upload( $lead_id, $file ) {
  * assumed, no hardcoded credentials.
  */
 function zeus_notify_new_lead( $lead_id ) {
-	$name  = get_post_meta( $lead_id, 'zeus_lead_name', true );
-	$email = get_post_meta( $lead_id, 'zeus_lead_email', true );
-	$phone = get_post_meta( $lead_id, 'zeus_lead_phone', true );
-	$type  = get_post_meta( $lead_id, 'zeus_lead_project_type', true );
+        $name         = get_post_meta( $lead_id, 'zeus_lead_name', true );
+        $email        = get_post_meta( $lead_id, 'zeus_lead_email', true );
+        $phone        = get_post_meta( $lead_id, 'zeus_lead_phone', true );
+        $zip          = get_post_meta( $lead_id, 'zeus_lead_zip', true );
+        $type         = get_post_meta( $lead_id, 'zeus_lead_project_type', true );
+        $description  = get_post_meta( $lead_id, 'zeus_lead_description', true );
+        $submitted_at = get_post_meta( $lead_id, 'zeus_lead_submitted_at', true );
+        $upload_name  = get_post_meta( $lead_id, 'zeus_lead_upload_original_name', true );
 
-	$subject = sprintf( '[%s] New consultation request from %s', get_bloginfo( 'name' ), $name );
-	$body    = "New Request Free Consultation submission:\n\n"
-		. "Name: {$name}\n"
-		. "Phone: {$phone}\n"
-		. "Email: {$email}\n"
-		. "Project type: {$type}\n"
-		. 'Admin link: ' . admin_url( 'post.php?post=' . $lead_id . '&action=edit' ) . "\n";
+        $project_types = zeus_consultation_project_types();
+        $type_label    = isset( $project_types[ $type ] ) ? $project_types[ $type ] : $type;
 
-	$use_local_log = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'ZEUS_LOCAL_MAIL_LOG' ) && ZEUS_LOCAL_MAIL_LOG );
+        $subject = sprintf( '[ZEUS] New consultation request from %s', $name );
 
-	if ( $use_local_log ) {
-		$log_file = WP_CONTENT_DIR . '/zeus-lead-mail.log';
-		$entry    = '[' . current_time( 'mysql' ) . "] Would send:\nSubject: {$subject}\n{$body}\n" . str_repeat( '-', 40 ) . "\n";
-		file_put_contents( $log_file, $entry, FILE_APPEND | LOCK_EX ); // phpcs:ignore
-		return;
-	}
+        $body = "NEW REQUEST FREE CONSULTATION\n\n"
+                . "Name: {$name}\n"
+                . "Phone: {$phone}\n"
+                . "Email: {$email}\n"
+                . "ZIP: {$zip}\n"
+                . "Project type: {$type_label}\n"
+                . "Submitted: {$submitted_at}\n\n"
+                . "PROJECT DETAILS / MESSAGE:\n"
+                . ( $description ? $description : '(No message provided)' )
+                . "\n";
 
-	wp_mail( get_option( 'admin_email' ), $subject, $body );
+        if ( $upload_name ) {
+                $body .= "\nUploaded file: {$upload_name}\n";
+        }
+
+        $headers = array();
+
+        if ( is_email( $email ) ) {
+                $headers[] = 'Reply-To: ' . sanitize_text_field( $name ) . ' <' . $email . '>';
+        }
+
+        $use_local_log = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'ZEUS_LOCAL_MAIL_LOG' ) && ZEUS_LOCAL_MAIL_LOG );
+
+        if ( $use_local_log ) {
+                $log_file = WP_CONTENT_DIR . '/zeus-lead-mail.log';
+                $entry    = '[' . current_time( 'mysql' ) . "] Would send:\nSubject: {$subject}\n{$body}\n" . str_repeat( '-', 40 ) . "\n";
+                file_put_contents( $log_file, $entry, FILE_APPEND | LOCK_EX ); // phpcs:ignore
+                return;
+        }
+
+        wp_mail( 'zeus.cabinets@gmail.com', $subject, $body, $headers );
 }
 
 /**

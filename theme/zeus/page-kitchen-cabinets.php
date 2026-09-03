@@ -76,7 +76,7 @@ $zeus_hero_image_id = 114;
 	<div class="zeus-trust-strip">
 		<div class="zeus-trust-strip__item">
 			<h3><?php esc_html_e( 'In-Stock Options', 'zeus' ); ?></h3>
-			<p><?php esc_html_e( 'Popular styles and finishes available through our central warehouse.', 'zeus' ); ?></p>
+                    <p><?php esc_html_e( 'All standard cabinet colors and finishes are available in stock through our central warehouse, except Hyper Colors and Euro / Flat Panel styles.', 'zeus' ); ?></p>
 		</div>
 		<div class="zeus-trust-strip__item">
 			<h3><?php esc_html_e( 'Custom Solutions', 'zeus' ); ?></h3>
@@ -107,7 +107,7 @@ zeus_section_start(
 			</div>
 			<div class="zeus-card__body">
 				<h3><?php esc_html_e( 'In-Stock Kitchen Cabinetry', 'zeus' ); ?></h3>
-				<p><?php esc_html_e( 'A strong fit for most kitchens: a broad choice of styles and finishes available through our central warehouse, moving from selection to professional delivery and installation faster than full custom fabrication.', 'zeus' ); ?></p>
+                            <p><?php esc_html_e( 'Most kitchen projects can use our in-stock cabinet program: all standard cabinet colors and finishes are available through our central warehouse, except Hyper Colors and Euro / Flat Panel styles.', 'zeus' ); ?></p>
 				<a class="zeus-btn zeus-btn--secondary" href="<?php echo esc_url( home_url( '/cabinet-styles/' ) ); ?>"><?php esc_html_e( 'Explore Cabinet Styles', 'zeus' ); ?></a>
 			</div>
 		</article>
@@ -173,7 +173,7 @@ zeus_section_start(
 		<?php endforeach; ?>
 	</div>
 	<p style="margin-top: var(--wp--preset--spacing--3);">
-		<?php esc_html_e( 'Popular styles and finishes are available through our central warehouse, helping many kitchen projects move from selection to delivery faster than full custom fabrication.', 'zeus' ); ?>
+            <?php esc_html_e( 'All standard cabinet colors and finishes are available in stock through our central warehouse. Hyper Colors and Euro / Flat Panel styles are the only exceptions and are not kept in stock.', 'zeus' ); ?>
 	</p>
 	<p style="margin-top: var(--wp--preset--spacing--2);">
 		<a class="zeus-btn zeus-btn--secondary zeus-btn--on-dark" href="<?php echo esc_url( home_url( '/cabinet-styles/' ) ); ?>"><?php esc_html_e( 'View Cabinet Styles', 'zeus' ); ?></a>
@@ -298,11 +298,11 @@ zeus_section_start(
 $zeus_faqs = array(
 	array(
 		'q' => __( 'Does ZEUS offer in-stock and custom kitchen cabinets?', 'zeus' ),
-		'a' => __( 'Yes. We stock popular kitchen cabinet styles and finishes through a central warehouse for faster turnaround, and we build custom kitchen cabinetry for non-standard dimensions and individual layouts.', 'zeus' ),
+            'a' => __( 'Yes. All standard cabinet colors and finishes are available in stock through our central warehouse, except Hyper Colors and Euro / Flat Panel styles. We also build custom kitchen cabinetry for non-standard dimensions and individual layouts.', 'zeus' ),
 	),
 	array(
 		'q' => __( 'What kitchen cabinet styles do you offer?', 'zeus' ),
-		'a' => __( 'Four collections: transitional full-overlay Brooklyn, traditional five-piece Shaker, the narrower-rail Slim Shaker Oslo collection (including the Classic Walnut finish), and minimalist Euro / Flat Panel.', 'zeus' ),
+            'a' => __( 'Four collections: transitional full-overlay Brooklyn, traditional five-piece Shaker, the narrower-rail Slim Shaker Oslo collection (including the Classic Walnut finish), and minimalist Euro / Flat Panel.', 'zeus' ),
 	),
 	array(
 		'q' => __( 'What is the difference between Shaker and Slim Shaker cabinets?', 'zeus' ),

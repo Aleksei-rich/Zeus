@@ -157,7 +157,7 @@ zeus_section_start(
 		'variant' => 'navy',
 		'eyebrow' => __( 'In-Stock', 'zeus' ),
 		'heading' => __( 'In-Stock Cabinet Collections', 'zeus' ),
-		'intro'   => __( 'Popular styles and finishes are available through our central warehouse, helping ZEUS move projects from selection to installation efficiently.', 'zeus' ),
+		'intro'   => __( 'All standard cabinet colors and finishes are available in stock through our central warehouse. Hyper Colors and Euro / Flat Panel styles are the only exceptions and are not part of our in-stock program.', 'zeus' ),
 	)
 );
 ?>
@@ -180,7 +180,7 @@ zeus_section_start(
 		<?php endforeach; ?>
 	</div>
 	<p style="margin-top: var(--wp--preset--spacing--3); color: rgba(255,255,255,0.85);">
-		<?php esc_html_e( 'A few of our popular in-stock styles and finishes, from light and white to warm neutral and darker statement tones -- explore each collection below for the full color range.', 'zeus' ); ?>
+		<?php esc_html_e( 'The styles shown above are only a selection. All standard cabinet colors and finishes are available in stock, except Hyper Colors and Euro / Flat Panel styles. Explore each collection below to see the full range.', 'zeus' ); ?>
 	</p>
 <?php zeus_section_end(); ?>
 

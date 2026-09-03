@@ -67,8 +67,8 @@ $zeus_field_value = static function ( $name ) use ( $zeus_values ) {
 	</div>
 
 	<div class="zeus-form__row">
-		<label for="zeus-project-type"><?php esc_html_e( 'Project Type', 'zeus' ); ?> <span aria-hidden="true">*</span></label>
-		<select id="zeus-project-type" name="project_type" required aria-required="true"
+		<label for="zeus-project-type"><?php esc_html_e( 'Project Type (optional)', 'zeus' ); ?></label>
+		<select id="zeus-project-type" name="project_type"
 			<?php if ( ! empty( $zeus_errors['project_type'] ) ) : ?>aria-invalid="true" aria-describedby="zeus-project-type-error"<?php endif; ?>>
 			<?php foreach ( $zeus_project_types as $zeus_value => $zeus_label ) : ?>
 				<option value="<?php echo esc_attr( $zeus_value ); ?>" <?php selected( $zeus_field_value( 'project_type' ), $zeus_value ); ?>><?php echo esc_html( $zeus_label ); ?></option>

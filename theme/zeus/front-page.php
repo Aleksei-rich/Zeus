@@ -177,7 +177,7 @@ zeus_section_start(
 	)
 );
 ?>
-	<p class="zeus-door-strip__note"><?php esc_html_e( 'A few of our popular in-stock styles and finishes — explore the full collection.', 'zeus' ); ?></p>
+	<p class="zeus-door-strip__note"><?php esc_html_e( 'All standard cabinet colors and finishes are available in stock. Hyper Colors and Euro / Flat Panel styles are the only exceptions.', 'zeus' ); ?></p>
 	<div class="zeus-door-strip">
 		<?php
 		$zeus_instock_doors = array(

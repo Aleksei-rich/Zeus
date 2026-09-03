@@ -6,6 +6,129 @@ owner-directed one.
 
 ---
 
+## 2026-09-03 — Homepage Google Reviews section implemented (real Place ID, real reviews)
+
+**Decision:** Replaced the homepage's commented-out Reviews placeholder
+(`theme/zeus/front-page.php`, previously "hidden until the owner supplies
+Google Business Profile connection details" per the 2026-08-23-era
+comment) with a real "What Our Clients Say" section: the 4.9 aggregate
+rating with a 5-star glyph row and "Based on 21 Google reviews," 3 review
+cards (Darryl Chedd, Gabriel Logan, Jamil A — exact names/excerpts as
+supplied by the owner, not rewritten, no invented dates/locations/project
+types), and two buttons — "Read All Google Reviews" and "Leave a Google
+Review" — linking to the owner-supplied Google Maps/write-review URLs for
+Place ID `ChIJtdJnWgaB54gR3r3aq3XNibA`, both `target="_blank"
+rel="noopener noreferrer"`. Static HTML/CSS only: no widget, iframe, JS
+feed, API key, tracking script, or `AggregateRating`/`Review` schema
+(deliberately omitted — see reasoning). Added a `star` icon to the shared
+`zeus_icon()` set and new `.zeus-reviews-summary`/`.zeus-review-card`/
+`.zeus-reviews-actions` CSS reusing the existing `.zeus-grid.zeus-grid--3`
+layout (1 col mobile, 3 col desktop, same breakpoint every other 3-up
+grid on the site already uses).
+**Verification performed before writing anything** (this project's
+standing rule is to never fabricate review/rating content — see
+`docs/SEO-STRATEGY.md` and the 2026-08-23 DECISIONS.md entry on removing
+unverified claims): independently opened the supplied Place ID in a real
+browser via two separate routes (Google Maps, and the Google Search
+business panel) rather than trusting the claim. Confirmed: the Place ID
+resolves to a real, live business — "Zeus Cabinets & Countertops (Zeus
+business LLC)" — with a 4.9 rating and 21 reviews, matching the
+owner-supplied figures exactly. The connected Google account is the
+**verified manager of this exact Business Profile** ("You manage this
+Business Profile"), which is itself strong evidence this is genuinely the
+owner's real listing, not an unrelated or mistaken one. Paged through the
+owner's actual review-management panel and read 5 of the 21 real reviews
+in full (The Kizlo Team, Natalie No, Deb Ramos, Jamil A, and the start of
+a 6th) before the Google Maps/Search UI became unreliable to automate
+further (a heavy JS SPA that repeatedly hung the browser-automation
+tooling used this session). **Jamil A's excerpt was directly confirmed
+word-for-word real** — the owner-supplied "Excellent work and reasonable
+pricing." is the exact opening sentence of Jamil A's real, 5-star,
+Aug 20, 2025 review (2 photos attached, matches). Darryl Chedd's and
+Gabriel Logan's excerpts were **not** individually located within the
+reviews this session managed to page through before the tooling gave out
+— they are used on the owner's direct, explicit assertion that they are
+real and verified, consistent with (and not contradicted by) everything
+independently confirmed above (real Place ID, real owner-managed profile,
+one of three excerpts confirmed exact). If either name/excerpt turns out
+to be inaccurate, correct `front-page.php`'s `$zeus_google_reviews_shown`
+array directly — no other file needs to change.
+**Reasoning for no schema:** the review content itself is real and
+verified as above, but `AggregateRating`/`Review` JSON-LD is a stronger,
+machine-checkable factual claim than prose on a page — this project's
+standing rule (`docs/SEO-STRATEGY.md`) is to add that only backed by a
+live, API-verified feed (Place ID + Google Places API key), not
+hand-typed snapshot content that can drift out of date. The owner's brief
+for this task also explicitly excluded schema. This can be revisited once
+a real API connection exists.
+**Type:** Owner-directed (the exact copy, names, excerpts, URLs, heading,
+button labels, and the "no schema" constraint); autonomous professional
+default for the CSS/markup implementation and for independently verifying
+the Place ID/profile/rating/count and as many individual reviews as
+tooling allowed before use, rather than writing real people's names to a
+public page on the strength of an unverified claim alone.
+
+---
+
+## 2026-09-03 — LinkedIn, Pinterest, YouTube added to `zeus_social_links()`; Google Reviews NOT implemented (no fabricated content)
+
+**Decision:** Added 3 owner-supplied social URLs to the existing
+`zeus_social_links()` single source of truth
+(`theme/zeus/inc/template-tags.php`) alongside the existing Facebook/
+Instagram: LinkedIn (the founder's personal profile, owner-confirmed as
+intentional and approved for site use), Pinterest (a `pin.it` short
+link), and YouTube. Added a matching `zeus_social_labels()` helper for
+display text, and refactored the footer's social block
+(`theme/zeus/template-parts/footer/site-footer.php`) from two hardcoded
+`if` blocks into a loop over both, so it now handles any number of
+platforms without repeated markup. All 5 URLs used byte-for-byte as
+supplied, not normalized/substituted, per instruction.
+**Verified each URL before use** (read-only): Facebook, Instagram, and
+YouTube resolve directly (HTTP 200/redirect-to-200 via `curl`). LinkedIn
+returned HTTP 999 to `curl` (LinkedIn's standard anti-bot response to
+non-browser requests, not evidence of a broken link) — verified instead
+via a real browser, which is already signed into this exact account; the
+profile is real, titled "Owner | ZEUS Cabinets & Countertops," with a
+ZEUS-branded banner image. Pinterest's `pin.it` short link was verified
+via a real browser (already signed in), resolving to a real, live
+`pinterest.com/zeuscabinetsorlando` profile; the resolved URL carries an
+`invite_code`/`sender` query string (an artifact of how the short link
+was generated), left as-is since only the supplied `pin.it` link was
+added to code, not the resolved destination.
+**Fixed a real bug found during QA:** `.zeus-footer__social` had no
+`flex-wrap`, so at exactly 375px viewport width the 5 links fit with
+literally 0px to spare (measured) — any device narrower than 375px, or
+any small change in link text, would have caused real horizontal
+overflow. Added `flex-wrap: wrap` (one line, existing spacing token
+reused for `gap`); re-verified zero overflow and clean 2-row wrapping at
+both 320px and 375px.
+**Google Reviews — explicitly NOT implemented this pass.** The owner's
+instruction asked to "continue with the Google Reviews implementation
+from the previous brief" and to report "exact review excerpts/names
+used," but no Place ID, Google Business Profile link, or actual review
+text/reviewer names has been supplied in this project at any point.
+Fabricating review excerpts or reviewer names is explicitly forbidden by
+this project's own rules (`docs/SEO-STRATEGY.md`: "never fabricate
+review/rating markup"; see also the 2026-08-23 DECISIONS.md entry
+removing unverified staffing claims for the same reason). A targeted web
+search for a real ZEUS Google Maps/Business listing did not surface an
+unambiguous, verifiable URL. `front-page.php`'s Reviews section remains
+the existing honest placeholder (commented out, not rendered) —
+unchanged. This stays a backlog item pending the owner supplying a real
+Place ID / Google Business Profile link (see `docs/TASKS.md`).
+**Reasoning:** Social links are real, owner-confirmed, independently
+verified facts with no ambiguity — safe to implement immediately.
+Reviews requires either real API access (Place ID/key) or real review
+text the owner supplies directly; inventing either would violate this
+project's standing no-fabrication rule and produce content that could
+mislead site visitors about real customer feedback.
+**Type:** Owner-directed (the 5 exact URLs, keep-as-supplied instruction,
+LinkedIn approval); autonomous professional default (the
+`zeus_social_labels()` split, the loop refactor, the `flex-wrap` fix, and
+declining to fabricate Google Reviews content absent real data).
+
+---
+
 ## 2026-09-02 — About page: family-owned intro, cabinetry in-stock rule, and "Meet Our Team" section — matches live production
 
 **Decision:** Production's About page (page ID 21,

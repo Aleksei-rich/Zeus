@@ -17,13 +17,13 @@ $zeus_social = zeus_social_links();
 				<a href="mailto:<?php echo esc_attr( zeus_email_address() ); ?>"><?php echo esc_html( zeus_email_address() ); ?></a>
 			</p>
 			<?php if ( $zeus_social ) : ?>
+				<?php $zeus_social_labels = zeus_social_labels(); ?>
 				<p class="zeus-footer__social">
-					<?php if ( ! empty( $zeus_social['facebook'] ) ) : ?>
-						<a href="<?php echo esc_url( $zeus_social['facebook'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Facebook', 'zeus' ); ?></a>
-					<?php endif; ?>
-					<?php if ( ! empty( $zeus_social['instagram'] ) ) : ?>
-						<a href="<?php echo esc_url( $zeus_social['instagram'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Instagram', 'zeus' ); ?></a>
-					<?php endif; ?>
+					<?php foreach ( $zeus_social as $zeus_platform => $zeus_url ) : ?>
+						<?php if ( ! empty( $zeus_url ) && ! empty( $zeus_social_labels[ $zeus_platform ] ) ) : ?>
+							<a href="<?php echo esc_url( $zeus_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $zeus_social_labels[ $zeus_platform ] ); ?></a>
+						<?php endif; ?>
+					<?php endforeach; ?>
 				</p>
 			<?php endif; ?>
 		</div>

@@ -369,18 +369,61 @@ zeus_section_start(
 	</div>
 <?php zeus_section_end(); ?>
 
-<!-- 11. Reviews — hidden for now (RC3A). ZEUS has a real, active Google
-     Business Profile with an existing reviews feed (see
-     docs/OLD-SITE-INVENTORY.md, "Existing review integration"), but no
-     verified, clickable review destination (Place ID / direct link) has
-     been confirmed for this rebuild yet, and the section must never say
-     development/status language like "check back soon" on the public
-     site. Per the RC3A brief: hide entirely rather than show placeholder
-     copy or fabricate a destination. Restore once the owner supplies the
-     Google Business Profile connection details — see
-     docs/CONTENT-MIGRATION-PLAN.md. No AggregateRating schema is added
-     until real review data is actually connected. -->
-<?php // Reviews section intentionally omitted — see comment above. ?>
+<!-- 11. Reviews (Google) — real Place ID + real reviews, owner-confirmed
+     2026-09-03 (see docs/DECISIONS.md). Static HTML/CSS only: no widget,
+     iframe, JS feed, API key, tracking script, or structured data
+     (deliberately no AggregateRating/Review schema — see
+     docs/SEO-STRATEGY.md, "never fabricate review/rating markup"; this
+     content is real, so the omission is about not adding schema without
+     an API-verified live feed behind it, not about hiding anything). -->
+<?php
+zeus_section_start(
+	array(
+		'variant' => 'compact',
+		'eyebrow' => __( 'Google Reviews', 'zeus' ),
+		'heading' => __( 'What Our Clients Say', 'zeus' ),
+	)
+);
+$zeus_google_place_id      = 'ChIJtdJnWgaB54gR3r3aq3XNibA';
+$zeus_google_reviews_url   = 'https://www.google.com/maps/search/?api=1&query=ZEUS%20Cabinets%20%26%20Countertops&query_place_id=' . $zeus_google_place_id;
+$zeus_google_write_url     = 'https://search.google.com/local/writereview?placeid=' . $zeus_google_place_id;
+$zeus_google_reviews_shown = array(
+	array(
+		'name' => 'Darryl Chedd',
+		'text' => __( 'Everything was completed on time, cleanly, and with excellent quality.', 'zeus' ),
+	),
+	array(
+		'name' => 'Gabriel Logan',
+		'text' => __( 'I really enjoyed working with this team.', 'zeus' ),
+	),
+	array(
+		'name' => 'Jamil A',
+		'text' => __( 'Excellent work and reasonable pricing.', 'zeus' ),
+	),
+);
+?>
+	<div class="zeus-reviews-summary">
+		<span class="zeus-reviews-summary__score"><?php echo esc_html__( '4.9', 'zeus' ); ?></span>
+		<span class="zeus-reviews-summary__stars" aria-hidden="true"><?php echo str_repeat( zeus_icon( 'star' ), 5 ); // phpcs:ignore ?></span>
+		<span class="zeus-visually-hidden"><?php esc_html_e( 'Rated 4.9 out of 5 stars', 'zeus' ); ?></span>
+		<span class="zeus-reviews-summary__count"><?php esc_html_e( 'Based on 21 Google reviews', 'zeus' ); ?></span>
+	</div>
+	<div class="zeus-grid zeus-grid--3">
+		<?php foreach ( $zeus_google_reviews_shown as $zeus_review ) : ?>
+			<div class="zeus-review-card">
+				<span class="zeus-review-card__stars" aria-hidden="true"><?php echo str_repeat( zeus_icon( 'star' ), 5 ); // phpcs:ignore ?></span>
+				<span class="zeus-visually-hidden"><?php esc_html_e( '5 out of 5 stars', 'zeus' ); ?></span>
+				<p class="zeus-review-card__text">&ldquo;<?php echo esc_html( $zeus_review['text'] ); ?>&rdquo;</p>
+				<p class="zeus-review-card__name"><?php echo esc_html( $zeus_review['name'] ); ?></p>
+				<p class="zeus-review-card__source"><?php esc_html_e( 'Google review', 'zeus' ); ?></p>
+			</div>
+		<?php endforeach; ?>
+	</div>
+	<div class="zeus-reviews-actions">
+		<a class="zeus-btn zeus-btn--primary" href="<?php echo esc_url( $zeus_google_reviews_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Read All Google Reviews', 'zeus' ); ?></a>
+		<a class="zeus-btn zeus-btn--secondary" href="<?php echo esc_url( $zeus_google_write_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Leave a Google Review', 'zeus' ); ?></a>
+	</div>
+<?php zeus_section_end(); ?>
 
 <!-- 12. Service area -->
 <?php

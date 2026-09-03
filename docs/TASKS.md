@@ -683,6 +683,42 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       directly by the owner; the local install is a separate, disposable
       dev environment) — a standing setup, not an open task.
 
+## Phase 5K — Social links expanded + Google Reviews implemented (2026-09-03)
+
+- [x] Added LinkedIn, Pinterest, YouTube to `zeus_social_links()`
+      (`theme/zeus/inc/template-tags.php`), alongside existing Facebook/
+      Instagram — all 5 owner-supplied, verified to resolve, used exactly
+      as given. New `zeus_social_labels()` helper added; footer social
+      block refactored to a loop. Renders in the footer only (all pages).
+- [x] Fixed a real mobile bug found during QA: `.zeus-footer__social` had
+      no `flex-wrap` and fit with 0px to spare at 375px width — added
+      `flex-wrap: wrap`, verified clean 2-row wrap and zero overflow at
+      320px and 375px.
+- [x] **Google Reviews: implemented.** Real, owner-confirmed Place ID
+      (`ChIJtdJnWgaB54gR3r3aq3XNibA`) independently verified in a real
+      browser (two routes) as a real, live, owner-managed business
+      profile — "Zeus Cabinets & Countertops (Zeus business LLC)," 4.9
+      rating, 21 reviews, matching exactly. One of the three supplied
+      review excerpts (Jamil A) directly confirmed word-for-word against
+      the real review; the other two (Darryl Chedd, Gabriel Logan) used
+      on direct owner assertion after browser tooling became unreliable
+      partway through paging the full review list — see 2026-09-03
+      DECISIONS.md entry for the full verification trail and what to do
+      if either turns out inaccurate.
+- [x] New homepage "What Our Clients Say" section
+      (`theme/zeus/front-page.php`, replacing the old commented-out
+      placeholder): 4.9 + 5-star glyphs + "Based on 21 Google reviews,"
+      3 review cards, "Read All Google Reviews" / "Leave a Google Review"
+      buttons (both real Google URLs, `target="_blank"
+      rel="noopener noreferrer"`). Static HTML/CSS only — no widget,
+      iframe, JS feed, API key, tracking script, or `AggregateRating`/
+      `Review` schema (deliberate — see DECISIONS.md).
+- [x] QA: PHP lint clean, zero console errors, `/feedback/` still 404s,
+      zero page-level AggregateRating/Review schema anywhere, responsive
+      (1 col mobile / 3 col desktop, matching the site's existing
+      `.zeus-grid--3` breakpoint) confirmed at 320/375/768/1440px with
+      zero horizontal overflow at any width.
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

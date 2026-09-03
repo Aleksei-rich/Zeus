@@ -80,6 +80,23 @@ function zeus_social_links() {
 	return array(
 		'facebook'  => 'https://www.facebook.com/profile.php?id=100083163667410',
 		'instagram' => 'https://www.instagram.com/zeus.cabinets',
+		'linkedin'  => 'https://www.linkedin.com/in/aleksei-cherednichenko-77a862428',
+		'pinterest' => 'https://pin.it/6D4A6LB4j',
+		'youtube'   => 'https://www.youtube.com/@ZeusCabinetsCountertop',
+	);
+}
+
+/**
+ * Display labels for zeus_social_links() keys -- kept separate since the
+ * URLs are the actual source of truth and labels are presentation-only.
+ */
+function zeus_social_labels() {
+	return array(
+		'facebook'  => __( 'Facebook', 'zeus' ),
+		'instagram' => __( 'Instagram', 'zeus' ),
+		'linkedin'  => __( 'LinkedIn', 'zeus' ),
+		'pinterest' => __( 'Pinterest', 'zeus' ),
+		'youtube'   => __( 'YouTube', 'zeus' ),
 	);
 }
 
@@ -142,6 +159,7 @@ function zeus_icon( $name ) {
 		'close'    => '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
 		'check'    => '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg>',
 		'location' => '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a7 7 0 00-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>',
+		'star'     => '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.5l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8-6.3 3.8 1.7-7-5.4-4.7 7.1-.6z"/></svg>',
 	);
 	return isset( $icons[ $name ] ) ? $icons[ $name ] : '';
 }

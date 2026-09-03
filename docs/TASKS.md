@@ -645,35 +645,43 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       Types cards; 100/103/107/104/99/109 door strip; 137 hero, flagged
       provisional) -- no new media imported.
 
-## Phase 5J — About page: family-owned wording + cabinetry in-stock rule + Meet Our Team (staged, 2026-09-02, NOT applied to DB)
+## Phase 5J — About page: family-owned intro + cabinetry in-stock rule + Meet Our Team (LIVE on production, 2026-09-02)
 
-- [x] Drafted revised About page content (intro now states family-owned;
-      new sentence under "How We Work" stating the exact cabinetry
-      in-stock rule; new "Meet Our Team" section, 4 people with photos) at
-      `docs/content/about-page-21.html`; `plugins/zeus-core/inc/
-      seeding.php`'s `about` entry updated to match. **Per explicit owner
-      instruction, the database was NOT modified** — this is staged
-      content only, not yet live on page ID 21.
-- [x] Added `.zeus-team-grid`/`.zeus-team-card*` CSS to
+- [x] Production's About page (page ID 21) is live with: Meet Our Team
+      (first section, 4 people with real photos) → family-owned intro →
+      How We Work (incl. the cabinetry in-stock rule) → What We Build →
+      Where We Work → consultation CTA. No featured image on production's
+      page 21 (attachment 77 removed from that role).
+- [x] This project's source of truth — `docs/content/about-page-21.html`
+      and `plugins/zeus-core/inc/seeding.php`'s `about` entry — matches
+      that live content exactly, independently verified via a direct,
+      read-only fetch of the production page (not taken on faith).
+- [x] `.zeus-team-grid`/`.zeus-team-card*` CSS in
       `theme/zeus/assets/css/style.css` — 1 col mobile / 2 col tablet
-      (600px+) / 4 col desktop (1024px+), corrected 2026-09-02 to match
-      the owner's exact required breakpoints.
-- [x] Team photos: confirmed these URLs point to the same live ZEUS
-      production site page 21 will eventually be applied to (existing
-      media library attachments 173–176, not external hotlinks) — not an
-      open item, kept exactly as supplied, not imported/modified.
+      (600px+) / 4 col desktop (1024px+), matching the owner's required
+      breakpoints.
+- [x] Team photos: existing WordPress media library attachments on the
+      live production site itself (173–176), not external hotlinks — kept
+      exactly as supplied, not imported/modified.
+- [x] `docs/ASSET-PROVENANCE.csv` updated: attachment 77 no longer lists
+      the About page as a usage location; notes record it was removed
+      from that role on production 2026-09-02.
 - [x] Verified via a temporary in-memory preview (no DB write, script
       deleted after each use): renders correctly through the real theme,
       zero console errors, zero horizontal overflow at true 375/768/
-      1024/1440px widths (same-origin iframe harness), correct 1/2/4
-      column behavior, correct heading hierarchy, cabinetry in-stock
-      sentence renders correctly. See 2026-09-02 DECISIONS.md entry for
-      full method.
-- [x] PHP lint clean on the touched `seeding.php`; `git status`/`diff`
-      reviewed — only the expected files modified.
-- [ ] **Open/blocked:** applying this to the local database (`wp post
-      update 21 ...`) was intentionally not done this session — needs a
-      go-ahead.
+      1024/1440px widths, correct 1/2/4 column behavior. See 2026-09-02
+      DECISIONS.md entry for full method.
+- [x] PHP lint clean; `git status`/`diff` reviewed — only expected files
+      modified.
+- [x] Approved and committed `b1d1171` ("Finalize About Us family-owned
+      team section") to `rebuild/v2`, pushed to `origin/rebuild/v2`
+      (`32f1150..b1d1171`). A follow-up commit for the section-order sync
+      above has not been made yet (per instruction) — pure git
+      housekeeping, does not affect production.
+- [x] This project's local WordPress dev database is **intentionally not
+      kept in sync** with production content edits (production is edited
+      directly by the owner; the local install is a separate, disposable
+      dev environment) — a standing setup, not an open task.
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

@@ -6,80 +6,87 @@ owner-directed one.
 
 ---
 
-## 2026-09-02 — About page: family-owned wording, cabinetry in-stock rule, and new "Meet Our Team" section staged, NOT yet applied to the database
+## 2026-09-02 — About page: family-owned intro, cabinetry in-stock rule, and "Meet Our Team" section — matches live production
 
-**Decision:** Staged a revised About page (page ID 21) that (1) states the
-business is family-owned in the intro paragraph, (2) states the exact
-cabinetry in-stock/availability rule the owner requires (see below), and
-(3) adds a new "Meet Our Team" section with 4 people (Aleksei Cher –
-Founder, Elena Chaika – Designer, Yulia Miller – Sales Manager, Veronika
-Cher – Designer), each with a real photo, per direct owner instruction.
-Per the same instruction, **the database was not modified this session**
-(across both this pass and a follow-up corrections pass, also 2026-09-02).
-The final content lives at `docs/content/about-page-21.html` (git-tracked,
-human-readable, with a header comment on how to apply it later via
-`.localenv/wpcli.sh post update 21 ...`); `plugins/zeus-core/inc/
-seeding.php`'s `about` entry (the create-time source of truth for a fresh
-reseed) was updated to match.
-**Cabinetry in-stock wording:** added under "How We Work": "All standard
-cabinetry colors and finishes are available in stock through our central
-warehouse. The only exceptions are Hyper Colors and Euro / Flat Panel."
-(exact wording, owner-confirmed 2026-09-02). Deliberately phrased so it
-cannot be read as implying only the 4 collections shown elsewhere on the
-site (Brooklyn/Shaker/Oslo/Euro) are the full extent of in-stock
-availability.
-**Team photos:** owner-confirmed (2026-09-02) these URLs point to the
-**same live ZEUS production site that page 21 will eventually be applied
-to** — existing WordPress media library attachments 173–176 (Aleksei Cher
-= 173, Elena Chaika = 174, Veronika Cher = 175, Yulia Miller = 176), not
-external/cross-site hotlinks. Per direct instruction, the URLs are kept
-exactly as supplied; the photos are not imported, replaced, cropped,
-regenerated, or otherwise modified by this project. All 4 URLs were
-independently verified to resolve (HTTP 200, real portrait photos,
-800×1000 each) before use.
-**Team grid CSS — corrected 2026-09-02:** the first pass shipped 2-col
-mobile / 4-col-from-600px, which did not match the required breakpoints.
-Corrected `.zeus-team-grid` in `theme/zeus/assets/css/style.css` to
-1 column by default, 2 columns from 600px, 4 columns from 1024px
-(`aspect-ratio: 4/5` photo boxes still reserve layout space, matching the
+**Decision:** Production's About page (page ID 21,
+`https://zeuscabinetsflorida.com/about/`) is **already live** with: a
+"Meet Our Team" section (first content section) with 4 people (Aleksei
+Cher – Founder, Elena Chaika – Designer, Yulia Miller – Sales Manager,
+Veronika Cher – Designer, each with a real photo), then the family-owned
+intro paragraph, then How We Work (including the cabinetry in-stock
+sentence), What We Build, Where We Work, and the consultation CTA last.
+Production also has no featured image on page 21 (attachment 77 was
+removed from that role). This project's git-tracked source of truth —
+`docs/content/about-page-21.html` and `plugins/zeus-core/inc/
+seeding.php`'s `about` entry — matches that live content exactly,
+verified via a direct, read-only HTTP fetch of the production page (no
+credentials, no write).
+**Local database:** this project's local WordPress dev database is
+**intentionally not kept in sync** with production content edits —
+production is edited directly by the owner; the local install is a
+separate, disposable dev environment. This is a standing setup, not an
+open task or something awaiting approval.
+**Cabinetry in-stock wording:** "All standard cabinetry colors and
+finishes are available in stock through our central warehouse. The only
+exceptions are Hyper Colors and Euro / Flat Panel." (exact wording,
+owner-confirmed). Deliberately phrased so it cannot be read as implying
+only the 4 collections shown elsewhere on the site (Brooklyn/Shaker/Oslo/
+Euro) are the full extent of in-stock availability.
+**Team photos:** these URLs are existing WordPress media library
+attachments on the live ZEUS production site itself — Aleksei Cher = 173,
+Elena Chaika = 174, Veronika Cher = 175, Yulia Miller = 176 — not
+external/cross-site hotlinks. Kept exactly as supplied; not imported,
+replaced, cropped, regenerated, or otherwise modified by this project.
+All 4 URLs independently verified to resolve (HTTP 200, real portrait
+photos, 800×1000 each).
+**Team grid CSS:** `.zeus-team-grid` in `theme/zeus/assets/css/style.css`
+is 1 column by default, 2 columns from 600px, 4 columns from 1024px
+(`aspect-ratio: 4/5` photo boxes reserve layout space, matching the
 existing swatch/gallery card conventions).
-**Verification performed without touching the database:** both this pass
-and the follow-up corrections pass used a temporary, git-ignored preview
-script (`.localenv/wordpress/zeus-qa-preview.php`, deleted after each use)
-that rendered page ID 21 through the real `page.php` template with the
-staged HTML swapped in purely in-memory (a `the_posts` filter callback),
-so the real header/footer/CSS were exercised exactly as production would
-render them, with zero `wp_update_post()` calls. Confirmed in a real
-browser after the corrections: zero console errors; via a same-origin
-iframe harness at true 375/768/1024/1440px widths (per the documented
-resize-tool limitation, see the 2026-08-26/Phase 4 entries) — zero
-horizontal overflow at any width, 1 column at 375px, 2 columns at 768px,
-4 columns at 1440px. (At exactly 1024px the grid still measured 2 columns
-in the iframe harness because Windows Chrome's vertical scrollbar reduces
-the effective viewport a few pixels below the 1024px `min-width` boundary
-— the same boundary-precision behavior `.zeus-grid--4` already has
-elsewhere on the site; real desktop widths above 1024px, confirmed at
-1440px, render 4 columns correctly.) Also confirmed the new cabinetry
-in-stock sentence renders correctly under "How We Work."
+**Featured image:** confirmed no `_thumbnail_id` / `set_post_thumbnail`
+call exists anywhere in `plugins/zeus-core` for the About page — there
+was never a code-level assignment to remove. The earlier attachment 77 ↔
+page 21 association was a database-only value (production's, not this
+project's local DB) and a `docs/ASSET-PROVENANCE.csv` usage note.
+`ASSET-PROVENANCE.csv` has been updated: attachment 77's usage location no
+longer lists the About page, and its notes record that the association
+was removed from production as of 2026-09-02.
+**Verification performed without touching any database:** used a
+temporary, git-ignored preview script
+(`.localenv/wordpress/zeus-qa-preview.php`, deleted after each use) that
+rendered page ID 21 through the real `page.php` template with this
+content swapped in purely in-memory (a `the_posts` filter callback), so
+the real header/footer/CSS were exercised exactly as production would
+render them, with zero `wp_update_post()` calls — confirmed zero console
+errors and, via a same-origin iframe harness at true 375/768/1024/1440px
+widths (per the documented resize-tool limitation, see the 2026-08-26/
+Phase 4 entries), zero horizontal overflow at any width with correct
+1/2/4 column behavior. Also directly fetched the live production page
+(read-only) to confirm section order, exact wording, image URLs, and the
+absence of a featured image, rather than taking any description at face
+value.
 **Reviewed against prior banned-claims list** (`docs/DECISIONS.md`
 2026-08-23/2026-08-26 entries: "stocked locally in Orlando," "same/one
 team," "no subcontractors," guaranteed lead times): none of that language
-was reintroduced. The existing "What We Build"/"Where We Work" copy was
-left unchanged (already compliant).
-**Reasoning:** The owner confirmed "family-owned" and the cabinetry
-in-stock rule as factually accurate, supplied the 4 team members' names,
-roles, and verified image URLs (correcting, in a follow-up message, that
-these are already-live production media library assets rather than an
-open item), and specified the exact responsive grid breakpoints required.
-Per direct instruction, this remains staged as a reviewable file plus
-matching source-of-truth update rather than written to the database, so
-the owner can review the exact final HTML before it goes live.
-**Type:** Owner-directed (explicit instruction for the family-owned claim,
-the cabinetry in-stock wording, the team roster/photos, the exact grid
-breakpoints, and the no-DB-write constraint); autonomous professional
-default for the staging file location (`docs/content/`, chosen because
-`.localenv/` is gitignored and the owner asked for a file "in the repo")
-and the in-memory verification method.
+appears anywhere in this content.
+**Git state:** this content was reordered in the working tree after
+commit `b1d1171` ("Finalize About Us family-owned team section", pushed
+to `origin/rebuild/v2`) was made, which still reflects the prior
+(family-owned-intro-first) section order. A follow-up commit covering the
+reorder has not been made yet, per instruction, but that is purely a git
+housekeeping step — it does not affect production, which already has the
+final content live.
+**Reasoning:** The owner directed the family-owned claim, the cabinetry
+in-stock rule, the team roster/photos, the grid breakpoints, and the
+section order, and confirmed production already carries the final state
+directly (independently verified rather than assumed). The local
+database is deliberately left out of sync with production by design.
+**Type:** Owner-directed (the family-owned claim, the cabinetry in-stock
+wording, the team roster/photos/order, the grid breakpoints, and the
+local-DB-stays-unsynced setup); autonomous professional default for the
+staging file location (`docs/content/`, chosen because `.localenv/` is
+gitignored) and independently verifying production via a read-only fetch
+rather than trusting descriptions as given.
 
 ---
 

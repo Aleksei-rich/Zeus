@@ -1,53 +1,46 @@
 <!--
-	Final post_content for WordPress page ID 21 ("About", /about/).
+	post_content for WordPress page ID 21 ("About", /about/), matching
+	the CURRENT LIVE production page at
+	https://zeuscabinetsflorida.com/about/ exactly (last verified via a
+	direct, read-only fetch on 2026-09-02). This is a content fragment
+	only (not a full HTML document — it's the post_content that belongs
+	inside WordPress's the_content()).
 
-	STATUS: NOT YET APPLIED to the local database. This is a staged
-	content fragment only (not a full HTML document — it's the
-	post_content that belongs inside WordPress's the_content()). Apply
-	it with, e.g.:
+	This project's local dev database is intentionally NOT kept in sync
+	with production content edits (production is edited directly by the
+	owner; this repo's local WordPress install is a separate, disposable
+	dev environment) — that is a deliberate standing setup, not an open
+	task. This file exists as the git-tracked, human-readable record of
+	production's current About page content, matched here in
+	plugins/zeus-core/inc/seeding.php ('about' entry) as well.
 
-	  .localenv/wpcli.sh post update 21 docs/content/about-page-21.html
+	Section order — matches production exactly:
+	  1. Meet Our Team (first content section)
+	  2. Family-owned intro paragraph
+	  3. How We Work (+ the cabinetry in-stock/availability sentence)
+	  4. What We Build
+	  5. Where We Work
+	  6. Final consultation CTA (last)
 
-	The matching create-time source of truth (used only when a fresh
-	install re-seeds this page from scratch) was updated to match in
-	plugins/zeus-core/inc/seeding.php ('about' entry).
+	"in-stock collection" is spelled with the space (not
+	"in-stockcollection") everywhere here, matching production.
 
-	Changes vs. the previously-live content:
-	  - Intro paragraph now states the business is family-owned
-	    (owner-confirmed, 2026-09-02 — see docs/DECISIONS.md).
-	  - Added a sentence under "How We Work" stating the exact cabinetry
-	    in-stock/availability rule (owner-confirmed, 2026-09-02): all
-	    standard colors/finishes are in stock via the central warehouse,
-	    except Hyper Colors and Euro / Flat Panel. Deliberately phrased
-	    so it doesn't read as "only the collections shown on this site
-	    are in stock."
-	  - Added a new "Meet Our Team" section: 4 people, real photos.
-	  - "What We Build" / "Where We Work" copy is unchanged from what is
-	    currently live — reviewed against docs/DECISIONS.md's list of
-	    banned in-stock/staffing claims ("stocked locally in Orlando",
-	    "same/one team", "no subcontractors", guaranteed lead times) and
-	    none are present.
+	Team photos: these URLs are existing WordPress media library
+	attachments on the live ZEUS production site itself (Aleksei Cher =
+	173, Elena Chaika = 174, Veronika Cher = 175, Yulia Miller = 176) —
+	not external/cross-site hotlinks. Kept exactly as supplied; not
+	imported, replaced, cropped, regenerated, or otherwise modified by
+	this project. Order and roles confirmed to match production.
 
-	Team photos: owner-confirmed (2026-09-02) these are already uploaded
-	to the production WordPress media library at these exact URLs —
-	Aleksei Cher = attachment 173, Elena Chaika = 174, Veronika Cher =
-	175, Yulia Miller = 176 (production's own numbering; unrelated to
-	this project's local attachment IDs). Per direct instruction: keep
-	these URLs exactly as supplied, do not import/replace/crop/
-	regenerate/modify the photos.
+	Featured image: production page 21 has no featured image (attachment
+	77 was removed from it on production; confirmed via the read-only
+	fetch — no `zeus-page-thumb` markup renders). No featured-image
+	assignment exists in this project's local seeding/source code either
+	(no `_thumbnail_id` / `set_post_thumbnail` calls anywhere in
+	plugins/zeus-core) — there was never a code-level assignment to
+	remove. See docs/ASSET-PROVENANCE.csv for attachment 77's current
+	(non-About-page) documented usage.
 -->
-<p>ZEUS Cabinets &amp; Countertops is a family-owned business designing and building kitchen and bathroom cabinetry and countertops for homeowners across Orlando and Central Florida — in-stock collections for fast turnaround, and custom cabinetry for spaces that need an individual solution.</p>
-
-<h2>How We Work</h2>
-<p>We start every project with a conversation about how you actually use your space. Most kitchens and bathrooms move fastest with an in-stock collection; some spaces — closets, built-ins, unusual dimensions — need custom cabinetry instead. Design, cabinetry, and countertops are planned and coordinated together by ZEUS.</p>
-<p>All standard cabinetry colors and finishes are available in stock through our central warehouse. The only exceptions are Hyper Colors and Euro / Flat Panel.</p>
-
-<h2>What We Build</h2>
-<p>In-stock and custom <a href="/cabinets/kitchen-cabinets/">kitchen</a> and <a href="/cabinets/bathroom-cabinets-vanities/">bathroom</a> cabinetry, <a href="/countertops/">countertops</a> in quartz, granite, porcelain, and marble, and custom storage for <a href="/custom-spaces/">closets, laundry rooms, pantries, and home offices</a>.</p>
-
-<h2>Where We Work</h2>
-<p>ZEUS is a service-area business serving Orlando, Windermere, Winter Garden, Horizon West, Clermont, and Dr. Phillips. We meet with you for a consultation rather than operating a public walk-in showroom.</p>
-
 <h2>Meet Our Team</h2>
 <p>ZEUS Cabinets &amp; Countertops is family-owned. Here's who you'll be working with.</p>
 <div class="zeus-team-grid">
@@ -72,5 +65,17 @@
 		<p class="zeus-team-card__role">Designer</p>
 	</div>
 </div>
+
+<p>ZEUS Cabinets &amp; Countertops is a family-owned business designing and building kitchen and bathroom cabinetry and countertops for homeowners across Orlando and Central Florida — in-stock collections for fast turnaround, and custom cabinetry for spaces that need an individual solution.</p>
+
+<h2>How We Work</h2>
+<p>We start every project with a conversation about how you actually use your space. Most kitchens and bathrooms move fastest with an in-stock collection; some spaces — closets, built-ins, unusual dimensions — need custom cabinetry instead. Design, cabinetry, and countertops are planned and coordinated together by ZEUS.</p>
+<p>All standard cabinetry colors and finishes are available in stock through our central warehouse. The only exceptions are Hyper Colors and Euro / Flat Panel.</p>
+
+<h2>What We Build</h2>
+<p>In-stock and custom <a href="/cabinets/kitchen-cabinets/">kitchen</a> and <a href="/cabinets/bathroom-cabinets-vanities/">bathroom</a> cabinetry, <a href="/countertops/">countertops</a> in quartz, granite, porcelain, and marble, and custom storage for <a href="/custom-spaces/">closets, laundry rooms, pantries, and home offices</a>.</p>
+
+<h2>Where We Work</h2>
+<p>ZEUS is a service-area business serving Orlando, Windermere, Winter Garden, Horizon West, Clermont, and Dr. Phillips. We meet with you for a consultation rather than operating a public walk-in showroom.</p>
 
 <p><a href="/consultation/">Request a free consultation</a> to start your project.</p>

@@ -29,6 +29,7 @@ $zeus_core_includes = array(
 	'inc/leads.php',
 	'inc/consultation-form.php',
 	'inc/consultation-multiupload.php',
+	'inc/mail-security.php',
 	'inc/google-reviews.php',
 );
 

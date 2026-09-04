@@ -50,15 +50,11 @@ function zeus_setup() {
 add_action( 'after_setup_theme', 'zeus_setup' );
 
 /**
- * Browser/site icon fallback. If WordPress has an explicit Site Icon set,
- * core outputs that instead. Otherwise use the approved ZEUS round icon
- * bundled with the theme rather than the generic letter favicon.
+ * Force the approved ZEUS round browser icon. WordPress currently has a
+ * legacy generic-Z Site Icon configured, so this is intentionally output
+ * after core's site-icon markup to make the branded icon authoritative.
  */
-function zeus_output_favicon_fallback() {
-	if ( has_site_icon() ) {
-		return;
-	}
-
+function zeus_output_brand_favicon() {
 	$icon = ZEUS_THEME_URI . '/assets/img/favicon-source-512.png';
 	?>
 	<link rel="icon" href="<?php echo esc_url( $icon ); ?>" sizes="32x32">
@@ -67,7 +63,7 @@ function zeus_output_favicon_fallback() {
 	<meta name="msapplication-TileImage" content="<?php echo esc_url( $icon ); ?>">
 	<?php
 }
-add_action( 'wp_head', 'zeus_output_favicon_fallback', 1 );
+add_action( 'wp_head', 'zeus_output_brand_favicon', 100 );
 
 /**
  * Register widget-free footer areas are not used; footer is fully templated.

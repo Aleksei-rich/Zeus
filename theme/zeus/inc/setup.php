@@ -50,6 +50,26 @@ function zeus_setup() {
 add_action( 'after_setup_theme', 'zeus_setup' );
 
 /**
+ * Browser/site icon fallback. If WordPress has an explicit Site Icon set,
+ * core outputs that instead. Otherwise use the approved ZEUS round icon
+ * bundled with the theme rather than the generic letter favicon.
+ */
+function zeus_output_favicon_fallback() {
+	if ( has_site_icon() ) {
+		return;
+	}
+
+	$icon = ZEUS_THEME_URI . '/assets/img/favicon-source-512.png';
+	?>
+	<link rel="icon" href="<?php echo esc_url( $icon ); ?>" sizes="32x32">
+	<link rel="icon" href="<?php echo esc_url( $icon ); ?>" sizes="192x192">
+	<link rel="apple-touch-icon" href="<?php echo esc_url( $icon ); ?>">
+	<meta name="msapplication-TileImage" content="<?php echo esc_url( $icon ); ?>">
+	<?php
+}
+add_action( 'wp_head', 'zeus_output_favicon_fallback', 1 );
+
+/**
  * Register widget-free footer areas are not used; footer is fully templated.
  * Kept intentionally minimal — no sidebar/widget system for a marketing site.
  */

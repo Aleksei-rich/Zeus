@@ -12,7 +12,7 @@ $zeus_project_types = function_exists( 'zeus_consultation_project_types' )
 $zeus_form_data   = function_exists( 'zeus_get_form_error_data' ) ? zeus_get_form_error_data() : null;
 $zeus_errors      = $zeus_form_data['errors'] ?? array();
 $zeus_values      = $zeus_form_data['values'] ?? array();
-$zeus_action_url  = function_exists( 'admin_url' ) ? admin_url( 'admin-post.php' ) : '';
+$zeus_action_url  = function_exists( 'admin_url' ) ? add_query_arg( 'action', 'zeus_submit_consultation', admin_url( 'admin-post.php' ) ) : '';
 
 $zeus_field_value = static function ( $name ) use ( $zeus_values ) {
 	return isset( $zeus_values[ $name ] ) ? $zeus_values[ $name ] : '';
@@ -24,7 +24,7 @@ $zeus_field_value = static function ( $name ) use ( $zeus_values ) {
 	<div class="zeus-form__alert" role="alert"><?php esc_html_e( 'Please fix the highlighted fields below.', 'zeus' ); ?></div>
 <?php endif; ?>
 
-<form class="zeus-form" method="post" action="<?php echo esc_url( $zeus_action_url ); ?>" enctype="multipart/form-data" novalidate>
+<form class="zeus-form" method="post" action="<?php echo esc_url( $zeus_action_url ); ?>" enctype="multipart/form-data" novalidate data-zeus-consultation-form>
 	<input type="hidden" name="action" value="zeus_submit_consultation">
 	<input type="hidden" name="zeus_redirect_to" value="<?php echo esc_url( home_url( add_query_arg( array(), $GLOBALS['wp']->request ?? '' ) ) ); ?>">
 	<input type="hidden" name="zeus_form_ts" value="<?php echo esc_attr( time() ); ?>">
@@ -85,14 +85,16 @@ $zeus_field_value = static function ( $name ) use ( $zeus_values ) {
 	</div>
 
 	<div class="zeus-form__row">
-		<label for="zeus-upload"><?php esc_html_e( 'Photo or Plan (optional)', 'zeus' ); ?></label>
-		<input type="file" id="zeus-upload" name="upload" accept=".jpg,.jpeg,.png,.webp,.pdf"
-			<?php if ( ! empty( $zeus_errors['upload'] ) ) : ?>aria-invalid="true" aria-describedby="zeus-upload-error"<?php endif; ?>>
-		<p class="zeus-form__note"><?php esc_html_e( 'JPG, PNG, WEBP, or PDF, up to 10MB.', 'zeus' ); ?></p>
-		<?php if ( ! empty( $zeus_errors['upload'] ) ) : ?><p class="zeus-form__error" id="zeus-upload-error"><?php echo esc_html( $zeus_errors['upload'] ); ?></p><?php endif; ?>
+		<label for="zeus-uploads"><?php esc_html_e( 'Photos or Plans (optional)', 'zeus' ); ?></label>
+		<input type="file" id="zeus-uploads" name="uploads[]" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf,image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf" multiple
+			aria-describedby="zeus-uploads-note zeus-uploads-status<?php echo ! empty( $zeus_errors['uploads'] ) ? ' zeus-uploads-error' : ''; ?>"
+			<?php if ( ! empty( $zeus_errors['uploads'] ) ) : ?>aria-invalid="true"<?php endif; ?>>
+		<p class="zeus-form__note" id="zeus-uploads-note"><?php esc_html_e( 'You can attach up to 5 photos or plans. JPG, PNG, WEBP, HEIC/HEIF, or PDF. Maximum 10MB per file and 15MB total.', 'zeus' ); ?></p>
+		<p class="zeus-form__note" id="zeus-uploads-status" data-zeus-upload-status aria-live="polite"></p>
+		<?php if ( ! empty( $zeus_errors['uploads'] ) ) : ?><p class="zeus-form__error" id="zeus-uploads-error"><?php echo esc_html( $zeus_errors['uploads'] ); ?></p><?php endif; ?>
 	</div>
 
 	<p class="zeus-form__note"><?php esc_html_e( 'Required fields are marked with *. We use this information only to prepare your consultation.', 'zeus' ); ?></p>
 
-	<button type="submit" class="zeus-btn zeus-btn--primary zeus-btn--block"><?php esc_html_e( 'Request Free Consultation', 'zeus' ); ?></button>
+	<button type="submit" class="zeus-btn zeus-btn--primary zeus-btn--block" data-zeus-submit><?php esc_html_e( 'Request Free Consultation', 'zeus' ); ?></button>
 </form>

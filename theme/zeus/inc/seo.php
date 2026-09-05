@@ -1,42 +1,30 @@
 <?php
 /**
  * Native, plugin-free SEO plumbing: title override, meta description,
- * Open Graph, and factual structured data (Organization, LocalBusiness,
- * BreadcrumbList, Article). No AggregateRating/review markup — see
- * docs/SEO-STRATEGY.md ("never fabricate review/rating markup").
- *
- * Canonical URLs are left to WordPress core's built-in rel_canonical()
- * (enabled by default since WP 4.6) rather than duplicated here.
- *
- * A dedicated SEO plugin (sitemaps, redirect management) is deliberately
- * deferred — see docs/DECISIONS.md, "Phase 2: no plugins installed...".
+ * Open Graph, and factual structured data. No AggregateRating/review markup.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/* Title tag override via the SEO meta field, when set. */
 function zeus_filter_document_title_parts( $parts ) {
 	if ( is_singular() ) {
 		$override = get_post_meta( get_the_ID(), 'zeus_seo_title', true );
 		if ( $override ) {
-			// The override string is already a complete, fully-branded title
-			// (it includes its own "| ZEUS..." suffix) -- clear the other
-			// parts so WP's title separator doesn't append the site name a
-			// second time.
 			$parts = array( 'title' => $override );
 		}
+	} elseif ( is_home() ) {
+		$parts = array( 'title' => __( 'Cabinet & Countertop Blog | Orlando, FL | ZEUS', 'zeus' ) );
+	} elseif ( is_post_type_archive( 'project' ) ) {
+		$parts = array( 'title' => __( 'Cabinet & Countertop Projects | Orlando, FL | ZEUS', 'zeus' ) );
 	} elseif ( is_post_type_archive( 'cabinet_collection' ) ) {
-		// No singular post backs the Cabinet Styles hub, so its title has
-		// nowhere to live as postmeta -- set directly (RC4E).
 		$parts = array( 'title' => __( 'Cabinet Styles Orlando, FL | Shaker, Slim Shaker & Flat Panel | ZEUS', 'zeus' ) );
 	}
 	return $parts;
 }
 add_filter( 'document_title_parts', 'zeus_filter_document_title_parts' );
 
-/* Explicit noindex for utility pages (e.g. the thank-you page). */
 function zeus_output_robots_meta() {
 	if ( is_singular() && get_post_meta( get_the_ID(), 'zeus_noindex', true ) ) {
 		echo '<meta name="robots" content="noindex,follow">' . "\n";
@@ -44,9 +32,7 @@ function zeus_output_robots_meta() {
 }
 add_action( 'wp_head', 'zeus_output_robots_meta', 1 );
 
-/* Meta description + Open Graph + JSON-LD, all in one wp_head hook. */
 function zeus_output_head_meta() {
-
 	$description = '';
 	$image_url   = '';
 	$url         = '';
@@ -62,6 +48,13 @@ function zeus_output_head_meta() {
 	} elseif ( is_front_page() ) {
 		$description = get_bloginfo( 'description' );
 		$url         = home_url( '/' );
+	} elseif ( is_home() ) {
+		$description = __( 'Practical cabinet, countertop, design and remodeling guidance from ZEUS Cabinets & Countertops for homeowners in Orlando and Central Florida.', 'zeus' );
+		$posts_page  = (int) get_option( 'page_for_posts' );
+		$url         = $posts_page ? get_permalink( $posts_page ) : home_url( '/blog/' );
+	} elseif ( is_post_type_archive( 'project' ) ) {
+		$description = __( 'Explore real ZEUS cabinet and countertop projects across Orlando and Central Florida, including kitchens, bathrooms and custom built-in spaces.', 'zeus' );
+		$url         = get_post_type_archive_link( 'project' );
 	} elseif ( is_post_type_archive( 'cabinet_collection' ) ) {
 		$description = __( 'Explore Shaker, Slim Shaker, Brooklyn and Euro flat-panel cabinet styles for Orlando kitchens, bathrooms and custom spaces, with selection and installation coordinated through ZEUS.', 'zeus' );
 		$url         = get_post_type_archive_link( 'cabinet_collection' );
@@ -69,10 +62,6 @@ function zeus_output_head_meta() {
 		$url = home_url( add_query_arg( array(), $GLOBALS['wp']->request ) );
 	}
 
-	// Never ship a page with no description at all — falls back to the
-	// site tagline, and if even that's unset, a minimal factual default
-	// so this can't silently regress to nothing (see docs/DECISIONS.md,
-	// "SEO audit findings").
 	if ( ! $description ) {
 		$description = get_bloginfo( 'description' );
 	}
@@ -80,23 +69,17 @@ function zeus_output_head_meta() {
 		$description = get_bloginfo( 'name' ) . ' — custom cabinets and countertops in Orlando and Central Florida.';
 	}
 
-	if ( $description ) {
-		printf( '<meta name="description" content="%s">' . "\n", esc_attr( $description ) );
-	}
+	printf( '<meta name="description" content="%s">' . "\n", esc_attr( $description ) );
 
-	// WordPress core's rel_canonical() only handles is_singular() queries,
-	// so post type archives (only the Cabinet Styles hub, currently) get
-	// no canonical at all by default -- add a self-referencing one here.
-	if ( is_post_type_archive( 'cabinet_collection' ) && $url ) {
+	// Core handles singular canonicals. Explicitly cover archive/listing pages.
+	if ( ( is_home() || is_post_type_archive( array( 'project', 'cabinet_collection' ) ) ) && $url ) {
 		printf( '<link rel="canonical" href="%s">' . "\n", esc_url( $url ) );
 	}
 
 	printf( '<meta property="og:type" content="website">' . "\n" );
 	printf( '<meta property="og:site_name" content="%s">' . "\n", esc_attr( get_bloginfo( 'name' ) ) );
 	printf( '<meta property="og:title" content="%s">' . "\n", esc_attr( $title ) );
-	if ( $description ) {
-		printf( '<meta property="og:description" content="%s">' . "\n", esc_attr( $description ) );
-	}
+	printf( '<meta property="og:description" content="%s">' . "\n", esc_attr( $description ) );
 	if ( $url ) {
 		printf( '<meta property="og:url" content="%s">' . "\n", esc_url( $url ) );
 	}
@@ -114,20 +97,39 @@ function zeus_output_head_meta() {
 }
 add_action( 'wp_head', 'zeus_output_head_meta' );
 
-/**
- * Organization / LocalBusiness — sitewide, only factual fields. No
- * street-address storefront implied (service-area business, no
- * walk-in showroom) — see docs/SEO-STRATEGY.md.
- */
 function zeus_output_organization_schema() {
 	$areas = array( 'Orlando', 'Windermere', 'Winter Garden', 'Horizon West', 'Clermont', 'Dr. Phillips' );
 
 	$schema = array(
-		'@context'         => 'https://schema.org',
-		'@type'            => 'HomeAndConstructionBusiness',
-		'name'             => get_bloginfo( 'name' ),
-		'url'              => home_url( '/' ),
-		'areaServed'       => array_map(
+		'@context'   => 'https://schema.org',
+		'@type'      => 'HomeAndConstructionBusiness',
+		'@id'        => home_url( '/#organization' ),
+		'name'       => 'ZEUS Cabinets & Countertops',
+		'legalName'  => 'Zeus Business LLC',
+		'url'        => home_url( '/' ),
+		'logo'       => ZEUS_THEME_URI . '/assets/img/logo-header.png',
+		'telephone'  => '(689) 222-3077',
+		'email'      => 'sales@zeuscabinetsflorida.com',
+		'founder'    => array(
+			'@type' => 'Person',
+			'name'  => 'Aleksei Cher',
+		),
+		'openingHoursSpecification' => array(
+			array(
+				'@type'     => 'OpeningHoursSpecification',
+				'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ),
+				'opens'     => '09:00',
+				'closes'    => '19:00',
+			),
+		),
+		'sameAs' => array(
+			'https://www.facebook.com/profile.php?id=100083163667410',
+			'https://www.instagram.com/zeus.cabinets',
+			'https://www.linkedin.com/in/aleksei-cherednichenko-77a862428',
+			'https://pin.it/6D4A6LB4j',
+			'https://www.youtube.com/@ZeusCabinetsCountertop',
+		),
+		'areaServed' => array_map(
 			function ( $area ) {
 				return array(
 					'@type' => 'City',
@@ -178,8 +180,10 @@ function zeus_output_article_schema() {
 		'datePublished' => get_the_date( 'c', $post_id ),
 		'dateModified'  => get_the_modified_date( 'c', $post_id ),
 		'author'        => array(
-			'@type' => 'Organization',
-			'name'  => get_bloginfo( 'name' ),
+			'@id' => home_url( '/#organization' ),
+		),
+		'publisher'     => array(
+			'@id' => home_url( '/#organization' ),
 		),
 		'mainEntityOfPage' => get_permalink( $post_id ),
 	);

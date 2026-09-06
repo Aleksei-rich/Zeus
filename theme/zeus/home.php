@@ -7,7 +7,13 @@ zeus_render_breadcrumbs();
 ?>
 <div class="zeus-container zeus-section--tight zeus-section">
 	<div class="zeus-section__header">
-		<h1><?php esc_html_e( 'Blog', 'zeus' ); ?></h1>
+		<h1><?php esc_html_e( 'Cabinet & Countertop Blog', 'zeus' ); ?></h1>
+		<p><?php esc_html_e( 'Practical cabinet, countertop and remodeling guidance for Orlando and Central Florida homeowners.', 'zeus' ); ?></p>
+	</div>
+
+	<div class="zeus-prose">
+		<p><?php esc_html_e( 'Use the ZEUS blog to compare cabinet styles, countertop materials, layout choices and installation considerations before making decisions for a kitchen, bathroom or custom built-in project. Articles are written to answer practical questions that come up during planning and product selection.', 'zeus' ); ?></p>
+		<p><?php esc_html_e( 'Topics include Shaker, Slim Shaker and flat-panel cabinetry; quartz, granite, porcelain and marble countertops; storage planning; home offices, closets, laundry rooms and pantries; and preparation for cabinet and countertop installation.', 'zeus' ); ?></p>
 	</div>
 
 	<?php if ( have_posts() ) : ?>

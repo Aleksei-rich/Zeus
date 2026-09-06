@@ -24,6 +24,7 @@ $zeus_includes = array(
 	'inc/template-tags.php',
 	'inc/breadcrumbs.php',
 	'inc/seo.php',
+	'inc/robots.php',
 	'inc/patterns.php',
 );
 

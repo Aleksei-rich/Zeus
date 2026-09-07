@@ -32,6 +32,44 @@ function zeus_output_robots_meta() {
 }
 add_action( 'wp_head', 'zeus_output_robots_meta', 1 );
 
+/**
+ * Keep content marked noindex out of core WordPress post sitemaps.
+ * This avoids sending Google conflicting discovery/indexing signals for
+ * utility pages such as the consultation thank-you page.
+ */
+function zeus_filter_sitemap_post_args( $args, $post_type ) {
+	$public_types = array( 'page', 'post', 'project', 'cabinet_collection' );
+	if ( ! in_array( $post_type, $public_types, true ) ) {
+		return $args;
+	}
+
+	$noindex_clause = array(
+		'relation' => 'OR',
+		array(
+			'key'     => 'zeus_noindex',
+			'compare' => 'NOT EXISTS',
+		),
+		array(
+			'key'     => 'zeus_noindex',
+			'value'   => '1',
+			'compare' => '!=',
+		),
+	);
+
+	if ( empty( $args['meta_query'] ) ) {
+		$args['meta_query'] = $noindex_clause;
+	} else {
+		$args['meta_query'] = array(
+			'relation' => 'AND',
+			$args['meta_query'],
+			$noindex_clause,
+		);
+	}
+
+	return $args;
+}
+add_filter( 'wp_sitemaps_posts_query_args', 'zeus_filter_sitemap_post_args', 10, 2 );
+
 function zeus_output_head_meta() {
 	$description = '';
 	$image_url   = '';

@@ -34,8 +34,8 @@ add_action( 'wp_head', 'zeus_output_robots_meta', 1 );
 
 /**
  * Keep content marked noindex out of core WordPress post sitemaps.
- * This avoids sending Google conflicting discovery/indexing signals for
- * utility pages such as the consultation thank-you page.
+ * Resolve the excluded IDs first, then use post__not_in. This is more
+ * reliable than a mixed NOT EXISTS / != meta_query across WP versions.
  */
 function zeus_filter_sitemap_post_args( $args, $post_type ) {
 	$public_types = array( 'page', 'post', 'project', 'cabinet_collection' );
@@ -43,27 +43,22 @@ function zeus_filter_sitemap_post_args( $args, $post_type ) {
 		return $args;
 	}
 
-	$noindex_clause = array(
-		'relation' => 'OR',
+	$noindex_ids = get_posts(
 		array(
-			'key'     => 'zeus_noindex',
-			'compare' => 'NOT EXISTS',
-		),
-		array(
-			'key'     => 'zeus_noindex',
-			'value'   => '1',
-			'compare' => '!=',
-		),
+			'post_type'        => $post_type,
+			'post_status'      => 'publish',
+			'posts_per_page'   => -1,
+			'fields'           => 'ids',
+			'no_found_rows'    => true,
+			'suppress_filters' => true,
+			'meta_key'         => 'zeus_noindex',
+			'meta_value'       => '1',
+		)
 	);
 
-	if ( empty( $args['meta_query'] ) ) {
-		$args['meta_query'] = $noindex_clause;
-	} else {
-		$args['meta_query'] = array(
-			'relation' => 'AND',
-			$args['meta_query'],
-			$noindex_clause,
-		);
+	if ( $noindex_ids ) {
+		$existing             = isset( $args['post__not_in'] ) ? (array) $args['post__not_in'] : array();
+		$args['post__not_in'] = array_values( array_unique( array_merge( $existing, array_map( 'intval', $noindex_ids ) ) ) );
 	}
 
 	return $args;

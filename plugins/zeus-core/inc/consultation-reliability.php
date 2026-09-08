@@ -129,8 +129,10 @@ function zeus_queue_consultation_notification( $lead_id ) {
 	update_post_meta( $lead_id, 'zeus_lead_notification_status', 'queued' );
 
 	if ( ! wp_next_scheduled( 'zeus_send_consultation_notification', array( $lead_id ) ) ) {
-		$scheduled = wp_schedule_single_event( time() + 1, 'zeus_send_consultation_notification', array( $lead_id ) );
+		$scheduled = wp_schedule_single_event( time(), 'zeus_send_consultation_notification', array( $lead_id ) );
 		if ( false === $scheduled || is_wp_error( $scheduled ) ) {
+			// Rare cron configuration failure: preserve notification even though
+			// this may add a little latency to the current request.
 			return zeus_send_consultation_notification( $lead_id );
 		}
 	}
@@ -189,7 +191,7 @@ function zeus_send_consultation_notification( $lead_id ) {
 	$use_local_log = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'ZEUS_LOCAL_MAIL_LOG' ) && ZEUS_LOCAL_MAIL_LOG );
 	if ( $use_local_log ) {
 		$entry = '[' . current_time( 'mysql' ) . "] Would send:\nSubject: {$subject}\n{$body}\n" . str_repeat( '-', 40 ) . "\n";
-		file_put_contents( WP_CONTENT_DIR . '/zeus-lead-mail.log', $entry, FILE_APPEND | LOCK_EX );
+		file_put_contents( WP_CONTENT_DIR . '/zeus-lead-mail.log', $entry, FILE_APPEND | LOCK_EX ); // phpcs:ignore
 		update_post_meta( $lead_id, 'zeus_lead_notification_status', 'logged' );
 		return true;
 	}
@@ -222,6 +224,9 @@ function zeus_send_consultation_notification( $lead_id ) {
 function zeus_handle_consultation_submission_reliable() {
 	$redirect_back = home_url( '/consultation/' );
 
+	// If PHP's post_max_size is exceeded, $_POST can be empty. Check this
+	// before reading any form field and return a human-readable JSON error
+	// when the X-Zeus-Async header is present.
 	if ( zeus_consultation_request_exceeds_post_max_size() ) {
 		zeus_consultation_error_response(
 			$redirect_back,
@@ -311,6 +316,7 @@ function zeus_handle_consultation_submission_reliable() {
 	$uploads = zeus_collect_consultation_uploads();
 	if ( count( $uploads ) > ZEUS_LEAD_MAX_UPLOAD_FILES ) {
 		$errors['uploads'] = sprintf(
+			/* translators: %d: number of files selected. */
 			__( 'You selected %d files. The maximum is 5. Please remove the extra files and try again.', 'zeus-core' ),
 			count( $uploads )
 		);

@@ -22,7 +22,7 @@
 	var submit = form.querySelector( '[data-zeus-submit]' );
 	var maxFiles = 5;
 	var maxPerFile = 10 * 1024 * 1024;
-	var maxTotal = 15 * 1024 * 1024;
+	var maxTotal = 10 * 1024 * 1024;
 	var allowedExtensions = [ 'jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'pdf' ];
 	var submitting = false;
 
@@ -118,7 +118,7 @@
 			message = '“' + tooLarge.name + '” is ' + mb( tooLarge.size ) + 'MB. Maximum is 10MB per file. Please choose a smaller photo or file.';
 			valid = false;
 		} else if ( total > maxTotal ) {
-			message = 'Selected files total ' + mb( total ) + 'MB. Maximum total is 15MB. Please remove a file or choose smaller photos.';
+			message = 'Selected files total ' + mb( total ) + 'MB. Maximum total is 10MB. Please remove a file or choose smaller photos.';
 			valid = false;
 		} else if ( invalidType ) {
 			message = '“' + invalidType.name + '” is not a supported file type. Please use JPG, PNG, WEBP, HEIC/HEIF, or PDF.';

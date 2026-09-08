@@ -1,10 +1,11 @@
 /**
  * Consultation form UX.
  *
- * Client-side limits stop invalid photo sets before a large upload starts.
- * Valid submissions use XHR so network/server failures can be shown inside
- * the form instead of leaving the visitor on an admin-post.php error page.
- * Server-side validation remains authoritative.
+ * Validate files in the browser before any upload begins, then let the
+ * browser perform a normal multipart POST to the public consultation endpoint.
+ * Native form submission is intentionally used here because the hosting layer
+ * has proven reliable for normal POSTs but inconsistent for XHR multipart
+ * requests from real browsers. Server-side validation remains authoritative.
  */
 ( function () {
 	'use strict';
@@ -14,13 +15,7 @@
 		return;
 	}
 
-	// Allows older theme JS to detect that the reliable handler owns submit UX.
 	window.ZeusConsultationReliabilityActive = true;
-
-	function primeHostGateCookie() {
-		document.cookie = 'hc_js_gate=1;path=/;SameSite=Lax;Max-Age=3600';
-	}
-	primeHostGateCookie();
 
 	var input = form.querySelector( '#zeus-uploads' );
 	var status = form.querySelector( '[data-zeus-upload-status]' );
@@ -29,8 +24,7 @@
 	var maxPerFile = 10 * 1024 * 1024;
 	var maxTotal = 15 * 1024 * 1024;
 	var allowedExtensions = [ 'jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'pdf' ];
-	var request = null;
-	var submissionId = '';
+	var submitting = false;
 
 	function mb( bytes ) {
 		return ( bytes / ( 1024 * 1024 ) ).toFixed( 1 ).replace( '.0', '' );
@@ -81,7 +75,7 @@
 	}
 
 	function validateFiles() {
-		if ( ! input || ! status ) {
+		if ( ! input ) {
 			return true;
 		}
 
@@ -141,62 +135,6 @@
 		return valid;
 	}
 
-	function makeSubmissionId() {
-		if ( submissionId ) {
-			return submissionId;
-		}
-		if ( window.crypto && typeof window.crypto.randomUUID === 'function' ) {
-			submissionId = window.crypto.randomUUID();
-		} else {
-			submissionId = 'zeus-' + Date.now() + '-' + Math.random().toString( 36 ).slice( 2 ) + Math.random().toString( 36 ).slice( 2 );
-		}
-		return submissionId;
-	}
-
-	function resetSubmitButton() {
-		if ( ! submit ) {
-			return;
-		}
-		submit.disabled = false;
-		submit.removeAttribute( 'aria-disabled' );
-		submit.textContent = 'Request Free Consultation';
-	}
-
-	function failRequest( message ) {
-		resetSubmitButton();
-		showAlert( message );
-		if ( input && selectedFiles().length ) {
-			setUploadMessage( selectedFiles().length + ( selectedFiles().length === 1 ? ' file is' : ' files are' ) + ' still selected. You can try again.', true );
-		}
-	}
-
-	function serverErrorMessage( payload, xhr ) {
-		var errors = payload && payload.data && payload.data.errors ? payload.data.errors : null;
-		if ( errors ) {
-			if ( errors.uploads ) {
-				setUploadMessage( errors.uploads, true );
-			}
-			var messages = Object.keys( errors ).map( function ( key ) { return errors[ key ]; } ).filter( Boolean );
-			if ( messages.length ) {
-				return messages.join( ' ' );
-			}
-		}
-
-		if ( xhr && xhr.status === 413 ) {
-			return 'The selected photos are too large for one request. Please keep the total at 15MB or less and each file at 10MB or less.';
-		}
-		if ( xhr && xhr.status === 429 ) {
-			return 'Several requests were sent recently. Please wait a little and try again.';
-		}
-		if ( xhr && xhr.status >= 500 ) {
-			return 'The server could not finish the request. Your information is still on this page. Please try again.';
-		}
-		if ( xhr && /Checking your browser/i.test( xhr.responseText || '' ) ) {
-			return 'The hosting security check blocked this upload before it reached the form handler. Please refresh the page and try again.';
-		}
-		return 'We could not send your request. Please review the form and try again.';
-	}
-
 	if ( input ) {
 		input.addEventListener( 'change', function () {
 			clearAlert();
@@ -204,23 +142,20 @@
 		} );
 	}
 
+	// Capture phase prevents the theme's legacy submit handler from changing
+	// the button state. We intentionally DO NOT preventDefault for valid forms:
+	// the browser performs the multipart POST and follows the server redirect.
 	form.addEventListener( 'submit', function ( event ) {
-		if ( ! window.XMLHttpRequest || ! window.FormData ) {
-			if ( ! validateFiles() ) {
-				event.preventDefault();
-				if ( input ) {
-					input.focus();
-				}
-			}
+		if ( submitting ) {
+			event.preventDefault();
 			return;
 		}
 
-		event.preventDefault();
 		event.stopImmediatePropagation();
 		clearAlert();
 
 		if ( ! validateFiles() ) {
-			resetSubmitButton();
+			event.preventDefault();
 			if ( input ) {
 				input.focus();
 				input.reportValidity();
@@ -229,86 +164,22 @@
 		}
 
 		if ( ! form.checkValidity() ) {
-			resetSubmitButton();
+			event.preventDefault();
 			form.reportValidity();
 			return;
 		}
 
-		if ( request ) {
-			return;
-		}
-
-		primeHostGateCookie();
-		var data = new FormData( form );
-		data.set( 'zeus_ajax', '1' );
-		data.set( 'zeus_submission_id', makeSubmissionId() );
-
-		request = new XMLHttpRequest();
-		request.open( 'POST', form.action, true );
-		request.withCredentials = true;
-		request.setRequestHeader( 'X-Zeus-Async', '1' );
-		request.setRequestHeader( 'Accept', 'application/json' );
-		request.timeout = 180000;
+		submitting = true;
+		var files = selectedFiles();
 
 		if ( submit ) {
 			submit.disabled = true;
 			submit.setAttribute( 'aria-disabled', 'true' );
-			submit.textContent = selectedFiles().length ? 'Uploading…' : 'Sending…';
-		}
-		if ( selectedFiles().length ) {
-			setUploadMessage( 'Preparing upload…', false );
+			submit.textContent = files.length ? 'Uploading files… Please wait' : 'Sending… Please wait';
 		}
 
-		request.upload.addEventListener( 'progress', function ( progress ) {
-			if ( ! progress.lengthComputable ) {
-				return;
-			}
-			var percent = Math.max( 0, Math.min( 100, Math.round( ( progress.loaded / progress.total ) * 100 ) ) );
-			if ( submit ) {
-				submit.textContent = 'Uploading… ' + percent + '%';
-			}
-			if ( status && selectedFiles().length ) {
-				setUploadMessage( 'Uploading ' + selectedFiles().length + ( selectedFiles().length === 1 ? ' file' : ' files' ) + ': ' + percent + '%', false );
-			}
-		} );
-
-		request.addEventListener( 'load', function () {
-			var xhr = request;
-			request = null;
-			var payload = null;
-			try {
-				payload = xhr.responseText ? JSON.parse( xhr.responseText ) : null;
-			} catch ( ignore ) {
-				payload = null;
-			}
-
-			if ( xhr.status >= 200 && xhr.status < 300 && payload && payload.success ) {
-				if ( submit ) {
-					submit.textContent = 'Request received';
-				}
-				setUploadMessage( 'Upload complete. Your request was received.', false );
-				window.location.assign( payload.data && payload.data.redirect ? payload.data.redirect : '/thank-you/' );
-				return;
-			}
-
-			failRequest( serverErrorMessage( payload, xhr ) );
-		} );
-
-		request.addEventListener( 'error', function () {
-			request = null;
-			failRequest( 'We could not confirm the upload because the connection to the server was interrupted. Your information and selected files are still here. Please try again. Re-trying will not create a duplicate if the first attempt was already received.' );
-		} );
-
-		request.addEventListener( 'timeout', function () {
-			request = null;
-			failRequest( 'The upload is taking too long. Your information and selected files are still here. Please check your connection and try again. If needed, use fewer or smaller photos.' );
-		} );
-
-		request.addEventListener( 'abort', function () {
-			request = null;
-			failRequest( 'The upload was interrupted. Your information is still here and you can try again.' );
-		} );
-
-		request.send( data );
+		if ( files.length ) {
+			setUploadMessage( 'Uploading ' + files.length + ( files.length === 1 ? ' file' : ' files' ) + ' (' + mb( files.reduce( function ( sum, file ) { return sum + file.size; }, 0 ) ) + 'MB total). Please keep this page open.', false );
+		}
 	}, true );
 } )();

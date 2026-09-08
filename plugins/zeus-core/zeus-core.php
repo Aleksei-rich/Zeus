@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ZEUS Core
  * Description: First-party site plugin for ZEUS Cabinets & Countertops. Owns content-model registration (CPTs, taxonomies, fields), editorial admin UI, lead capture, and the Request Free Consultation form handler — independent of the active theme. See docs/CONTENT-MODEL.md and docs/DECISIONS.md.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Author: ZEUS Cabinets & Countertops
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ZEUS_CORE_VERSION', '0.1.0' );
+define( 'ZEUS_CORE_VERSION', '0.1.1' );
 define( 'ZEUS_CORE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ZEUS_CORE_URL', plugin_dir_url( __FILE__ ) );
 define( 'ZEUS_CORE_FILE', __FILE__ );
@@ -29,6 +29,7 @@ $zeus_core_includes = array(
 	'inc/leads.php',
 	'inc/consultation-form.php',
 	'inc/consultation-multiupload.php',
+	'inc/consultation-reliability.php',
 	'inc/mail-security.php',
 	'inc/google-reviews.php',
 );

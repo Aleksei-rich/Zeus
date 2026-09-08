@@ -12,7 +12,15 @@ $zeus_project_types = function_exists( 'zeus_consultation_project_types' )
 $zeus_form_data   = function_exists( 'zeus_get_form_error_data' ) ? zeus_get_form_error_data() : null;
 $zeus_errors      = $zeus_form_data['errors'] ?? array();
 $zeus_values      = $zeus_form_data['values'] ?? array();
-$zeus_action_url  = function_exists( 'admin_url' ) ? add_query_arg( 'action', 'zeus_submit_consultation', admin_url( 'admin-post.php' ) ) : '';
+
+// Submit through a normal public same-origin URL. Host-level browser protection
+// can intercept /wp-admin/admin-post.php before WordPress sees the request,
+// which breaks multipart/XHR submissions even when the form itself is valid.
+$zeus_action_url = add_query_arg(
+	'zeus_consultation_submit',
+	'1',
+	home_url( '/consultation/' )
+);
 
 $zeus_field_value = static function ( $name ) use ( $zeus_values ) {
 	return isset( $zeus_values[ $name ] ) ? $zeus_values[ $name ] : '';

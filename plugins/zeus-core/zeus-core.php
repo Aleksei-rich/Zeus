@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ZEUS Core
  * Description: First-party site plugin for ZEUS Cabinets & Countertops. Owns content-model registration (CPTs, taxonomies, fields), editorial admin UI, lead capture, and the Request Free Consultation form handler — independent of the active theme. See docs/CONTENT-MODEL.md and docs/DECISIONS.md.
- * Version: 0.1.3
+ * Version: 0.1.4
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Author: ZEUS Cabinets & Countertops
@@ -13,10 +13,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ZEUS_CORE_VERSION', '0.1.3' );
+define( 'ZEUS_CORE_VERSION', '0.1.4' );
 define( 'ZEUS_CORE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ZEUS_CORE_URL', plugin_dir_url( __FILE__ ) );
 define( 'ZEUS_CORE_FILE', __FILE__ );
+
+// Customer-facing attachment policy: no more than 10MB total. The mail
+// reliability layer reads the attachment constant below before defining its
+// own fallback, so accepted requests up to this limit are also attempted as
+// normal email attachments instead of being intentionally omitted.
+if ( ! defined( 'ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES' ) ) {
+	define( 'ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES', 10 * 1024 * 1024 );
+}
+if ( ! defined( 'ZEUS_LEAD_MAX_MAIL_ATTACHMENT_BYTES' ) ) {
+	define( 'ZEUS_LEAD_MAX_MAIL_ATTACHMENT_BYTES', 10 * 1024 * 1024 );
+}
 
 $zeus_core_includes = array(
 	'inc/post-types.php',
@@ -46,12 +57,32 @@ foreach ( $zeus_core_includes as $zeus_core_file ) {
 }
 
 /**
- * Public same-origin POST endpoint for the consultation XHR.
+ * Sum customer-upload bytes from the normal multipart request. This is a
+ * server-side backstop for cached/disabled JavaScript; the browser normally
+ * blocks over-limit selections before any upload starts.
+ */
+function zeus_public_consultation_upload_total_bytes() {
+	$total = 0;
+
+	if ( isset( $_FILES['uploads']['size'] ) ) {
+		$sizes = is_array( $_FILES['uploads']['size'] ) ? $_FILES['uploads']['size'] : array( $_FILES['uploads']['size'] );
+		foreach ( $sizes as $size ) {
+			$total += max( 0, (int) $size );
+		}
+	} elseif ( isset( $_FILES['upload']['size'] ) ) {
+		$total = max( 0, (int) $_FILES['upload']['size'] );
+	}
+
+	return $total;
+}
+
+/**
+ * Public same-origin POST endpoint for the consultation form.
  *
  * The hosting browser gate protects /wp-admin/admin-post.php and can return
- * an HTML JavaScript challenge instead of the JSON response expected by the
- * form. The public consultation URL does not need the admin endpoint at all,
- * so handle the exact POST query here before template rendering.
+ * an HTML JavaScript challenge before WordPress sees the request. A normal
+ * public same-origin multipart POST has proven reliable on this host, so the
+ * consultation form submits here instead of through the admin endpoint.
  */
 function zeus_handle_public_consultation_endpoint() {
 	if ( 'POST' !== strtoupper( (string) ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) {
@@ -70,6 +101,20 @@ function zeus_handle_public_consultation_endpoint() {
 		);
 	}
 
+	$total_bytes = zeus_public_consultation_upload_total_bytes();
+	if ( $total_bytes > ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES ) {
+		$errors = array(
+			'uploads' => __( 'Your selected files are over the 10MB total limit. Please remove a file or choose smaller photos.', 'zeus-core' ),
+		);
+
+		if ( function_exists( 'zeus_consultation_error_response' ) ) {
+			zeus_consultation_error_response( home_url( '/consultation/' ), $errors, array(), 413 );
+		}
+
+		wp_safe_redirect( home_url( '/consultation/' ) );
+		exit;
+	}
+
 	nocache_headers();
 	zeus_handle_consultation_submission_reliable();
 	exit;
@@ -77,9 +122,9 @@ function zeus_handle_public_consultation_endpoint() {
 add_action( 'template_redirect', 'zeus_handle_public_consultation_endpoint', 0 );
 
 /**
- * Prime the host browser-gate cookie and point the progressive-enhancement
- * form at the public endpoint above. The form markup itself remains backward
- * compatible; without JavaScript it still has its original admin-post action.
+ * Prime the host browser-gate cookie and keep the form pointed at the public
+ * endpoint above. The template also renders this endpoint directly; the
+ * inline assignment is retained as a cache-turnover safety net.
  */
 function zeus_prime_consultation_frontend_endpoint() {
 	if ( ! wp_script_is( 'zeus-consultation-reliability', 'enqueued' ) ) {

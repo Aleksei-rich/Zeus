@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ZEUS Core
  * Description: First-party site plugin for ZEUS Cabinets & Countertops. Owns content-model registration (CPTs, taxonomies, fields), editorial admin UI, lead capture, and the Request Free Consultation form handler — independent of the active theme. See docs/CONTENT-MODEL.md and docs/DECISIONS.md.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Author: ZEUS Cabinets & Countertops
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ZEUS_CORE_VERSION', '0.1.1' );
+define( 'ZEUS_CORE_VERSION', '0.1.2' );
 define( 'ZEUS_CORE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ZEUS_CORE_URL', plugin_dir_url( __FILE__ ) );
 define( 'ZEUS_CORE_FILE', __FILE__ );
@@ -44,6 +44,26 @@ foreach ( $zeus_core_includes as $zeus_core_file ) {
 		require_once $zeus_core_path;
 	}
 }
+
+/**
+ * Hostinger's browser gate protects admin-post.php and returns an HTML
+ * JavaScript challenge to XHR requests that do not yet carry hc_js_gate.
+ * An XHR cannot execute that returned challenge, so prime the same first-
+ * party cookie on pages where the reliable consultation script is loaded.
+ * This lets the legitimate form POST reach WordPress on the first attempt.
+ */
+function zeus_prime_host_browser_gate_cookie() {
+	if ( ! wp_script_is( 'zeus-consultation-reliability', 'enqueued' ) ) {
+		return;
+	}
+
+	wp_add_inline_script(
+		'zeus-consultation-reliability',
+		"document.cookie='hc_js_gate=1;path=/;SameSite=Lax;Max-Age=3600';",
+		'before'
+	);
+}
+add_action( 'wp_enqueue_scripts', 'zeus_prime_host_browser_gate_cookie', 30 );
 
 /**
  * Activation only ever provisions infrastructure (a protected upload

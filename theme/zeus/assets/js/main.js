@@ -62,6 +62,7 @@
 /**
  * Consultation upload UX. Server-side validation remains authoritative;
  * this only gives immediate mobile/desktop feedback before a large POST.
+ * The zeus-core reliability layer owns submit behavior when present.
  */
 ( function () {
 	'use strict';
@@ -117,6 +118,13 @@
 	}
 
 	form.addEventListener( 'submit', function ( event ) {
+		// The plugin's capture-phase reliability handler performs validation,
+		// progress, XHR, retry safety and error recovery. Do not disable the
+		// button here when that handler is active.
+		if ( window.ZeusConsultationReliabilityActive ) {
+			return;
+		}
+
 		if ( ! validateFiles() ) {
 			event.preventDefault();
 			if ( input ) {

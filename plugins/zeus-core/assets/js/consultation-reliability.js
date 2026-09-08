@@ -14,6 +14,9 @@
 		return;
 	}
 
+	// Allows older theme JS to detect that the reliable handler owns submit UX.
+	window.ZeusConsultationReliabilityActive = true;
+
 	var input = form.querySelector( '#zeus-uploads' );
 	var status = form.querySelector( '[data-zeus-upload-status]' );
 	var submit = form.querySelector( '[data-zeus-submit]' );
@@ -193,6 +196,9 @@
 		} );
 	}
 
+	// Capture phase is intentional. The theme's legacy submit listener runs in
+	// bubble phase and used to disable the button before this handler could
+	// validate or start XHR, which could leave the UI stuck on “Sending…”.
 	form.addEventListener( 'submit', function ( event ) {
 		if ( ! window.XMLHttpRequest || ! window.FormData ) {
 			if ( ! validateFiles() ) {
@@ -205,9 +211,11 @@
 		}
 
 		event.preventDefault();
+		event.stopImmediatePropagation();
 		clearAlert();
 
 		if ( ! validateFiles() ) {
+			resetSubmitButton();
 			if ( input ) {
 				input.focus();
 				input.reportValidity();
@@ -216,6 +224,7 @@
 		}
 
 		if ( ! form.checkValidity() ) {
+			resetSubmitButton();
 			form.reportValidity();
 			return;
 		}
@@ -238,6 +247,9 @@
 			submit.disabled = true;
 			submit.setAttribute( 'aria-disabled', 'true' );
 			submit.textContent = selectedFiles().length ? 'Uploading…' : 'Sending…';
+		}
+		if ( selectedFiles().length ) {
+			setUploadMessage( 'Preparing upload…', false );
 		}
 
 		request.upload.addEventListener( 'progress', function ( progress ) {
@@ -291,5 +303,5 @@
 		} );
 
 		request.send( data );
-	} );
+	}, true );
 } )();

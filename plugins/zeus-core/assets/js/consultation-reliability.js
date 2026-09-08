@@ -17,6 +17,11 @@
 	// Allows older theme JS to detect that the reliable handler owns submit UX.
 	window.ZeusConsultationReliabilityActive = true;
 
+	function primeHostGateCookie() {
+		document.cookie = 'hc_js_gate=1;path=/;SameSite=Lax;Max-Age=3600';
+	}
+	primeHostGateCookie();
+
 	var input = form.querySelector( '#zeus-uploads' );
 	var status = form.querySelector( '[data-zeus-upload-status]' );
 	var submit = form.querySelector( '[data-zeus-submit]' );
@@ -186,6 +191,9 @@
 		if ( xhr && xhr.status >= 500 ) {
 			return 'The server could not finish the request. Your information is still on this page. Please try again.';
 		}
+		if ( xhr && /Checking your browser/i.test( xhr.responseText || '' ) ) {
+			return 'The hosting security check blocked this upload before it reached the form handler. Please refresh the page and try again.';
+		}
 		return 'We could not send your request. Please review the form and try again.';
 	}
 
@@ -196,9 +204,6 @@
 		} );
 	}
 
-	// Capture phase is intentional. The theme's legacy submit listener runs in
-	// bubble phase and used to disable the button before this handler could
-	// validate or start XHR, which could leave the UI stuck on “Sending…”.
 	form.addEventListener( 'submit', function ( event ) {
 		if ( ! window.XMLHttpRequest || ! window.FormData ) {
 			if ( ! validateFiles() ) {
@@ -233,12 +238,14 @@
 			return;
 		}
 
+		primeHostGateCookie();
 		var data = new FormData( form );
 		data.set( 'zeus_ajax', '1' );
 		data.set( 'zeus_submission_id', makeSubmissionId() );
 
 		request = new XMLHttpRequest();
 		request.open( 'POST', form.action, true );
+		request.withCredentials = true;
 		request.setRequestHeader( 'X-Zeus-Async', '1' );
 		request.setRequestHeader( 'Accept', 'application/json' );
 		request.timeout = 180000;

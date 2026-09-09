@@ -54,8 +54,8 @@ add_filter( 'gettext', 'zeus_visual_polish_gettext', 20, 3 );
  *
  * - Homepage real-work strip: replace the owner-rejected gray-kitchen image
  *   with the already verified real bathroom-vanity installation.
- * - Cabinets / Custom Cabinetry: show a Euro flat-panel kitchen.
- * - Kitchen Cabinets / In-Stock: use the stronger second Shaker White image.
+ * - Cabinets / Custom Cabinetry card: show the dedicated Euro flat-panel kitchen.
+ * - Kitchen Cabinets / In-Stock: use a richer Brooklyn Slate kitchen image.
  */
 function zeus_visual_polish_attachment_image( $html, $attachment_id, $size, $icon, $attr ) {
 	static $replacing = false;
@@ -68,12 +68,12 @@ function zeus_visual_polish_attachment_image( $html, $attachment_id, $size, $ico
 
 	if ( is_front_page() && 77 === (int) $attachment_id ) {
 		$replacement_id = 76;
-	} elseif ( is_page( 'cabinets' ) && 112 === (int) $attachment_id ) {
+	} elseif ( is_page( 'cabinets' ) && 139 === (int) $attachment_id ) {
 		$replacement_id = 153;
 		$attr['alt']     = __( 'Modern Euro flat-panel kitchen cabinetry', 'zeus' );
 	} elseif ( is_page( 'kitchen-cabinets' ) && 123 === (int) $attachment_id ) {
-		$replacement_id = 124;
-		$attr['alt']     = __( 'Shaker White in-stock kitchen cabinetry', 'zeus' );
+		$replacement_id = 121;
+		$attr['alt']     = __( 'Brooklyn Slate kitchen cabinetry', 'zeus' );
 	}
 
 	if ( ! $replacement_id ) {

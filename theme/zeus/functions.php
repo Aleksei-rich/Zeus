@@ -27,6 +27,7 @@ $zeus_includes = array(
 	'inc/robots.php',
 	'inc/patterns.php',
 	'inc/visual-polish.php',
+	'inc/sticky-consultation.php',
 );
 
 foreach ( $zeus_includes as $zeus_file ) {

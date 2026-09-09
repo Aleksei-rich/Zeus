@@ -54,6 +54,8 @@ add_filter( 'gettext', 'zeus_visual_polish_gettext', 20, 3 );
  *
  * - Homepage real-work strip: replace the owner-rejected gray-kitchen image
  *   with the already verified real bathroom-vanity installation.
+ * - Cabinets real-work strip: replace the same rejected image with a verified
+ *   completed Windermere project photo rather than duplicating the vanity.
  * - Cabinets / Custom Cabinetry card: show the dedicated Euro flat-panel kitchen.
  * - Kitchen Cabinets / In-Stock: use a richer Brooklyn Slate kitchen image.
  */
@@ -68,6 +70,9 @@ function zeus_visual_polish_attachment_image( $html, $attachment_id, $size, $ico
 
 	if ( is_front_page() && 77 === (int) $attachment_id ) {
 		$replacement_id = 76;
+	} elseif ( is_page( 'cabinets' ) && 77 === (int) $attachment_id ) {
+		$replacement_id = 354;
+		$attr['alt']     = __( 'Completed ZEUS cabinetry project', 'zeus' );
 	} elseif ( is_page( 'cabinets' ) && 139 === (int) $attachment_id ) {
 		$replacement_id = 153;
 		$attr['alt']     = __( 'Modern Euro flat-panel kitchen cabinetry', 'zeus' );
@@ -89,16 +94,18 @@ function zeus_visual_polish_attachment_image( $html, $attachment_id, $size, $ico
 add_filter( 'wp_get_attachment_image', 'zeus_visual_polish_attachment_image', 20, 5 );
 
 /**
- * Expand the homepage Real ZEUS Work strip with featured images from two
- * verified completed Project CPT records. The images are intentionally used
- * generically: no cabinet style, material or room type is asserted here.
+ * Expand real-work strips with featured images from verified completed Project
+ * CPT records. Images are intentionally used generically: no cabinet style,
+ * material or room type is asserted here.
  */
 function zeus_visual_polish_expand_real_work() {
-	if ( is_admin() || ! is_front_page() ) {
+	if ( is_admin() || ( ! is_front_page() && ! is_page( 'cabinets' ) ) ) {
 		return;
 	}
 
-	$extra_ids = array( 354, 357 );
+	$is_home   = is_front_page();
+	$extra_ids = $is_home ? array( 354, 357 ) : array( 357 );
+	$heading   = $is_home ? 'From Real ZEUS Installations' : 'Real ZEUS Cabinetry Installations';
 	$cards     = array();
 
 	foreach ( $extra_ids as $attachment_id ) {
@@ -130,10 +137,11 @@ function zeus_visual_polish_expand_real_work() {
 	(function () {
 		var template = document.getElementById('zeus-extra-real-work-template');
 		if (!template) return;
+		var expectedHeading = <?php echo wp_json_encode( $heading ); ?>;
 		var headings = document.querySelectorAll('h2');
 		var target = null;
 		for (var i = 0; i < headings.length; i++) {
-			if (headings[i].textContent.trim() === 'From Real ZEUS Installations') {
+			if (headings[i].textContent.trim() === expectedHeading) {
 				target = headings[i];
 				break;
 			}
@@ -177,11 +185,13 @@ function zeus_visual_polish_css() {
 			padding: 0.55rem;
 		}
 
-		/* Expanded real-work strip: allow five verified images to wrap cleanly. */
-		.home .zeus-real-photo {
+		/* Expanded real-work strips: allow verified images to wrap cleanly. */
+		.home .zeus-real-photo,
+		.page-slug-cabinets .zeus-real-photo {
 			min-width: 0;
 		}
-		.home .zeus-real-photo img {
+		.home .zeus-real-photo img,
+		.page-slug-cabinets .zeus-real-photo img {
 			width: 100%;
 			height: 100%;
 			aspect-ratio: 4 / 3;

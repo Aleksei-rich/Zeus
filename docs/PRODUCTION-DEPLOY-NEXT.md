@@ -24,7 +24,7 @@ If the production theme is missing any dependency already present on `rebuild/v2
 - maps Kitchen Cabinets > In-Stock Kitchen Cabinetry to richer Brooklyn Slate image ID 121;
 - centers CTA and Portfolio intro/copy instead of leaving text visually pinned left;
 - adds one reviewed desktop floating `Request Free Consultation` CTA that hides near existing CTA/form/footer areas and does not duplicate the mobile conversion bar;
-- makes the Portfolio archive render the published Project CPT grid instead of the old empty-placeholder presentation.
+- keeps the live published Project CPT grid while replacing the current long Portfolio intro with concise, centered verified-project copy.
 
 ### SEO / crawler policy
 - excludes content carrying `zeus_noindex=1` from core WordPress post sitemaps;
@@ -67,7 +67,7 @@ If the production theme is missing any dependency already present on `rebuild/v2
    c) From Real ZEUS Installations no longer shows the rejected gray image ID 77.
    d) /cabinets/ Custom Cabinetry shows the Euro/flat-panel kitchen.
    e) /cabinets/kitchen-cabinets/ In-Stock Kitchen Cabinetry shows the richer replacement kitchen.
-   f) /portfolio/ shows the published real project cards instead of the old placeholder.
+   f) /portfolio/ still shows all published real project cards, with the intro centered and reduced to concise verified-project copy.
    g) Desktop: one floating Request Free Consultation CTA follows scroll and disappears near CTA/form/footer sections.
    h) Mobile: no extra overlapping desktop floating CTA; existing mobile conversion controls remain usable.
    i) Consultation form submits/renders exactly as before — do not edit it during verification.
@@ -79,7 +79,12 @@ If the production theme is missing any dependency already present on `rebuild/v2
 ```
 
 ## Current production evidence before deploy
-As of 2026-09-09, live checks still show the old homepage `From Real ZEUS Installations` trio including the rejected gray kitchen image, and `/portfolio/` still exposes the old placeholder copy. This confirms the branch changes have not yet reached production and the deploy remains necessary.
+As of 2026-09-09, live checks show:
+- the homepage still uses the old three-image `From Real ZEUS Installations` row including the rejected gray kitchen image;
+- `/cabinets/` still shows the white-oak floating-shelves image for `Custom Cabinetry` rather than the intended Euro / flat-panel kitchen;
+- `/portfolio/` now correctly renders five published completed-project cards, but the intro remains the older long, left-weighted copy. The `rebuild/v2` archive keeps those project cards and replaces only the presentation/copy with the reviewed centered version.
+
+This confirms the remaining branch changes have not fully reached production and the single deploy block remains necessary.
 
 ## Rollback
 Restore the five backed-up theme files only, purge caches, and recheck homepage, `/portfolio/`, `/cabinets/`, `/cabinets/kitchen-cabinets/`, `/consultation/`, and the sitemap/robots URLs. No database rollback should be performed for this batch.

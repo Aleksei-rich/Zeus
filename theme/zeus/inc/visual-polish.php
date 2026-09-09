@@ -89,6 +89,68 @@ function zeus_visual_polish_attachment_image( $html, $attachment_id, $size, $ico
 add_filter( 'wp_get_attachment_image', 'zeus_visual_polish_attachment_image', 20, 5 );
 
 /**
+ * Expand the homepage Real ZEUS Work strip with featured images from two
+ * verified completed Project CPT records. The images are intentionally used
+ * generically: no cabinet style, material or room type is asserted here.
+ */
+function zeus_visual_polish_expand_real_work() {
+	if ( is_admin() || ! is_front_page() ) {
+		return;
+	}
+
+	$extra_ids = array( 354, 357 );
+	$cards     = array();
+
+	foreach ( $extra_ids as $attachment_id ) {
+		if ( ! wp_attachment_is_image( $attachment_id ) ) {
+			continue;
+		}
+
+		$image = wp_get_attachment_image(
+			$attachment_id,
+			'zeus-card',
+			false,
+			array(
+				'loading' => 'lazy',
+				'alt'     => __( 'Completed ZEUS cabinetry project', 'zeus' ),
+			)
+		);
+
+		if ( $image ) {
+			$cards[] = '<div class="zeus-real-photo zeus-real-photo--verified-project">' . $image . '<span class="zeus-real-photo__label">' . esc_html__( 'Real ZEUS Installation', 'zeus' ) . '</span></div>';
+		}
+	}
+
+	if ( ! $cards ) {
+		return;
+	}
+	?>
+	<template id="zeus-extra-real-work-template"><?php echo wp_kses_post( implode( '', $cards ) ); ?></template>
+	<script id="zeus-extra-real-work-js">
+	(function () {
+		var template = document.getElementById('zeus-extra-real-work-template');
+		if (!template) return;
+		var headings = document.querySelectorAll('h2');
+		var target = null;
+		for (var i = 0; i < headings.length; i++) {
+			if (headings[i].textContent.trim() === 'From Real ZEUS Installations') {
+				target = headings[i];
+				break;
+			}
+		}
+		if (!target) return;
+		var section = target.closest('.zeus-section');
+		if (!section) return;
+		var grid = section.querySelector('.zeus-grid');
+		if (!grid || grid.querySelector('.zeus-real-photo--verified-project')) return;
+		grid.appendChild(template.content.cloneNode(true));
+	})();
+	</script>
+	<?php
+}
+add_action( 'wp_footer', 'zeus_visual_polish_expand_real_work', 18 );
+
+/**
  * Small presentation layer for the reviewed sections plus a desktop-only
  * floating consultation CTA. Mobile already has the persistent Call /
  * Consultation conversion bar, so the floating control is intentionally
@@ -113,6 +175,17 @@ function zeus_visual_polish_css() {
 			border: 1px solid var(--wp--preset--color--stone-200);
 			border-radius: var(--wp--custom--radius--medium);
 			padding: 0.55rem;
+		}
+
+		/* Expanded real-work strip: allow five verified images to wrap cleanly. */
+		.home .zeus-real-photo {
+			min-width: 0;
+		}
+		.home .zeus-real-photo img {
+			width: 100%;
+			height: 100%;
+			aspect-ratio: 4 / 3;
+			object-fit: cover;
 		}
 
 		/* CTA text was visually anchored left because the paragraph had a

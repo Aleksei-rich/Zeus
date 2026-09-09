@@ -1,25 +1,27 @@
 <?php
 /**
- * Portfolio hub (/portfolio/). No fake projects are ever seeded — if
- * empty, an honest "in progress" message is shown instead of filler.
+ * Portfolio hub (/portfolio/). Only verified ZEUS projects are rendered.
  */
 get_header();
 zeus_render_breadcrumbs();
 ?>
-<div class="zeus-container zeus-section--tight zeus-section">
-	<div class="zeus-section__header">
-		<h1><?php esc_html_e( 'Portfolio', 'zeus' ); ?></h1>
-		<p><?php esc_html_e( 'Real ZEUS cabinet, countertop and built-in projects across Orlando and Central Florida.', 'zeus' ); ?></p>
+<section class="zeus-section zeus-section--tight zeus-portfolio-intro">
+	<div class="zeus-container">
+		<div class="zeus-section__header zeus-section__header--centered">
+			<p class="zeus-section__eyebrow"><?php esc_html_e( 'Real ZEUS Work', 'zeus' ); ?></p>
+			<h1><?php esc_html_e( 'Portfolio', 'zeus' ); ?></h1>
+			<p><?php esc_html_e( 'Completed ZEUS cabinetry, countertop and built-in projects from Orlando and Central Florida.', 'zeus' ); ?></p>
+		</div>
+		<div class="zeus-prose zeus-prose--wide zeus-portfolio-intro__copy">
+			<p><?php esc_html_e( 'This portfolio is built from verified completed ZEUS work rather than generic stock imagery. As additional real-project photography is reviewed and grouped with confidence, more kitchens, bathroom vanities, closets, laundry and pantry cabinetry, home offices and countertop installations will be added here.', 'zeus' ); ?></p>
+		</div>
 	</div>
+</section>
 
-	<div class="zeus-prose">
-		<p><?php esc_html_e( 'This portfolio is being built from completed ZEUS projects so visitors can evaluate real layouts, finishes and installation details rather than generic stock imagery. Our work includes kitchens, bathroom vanities, closets, laundry and pantry cabinetry, home offices and stone countertops.', 'zeus' ); ?></p>
-		<p><?php esc_html_e( 'ZEUS coordinates cabinet selection, measurements, design, delivery, assembly and installation, with countertop fabrication and installation available as part of the same project. Cabinet options include Shaker, Slim Shaker, Brooklyn and Euro flat-panel styles, while countertop materials include quartz, granite, porcelain and marble.', 'zeus' ); ?></p>
-		<p><?php esc_html_e( 'We serve homeowners, investors, flippers and renovation companies throughout Orlando, Windermere, Winter Garden, Horizon West, Clermont and surrounding Central Florida communities. As more completed-project photography is organized, this page will expand with individual project details and images.', 'zeus' ); ?></p>
-	</div>
-
+<section class="zeus-section zeus-section--stone zeus-portfolio-grid-section">
+	<div class="zeus-container">
 	<?php if ( have_posts() ) : ?>
-		<div class="zeus-grid zeus-grid--3">
+		<div class="zeus-grid zeus-grid--3 zeus-portfolio-grid">
 			<?php
 			while ( have_posts() ) :
 				the_post();
@@ -27,10 +29,14 @@ zeus_render_breadcrumbs();
 			endwhile;
 			?>
 		</div>
+		<?php the_posts_pagination(); ?>
 	<?php else : ?>
-		<p><?php esc_html_e( "We're adding real project photography to this page. In the meantime, request a free consultation to talk through your project and see examples.", 'zeus' ); ?></p>
+		<div class="zeus-prose zeus-prose--wide">
+			<p><?php esc_html_e( "We're adding verified completed-project photography to this page. Request a free consultation to discuss your project and see relevant examples.", 'zeus' ); ?></p>
+		</div>
 	<?php endif; ?>
-</div>
+	</div>
+</section>
 <?php
 get_template_part( 'components/cta-section' );
 get_footer();

@@ -104,6 +104,7 @@ zeus_section_start(
 );
 ?>
 	<p><?php esc_html_e( 'Some granite may benefit from periodic sealing, depending on the specific stone, fabrication, and sealer used. Follow the care recommendations for your selected slab, and wipe up spills — especially oil and acidic liquids — promptly to help keep the surface looking its best.', 'zeus' ); ?></p>
+	<p><a href="<?php echo esc_url( home_url( '/how-to-care-for-granite-countertops/' ) ); ?>"><?php esc_html_e( 'Read our granite countertop care guide.', 'zeus' ); ?></a></p>
 <?php zeus_section_end(); ?>
 
 <!-- 5. Applications -->
@@ -132,6 +133,7 @@ zeus_section_start(
 		);
 		?>
 	</p>
+	<p><a href="<?php echo esc_url( home_url( '/quartz-vs-granite-vs-porcelain-vs-marble-countertops/' ) ); ?>"><?php esc_html_e( 'Compare quartz, granite, porcelain, and marble countertops.', 'zeus' ); ?></a></p>
 <?php zeus_section_end(); ?>
 
 <!-- 6. Process -->

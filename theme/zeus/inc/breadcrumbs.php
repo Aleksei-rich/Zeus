@@ -40,6 +40,13 @@ function zeus_get_breadcrumb_trail() {
 		$trail[] = array( 'label' => get_the_title(), 'url' => null );
 	} elseif ( is_home() ) {
 		$trail[] = array( 'label' => __( 'Blog', 'zeus' ), 'url' => null );
+	} elseif ( is_category() ) {
+		$blog_page_id = get_option( 'page_for_posts' );
+		$trail[] = array(
+			'label' => __( 'Blog', 'zeus' ),
+			'url'   => $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/blog/' ),
+		);
+		$trail[] = array( 'label' => single_cat_title( '', false ), 'url' => null );
 	} elseif ( is_singular( 'post' ) ) {
 		$blog_page_id = get_option( 'page_for_posts' );
 		if ( $blog_page_id ) {

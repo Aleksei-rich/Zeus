@@ -40,6 +40,14 @@ function zeus_content_safety_gettext( $translation, $text, $domain ) {
 		return isset( $replacements[ $text ] ) ? $replacements[ $text ] : $translation;
 	}
 
+	if ( is_singular( 'cabinet_collection' ) && 'euro-flat-panel' === get_post_field( 'post_name', get_queried_object_id() ) ) {
+		$replacements = array(
+			'Yes — beyond in-stock options, ZEUS can build custom flat-panel cabinetry for built-ins and non-standard spaces.' => 'Yes — ZEUS can build custom flat-panel cabinetry for built-ins, non-standard dimensions, and projects that need an individual solution.',
+		);
+
+		return isset( $replacements[ $text ] ) ? $replacements[ $text ] : $translation;
+	}
+
 	if ( is_post_type_archive( 'cabinet_collection' ) ) {
 		$replacements = array(
 			'Cabinet Styles Orlando, FL | Shaker, Slim Shaker & Flat Panel | ZEUS' => 'Cabinet Styles Orlando, FL | Shaker & Flat Panel | ZEUS',

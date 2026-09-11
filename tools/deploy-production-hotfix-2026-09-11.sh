@@ -129,11 +129,15 @@ printf 'Porcelain title: '; wp post meta get 15 zeus_seo_title
 log "Live verification using cache-busting URLs"
 CHECK="zeus_deploy_check=$STAMP"
 FAILS=0
+CHECK_SEQ=0
 check_contains() {
   local url="$1"
   local needle="$2"
   local label="$3"
-  if curl -fsSL --retry 2 "${url}?${CHECK}" | grep -Fq "$needle"; then
+  local body
+  CHECK_SEQ=$((CHECK_SEQ+1))
+  body="$TMP/live-check-${CHECK_SEQ}.html"
+  if curl -fsSL --retry 2 "${url}?${CHECK}" -o "$body" && grep -Fq "$needle" "$body"; then
     echo "PASS: $label"
   else
     echo "WARN: $label not visible yet"

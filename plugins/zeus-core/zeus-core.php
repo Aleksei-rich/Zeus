@@ -19,14 +19,14 @@ define( 'ZEUS_CORE_URL', plugin_dir_url( __FILE__ ) );
 define( 'ZEUS_CORE_FILE', __FILE__ );
 
 // Customer-facing upload policy: up to 5 files, no more than 10MB per file
-// and no more than 15MB total. Email attachments remain capped separately at
-// 10MB raw; larger accepted sets stay in private lead storage and are linked
-// from the Consultation Request notification instead of being attached.
+// and no more than 15MB total. Every accepted upload is intended to be
+// delivered to the ZEUS notification mailbox as an email attachment. The
+// private lead copy remains backup/audit storage, not the normal delivery path.
 if ( ! defined( 'ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES' ) ) {
 	define( 'ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES', 15 * 1024 * 1024 );
 }
 if ( ! defined( 'ZEUS_LEAD_MAX_MAIL_ATTACHMENT_BYTES' ) ) {
-	define( 'ZEUS_LEAD_MAX_MAIL_ATTACHMENT_BYTES', 10 * 1024 * 1024 );
+	define( 'ZEUS_LEAD_MAX_MAIL_ATTACHMENT_BYTES', 15 * 1024 * 1024 );
 }
 
 $zeus_core_includes = array(
@@ -41,6 +41,7 @@ $zeus_core_includes = array(
 	'inc/consultation-form.php',
 	'inc/consultation-multiupload.php',
 	'inc/consultation-reliability.php',
+	'inc/consultation-mail-attachments.php',
 	'inc/mail-security.php',
 	'inc/google-reviews.php',
 );

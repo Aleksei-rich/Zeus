@@ -18,12 +18,12 @@ define( 'ZEUS_CORE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ZEUS_CORE_URL', plugin_dir_url( __FILE__ ) );
 define( 'ZEUS_CORE_FILE', __FILE__ );
 
-// Customer-facing attachment policy: no more than 10MB total. The mail
-// reliability layer reads the attachment constant below before defining its
-// own fallback, so accepted requests up to this limit are also attempted as
-// normal email attachments instead of being intentionally omitted.
+// Customer-facing upload policy: up to 5 files, no more than 10MB per file
+// and no more than 15MB total. Email attachments remain capped separately at
+// 10MB raw; larger accepted sets stay in private lead storage and are linked
+// from the Consultation Request notification instead of being attached.
 if ( ! defined( 'ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES' ) ) {
-	define( 'ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES', 10 * 1024 * 1024 );
+	define( 'ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES', 15 * 1024 * 1024 );
 }
 if ( ! defined( 'ZEUS_LEAD_MAX_MAIL_ATTACHMENT_BYTES' ) ) {
 	define( 'ZEUS_LEAD_MAX_MAIL_ATTACHMENT_BYTES', 10 * 1024 * 1024 );
@@ -104,7 +104,7 @@ function zeus_handle_public_consultation_endpoint() {
 	$total_bytes = zeus_public_consultation_upload_total_bytes();
 	if ( $total_bytes > ZEUS_LEAD_PUBLIC_MAX_TOTAL_UPLOAD_BYTES ) {
 		$errors = array(
-			'uploads' => __( 'Your selected files are over the 10MB total limit. Please remove a file or choose smaller photos.', 'zeus-core' ),
+			'uploads' => __( 'Your selected files are over the 15MB total limit. Please remove a file or choose smaller photos.', 'zeus-core' ),
 		);
 
 		if ( function_exists( 'zeus_consultation_error_response' ) ) {

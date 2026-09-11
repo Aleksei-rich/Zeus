@@ -97,7 +97,7 @@ $zeus_field_value = static function ( $name ) use ( $zeus_values ) {
 		<input type="file" id="zeus-uploads" name="uploads[]" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf,image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf" multiple
 			aria-describedby="zeus-uploads-note zeus-uploads-formats zeus-uploads-status<?php echo ! empty( $zeus_errors['uploads'] ) ? ' zeus-uploads-error' : ''; ?>"
 			<?php if ( ! empty( $zeus_errors['uploads'] ) ) : ?>aria-invalid="true"<?php endif; ?>>
-		<p class="zeus-form__error" id="zeus-uploads-note"><strong><?php esc_html_e( 'IMPORTANT:', 'zeus' ); ?></strong> <?php esc_html_e( 'Maximum 5 files and 10MB total for all attachments.', 'zeus' ); ?></p>
+		<p class="zeus-form__error" id="zeus-uploads-note"><strong><?php esc_html_e( 'IMPORTANT:', 'zeus' ); ?></strong> <?php esc_html_e( 'Maximum 5 files and 15MB total for all attachments.', 'zeus' ); ?></p>
 		<p class="zeus-form__note" id="zeus-uploads-formats"><?php esc_html_e( 'JPG, PNG, WEBP, HEIC/HEIF, or PDF. Maximum 10MB per individual file.', 'zeus' ); ?></p>
 		<p class="zeus-form__note" id="zeus-uploads-status" data-zeus-upload-status aria-live="polite"></p>
 		<?php if ( ! empty( $zeus_errors['uploads'] ) ) : ?><p class="zeus-form__error" id="zeus-uploads-error"><?php echo esc_html( $zeus_errors['uploads'] ); ?></p><?php endif; ?>

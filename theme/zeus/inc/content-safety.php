@@ -95,8 +95,8 @@ function zeus_unify_home_real_work_html( $html ) {
 		$legacy_end   = strpos( $html, '</section>', $legacy_pos );
 
 		if ( false !== $legacy_start && false !== $legacy_end ) {
-			$legacy_end = $legacy_end + strlen( '</section>' );
-			$html       = substr( $html, 0, $legacy_start ) . substr( $html, $legacy_end );
+			$legacy_end += strlen( '</section>' );
+			$html        = substr( $html, 0, $legacy_start ) . substr( $html, $legacy_end );
 		}
 	}
 
@@ -104,9 +104,10 @@ function zeus_unify_home_real_work_html( $html ) {
 }
 
 /**
- * Buffer only the public front page. This keeps the correction server-side,
- * so crawlers and accessibility tools see the same single Real ZEUS Work block
- * as visitors; the redundant section is not merely hidden with CSS/JS.
+ * Start buffering on the `wp` hook rather than late in `template_redirect`.
+ * Some full-page cache layers can serve/exit during template_redirect before a
+ * late callback runs. Starting here ensures the final HTML is still filtered
+ * even when that cache layer handles the response later in the request.
  */
 function zeus_unify_home_real_work_start_buffer() {
 	if ( is_admin() || ! is_front_page() ) {
@@ -115,4 +116,4 @@ function zeus_unify_home_real_work_start_buffer() {
 
 	ob_start( 'zeus_unify_home_real_work_html' );
 }
-add_action( 'template_redirect', 'zeus_unify_home_real_work_start_buffer', 99 );
+add_action( 'wp', 'zeus_unify_home_real_work_start_buffer', 0 );

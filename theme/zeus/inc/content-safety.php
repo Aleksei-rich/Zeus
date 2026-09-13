@@ -1,9 +1,9 @@
 <?php
 /**
- * Small factual-copy and snippet corrections for production-rendered theme text.
+ * Small factual-copy, snippet, and homepage content-structure corrections.
  *
- * Kept separate so these wording fixes can be deployed/rolled back without
- * rewriting large templates. No layout or business logic changes.
+ * Kept separate so production-safe corrections can be deployed/rolled back
+ * without rewriting large page templates.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,3 +60,59 @@ function zeus_content_safety_gettext( $translation, $text, $domain ) {
 	return $translation;
 }
 add_filter( 'gettext', 'zeus_content_safety_gettext', 25, 3 );
+
+/**
+ * The homepage historically rendered two consecutive sections for the same
+ * business proof: a dynamic Portfolio/Featured Projects section and a second
+ * static "Real ZEUS Work" photo strip. Keep one source of truth by retaining
+ * the dynamic Project CPT section, relabeling its eyebrow as "Real ZEUS Work",
+ * and removing the redundant static photo section from the server-rendered
+ * HTML. The full Portfolio archive and its project URLs remain unchanged.
+ */
+function zeus_unify_home_real_work_html( $html ) {
+	if ( ! is_string( $html ) || '' === $html ) {
+		return $html;
+	}
+
+	// Relabel only the section that contains the Featured Projects heading.
+	$featured_pos = strpos( $html, 'Featured Projects' );
+	if ( false !== $featured_pos ) {
+		$featured_start = strrpos( substr( $html, 0, $featured_pos ), '<section' );
+		$featured_end   = strpos( $html, '</section>', $featured_pos );
+
+		if ( false !== $featured_start && false !== $featured_end ) {
+			$featured_end += strlen( '</section>' );
+			$featured      = substr( $html, $featured_start, $featured_end - $featured_start );
+			$featured      = str_replace( '>Portfolio<', '>Real ZEUS Work<', $featured );
+			$html          = substr( $html, 0, $featured_start ) . $featured . substr( $html, $featured_end );
+		}
+	}
+
+	// Remove the now-redundant static Real ZEUS Installations section entirely.
+	$legacy_pos = strpos( $html, 'From Real ZEUS Installations' );
+	if ( false !== $legacy_pos ) {
+		$legacy_start = strrpos( substr( $html, 0, $legacy_pos ), '<section' );
+		$legacy_end   = strpos( $html, '</section>', $legacy_pos );
+
+		if ( false !== $legacy_start && false !== $legacy_end ) {
+			$legacy_end = $legacy_end + strlen( '</section>' );
+			$html       = substr( $html, 0, $legacy_start ) . substr( $html, $legacy_end );
+		}
+	}
+
+	return $html;
+}
+
+/**
+ * Buffer only the public front page. This keeps the correction server-side,
+ * so crawlers and accessibility tools see the same single Real ZEUS Work block
+ * as visitors; the redundant section is not merely hidden with CSS/JS.
+ */
+function zeus_unify_home_real_work_start_buffer() {
+	if ( is_admin() || ! is_front_page() ) {
+		return;
+	}
+
+	ob_start( 'zeus_unify_home_real_work_html' );
+}
+add_action( 'template_redirect', 'zeus_unify_home_real_work_start_buffer', 99 );

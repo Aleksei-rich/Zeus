@@ -6,6 +6,14 @@ owner-directed one.
 
 ---
 
+## 2026-09-18 — Cabinet color detail pages expanded to Shaker and Oslo; Euro remains collection-only
+
+**Decision:** Publish the same curated Style → Color → Gallery child-page model for the verified fixed finishes in Shaker (White, Sand, Kodiak, Moss) and Oslo (White, Oak, Classic Walnut). Each child URL uses exact dealer-provided media already inventoried for that collection+finish, unique SEO copy, canonical URL, breadcrumb path, cross-color navigation, and the standard consultation CTA. The existing cabinet-color sitemap is expanded from 6 Brooklyn URLs to 13 total Brooklyn/Shaker/Oslo URLs.
+
+**Euro / Flat Panel is intentionally not split into finish child URLs.** The approved business catalog/site model does not document a fixed Euro finish list equivalent to Brooklyn/Shaker/Oslo, and the available Euro imagery is category/design-direction media rather than verified exact finish-specific dealer imagery. Publishing invented or inferred Euro color URLs would violate the same provenance rule used for the other collections.
+
+**Type:** Owner-directed expansion, implemented with the existing curated publish gate and provenance rules.
+
 ## 2026-09-18 — Production-readiness review of the Cabinet Color pages (commit a9acad1): one content fix, one dormant edge case documented
 
 **Reviewed:** every Brooklyn hero/gallery image and its official door-

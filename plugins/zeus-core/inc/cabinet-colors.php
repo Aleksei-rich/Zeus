@@ -328,4 +328,4 @@ function zeus_register_cabinet_color_sitemap_provider() {
 
 	wp_register_sitemap_provider( 'cabinetcolors', $provider );
 }
-add_action( 'wp_sitemaps_init', 'zeus_register_cabinet_color_sitemap_provider' );
+// Register on normal init rather than relying on wp_sitemaps_init having not\n// already fired. wp_register_sitemap_provider() safely initializes/reuses the\n// core sitemap server and adds this provider to its registry.\nadd_action( 'init', 'zeus_register_cabinet_color_sitemap_provider', 99 );

@@ -171,6 +171,164 @@ function zeus_get_cabinet_color_content_map() {
 				),
 			),
 		),
+		'shaker' => array(
+			'white'  => array(
+				'seo_title'       => __( 'Shaker White Kitchen Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
+				'seo_description' => __( 'Explore Shaker White cabinets in kitchen settings and see how this bright, versatile finish works with countertops, hardware, and flooring.', 'zeus-core' ),
+				'h1'              => __( 'Shaker White Kitchen Cabinets', 'zeus-core' ),
+				'intro'           => array(
+					__( "Shaker White combines the collection's classic five-piece recessed-panel door with a bright, versatile finish. The wider Shaker frame remains clearly visible, giving the cabinetry more traditional definition than a Slim Shaker profile while still fitting transitional and modern rooms.", 'zeus-core' ),
+					__( "White gives you broad flexibility for the rest of the room: light or dark countertops can both work, while black, brushed nickel, brass, or gold hardware each create a different level of contrast. Wood flooring and warm stone can soften the palette; cooler quartz and marble keep it crisp.", 'zeus-core' ),
+				),
+				'hero_id'         => 123,
+				'hero_alt'        => __( 'Shaker White kitchen cabinets', 'zeus-core' ),
+				'gallery_heading' => __( 'Shaker White Kitchens', 'zeus-core' ),
+				'gallery'         => array(
+					array(
+						'id'  => 123,
+						'alt' => __( 'Shaker White kitchen cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 124,
+						'alt' => __( 'Shaker White kitchen cabinets', 'zeus-core' ),
+					),
+				),
+			),
+			'sand'   => array(
+				'seo_title'       => __( 'Shaker Sand Kitchen Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
+				'seo_description' => __( 'Explore Shaker Sand cabinets in kitchen settings and see how this warm neutral finish pairs with countertops, wood tones, and hardware.', 'zeus-core' ),
+				'h1'              => __( 'Shaker Sand Kitchen Cabinets', 'zeus-core' ),
+				'intro'           => array(
+					__( "Shaker Sand brings a softer, warmer neutral to the collection's classic recessed-panel door. It keeps the familiar Shaker geometry while moving away from the sharper contrast of bright white.", 'zeus-core' ),
+					__( "Sand works naturally with warm woods, cream or beige stone, and countertops with warmer veining. Brass and bronze continue the warmer direction, while matte black hardware adds a stronger graphic contrast.", 'zeus-core' ),
+				),
+				'hero_id'         => 125,
+				'hero_alt'        => __( 'Shaker Sand kitchen cabinets', 'zeus-core' ),
+				'gallery_heading' => __( 'Shaker Sand Kitchens', 'zeus-core' ),
+				'gallery'         => array(
+					array(
+						'id'  => 125,
+						'alt' => __( 'Shaker Sand kitchen cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 126,
+						'alt' => __( 'Shaker Sand kitchen cabinets', 'zeus-core' ),
+					),
+				),
+			),
+			'kodiak' => array(
+				'seo_title'       => __( 'Shaker Kodiak Kitchen & Bath Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
+				'seo_description' => __( 'Explore Shaker Kodiak cabinets in kitchen and bathroom settings and see how this deeper, earth-toned finish pairs with lighter surfaces and hardware.', 'zeus-core' ),
+				'h1'              => __( 'Shaker Kodiak Kitchen & Bath Cabinets', 'zeus-core' ),
+				'intro'           => array(
+					__( "Shaker Kodiak is one of the collection's deeper, earthier choices. The darker finish gives the classic five-piece door more visual weight and makes the recessed center panel and wider frame read more strongly across a run of cabinetry.", 'zeus-core' ),
+					__( "Lighter countertops and backsplashes create useful contrast with Kodiak, while warm wood and natural stone can build a richer tonal palette. Brushed brass or warm metal hardware reinforces that depth; black hardware keeps the look more restrained.", 'zeus-core' ),
+				),
+				'hero_id'         => 127,
+				'hero_alt'        => __( 'Shaker Kodiak kitchen cabinets', 'zeus-core' ),
+				'gallery'         => array(
+					array(
+						'id'  => 127,
+						'alt' => __( 'Shaker Kodiak kitchen cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 128,
+						'alt' => __( 'Shaker Kodiak bathroom vanity cabinets', 'zeus-core' ),
+					),
+				),
+			),
+			'moss'   => array(
+				'seo_title'       => __( 'Shaker Moss Kitchen & Bath Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
+				'seo_description' => __( 'Explore Shaker Moss cabinets in kitchen and bathroom settings and see how this earthy green finish pairs with stone, wood, and warm metal hardware.', 'zeus-core' ),
+				'h1'              => __( 'Shaker Moss Kitchen & Bath Cabinets', 'zeus-core' ),
+				'intro'           => array(
+					__( "Shaker Moss gives the traditional recessed-panel profile an earthy green direction. It is a stronger color choice than White or Sand, while still working comfortably with natural materials and warm interior palettes.", 'zeus-core' ),
+					__( "Moss pairs especially well with wood accents, light stone, and countertops with warm or natural veining. Brass and gold hardware bring out the warmer side of the finish; black hardware creates a cleaner, more architectural contrast.", 'zeus-core' ),
+				),
+				'hero_id'         => 129,
+				'hero_alt'        => __( 'Shaker Moss kitchen cabinets', 'zeus-core' ),
+				'gallery'         => array(
+					array(
+						'id'  => 129,
+						'alt' => __( 'Shaker Moss kitchen cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 130,
+						'alt' => __( 'Shaker Moss bathroom vanity cabinets', 'zeus-core' ),
+					),
+				),
+			),
+		),
+		'oslo' => array(
+			'white'  => array(
+				'seo_title'       => __( 'Oslo White Slim Shaker Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
+				'seo_description' => __( 'Explore Oslo White Slim Shaker cabinets in kitchen and bathroom settings and see how this light finish supports a clean, modern framed look.', 'zeus-core' ),
+				'h1'              => __( 'Oslo White Slim Shaker Cabinets', 'zeus-core' ),
+				'intro'           => array(
+					__( "Oslo White combines a light finish with the collection's narrow Slim Shaker frame. The recessed-panel geometry is still visible, but the slimmer rail gives the cabinetry a cleaner, more architectural line than traditional Shaker.", 'zeus-core' ),
+					__( "White keeps that narrow-frame profile bright and flexible. It can pair with light or dark countertops, warm or cool stone, and hardware ranging from subtle brushed nickel to higher-contrast black, brass, or gold.", 'zeus-core' ),
+				),
+				'hero_id'         => 131,
+				'hero_alt'        => __( 'Oslo White Slim Shaker kitchen cabinets', 'zeus-core' ),
+				'gallery'         => array(
+					array(
+						'id'  => 131,
+						'alt' => __( 'Oslo White Slim Shaker kitchen cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 132,
+						'alt' => __( 'Oslo White Slim Shaker bathroom vanity cabinets', 'zeus-core' ),
+					),
+				),
+			),
+			'oak'    => array(
+				'seo_title'       => __( 'Oslo Oak Slim Shaker Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
+				'seo_description' => __( 'Explore Oslo Oak Slim Shaker cabinets in kitchen and bathroom settings and see how this natural wood finish creates a warm contemporary look.', 'zeus-core' ),
+				'h1'              => __( 'Oslo Oak Slim Shaker Cabinets', 'zeus-core' ),
+				'intro'           => array(
+					__( "Oslo Oak adds a natural wood direction to the collection's narrow Slim Shaker profile. The combination keeps the door visually structured while bringing more warmth and material texture than a painted finish.", 'zeus-core' ),
+					__( "Oak works naturally with light quartz, marble-look surfaces, and other understated stones that let the wood remain visible as a design element. Black hardware adds definition; brushed brass or softer metal finishes keep the palette warmer.", 'zeus-core' ),
+				),
+				'hero_id'         => 133,
+				'hero_alt'        => __( 'Oslo Oak Slim Shaker kitchen cabinets', 'zeus-core' ),
+				'gallery'         => array(
+					array(
+						'id'  => 133,
+						'alt' => __( 'Oslo Oak Slim Shaker kitchen cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 134,
+						'alt' => __( 'Oslo Oak Slim Shaker bathroom vanity cabinets', 'zeus-core' ),
+					),
+				),
+			),
+			'walnut' => array(
+				'seo_title'       => __( 'OSLO Classic Walnut Slim Shaker Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
+				'seo_description' => __( 'Explore OSLO Classic Walnut Slim Shaker cabinetry in kitchens, bathrooms, and built-ins, with a rich natural walnut finish and narrow framed profile.', 'zeus-core' ),
+				'h1'              => __( 'OSLO Classic Walnut Slim Shaker Cabinets', 'zeus-core' ),
+				'intro'           => array(
+					__( "OSLO Classic Walnut combines a rich natural walnut finish with the collection's narrow Slim Shaker frame. The result is warmer and more architectural than a painted cabinet, while the slim rail keeps the overall composition streamlined.", 'zeus-core' ),
+					__( "Walnut works especially well with lighter countertops and wall finishes that preserve contrast and let the wood grain remain a focal material. Brass or warm metal hardware can reinforce the richness of the wood; black hardware gives the cabinetry a sharper contemporary edge.", 'zeus-core' ),
+				),
+				'hero_id'         => 136,
+				'hero_alt'        => __( 'OSLO Classic Walnut Slim Shaker kitchen cabinets', 'zeus-core' ),
+				'gallery_heading' => __( 'OSLO Classic Walnut in Kitchens, Baths & Built-Ins', 'zeus-core' ),
+				'gallery'         => array(
+					array(
+						'id'  => 136,
+						'alt' => __( 'OSLO Classic Walnut Slim Shaker kitchen cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 137,
+						'alt' => __( 'OSLO Classic Walnut Slim Shaker bathroom vanity cabinets', 'zeus-core' ),
+					),
+					array(
+						'id'  => 138,
+						'alt' => __( 'OSLO Classic Walnut Slim Shaker cabinetry in a home bar', 'zeus-core' ),
+					),
+				),
+			),
+		),
 	);
 }
 

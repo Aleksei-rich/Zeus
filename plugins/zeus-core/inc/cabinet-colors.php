@@ -372,7 +372,7 @@ add_filter( 'query_vars', 'zeus_register_cabinet_color_query_var' );
 /**
  * Gate: only a curated, published color resolves. Anything else under
  * this same 2-segment URL shape (an unmapped color, or a whole style
- * that hasn't been reviewed/published yet, e.g. Shaker/Oslo/Euro right
+ * that has not been reviewed/published yet, such as Euro finishes right
  * now) 404s cleanly instead of silently re-rendering the parent
  * collection page a second time at a different URL.
  */

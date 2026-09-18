@@ -83,10 +83,11 @@ surface — see `DECISIONS.md`, 2026-09-18.
   `[style_slug][color_slug]` entry (SEO title/description, H1, intro
   copy, verified hero + gallery attachment IDs) is what makes a color
   page exist at all. No entry → the URL 404s, even if the underlying
-  collection+finish relationship is real. This is deliberate: it's how
-  Shaker/Oslo/Euro colors stay unpublished until their own content is
-  curated and reviewed, without needing a separate "is this published"
-  flag.
+  collection+finish relationship is real. This is deliberate: it keeps any uncurated combination unpublished
+  without needing a separate "is this published" flag. Brooklyn, Shaker,
+  and Oslo now have curated entries; Euro / Flat Panel remains unpublished
+  at the child-finish level because the approved catalog does not define a
+  fixed Euro finish list with exact finish-specific imagery.
 - **Template:** `theme/zeus/single-cabinet-color.php`, one reusable
   template for every current and future style/color, selected via
   `template_include` in `theme/zeus/inc/cabinet-colors.php`.

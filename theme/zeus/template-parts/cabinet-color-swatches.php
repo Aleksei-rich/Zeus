@@ -13,9 +13,9 @@
  *
  * A swatch only becomes a link when a published color page exists for
  * that style+color (zeus_get_cabinet_color_content()) -- otherwise it
- * renders the same static, non-interactive markup as before, so
- * collections without curated color pages yet (Shaker, Oslo, Euro) are
- * visually and functionally unchanged.
+ * renders the same static, non-interactive markup as before. Brooklyn,
+ * Shaker, and Oslo currently have curated detail pages; Euro / Flat Panel
+ * remains static until a verified fixed finish catalog is documented.
  */
 
 $zeus_style_slug = $args['style_slug'] ?? '';

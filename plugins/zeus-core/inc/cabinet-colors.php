@@ -151,11 +151,11 @@ function zeus_get_cabinet_color_content_map() {
 			),
 			'midnight' => array(
 				'seo_title'       => __( 'Brooklyn Midnight Kitchen Cabinets | ZEUS Cabinets & Countertops', 'zeus-core' ),
-				'seo_description' => __( 'See Brooklyn Midnight cabinets in a real kitchen and bathroom, and how this near-black finish pairs with countertops and hardware.', 'zeus-core' ),
+				'seo_description' => __( 'See Brooklyn Midnight cabinets in a real kitchen and bathroom, and how this deep navy finish pairs with countertops and hardware.', 'zeus-core' ),
 				'h1'              => __( 'Brooklyn Midnight Kitchen Cabinets', 'zeus-core' ),
 				'intro'           => array(
-					__( "Brooklyn Midnight is the darkest finish in the collection -- a near-black that reads as Brooklyn's most dramatic option. It's a deliberate style choice for a kitchen where the cabinetry is meant to be a focal point rather than a backdrop.", 'zeus-core' ),
-					__( "Midnight works best with strong contrast: light countertops (white quartz, light marble) and bright lighting keep the room from feeling closed in, and brass, gold, or matte-black hardware all read clearly against it depending on how much contrast you want. Light or mid-tone wood floors help keep the overall room balanced rather than overwhelmingly dark.", 'zeus-core' ),
+					__( "Brooklyn Midnight is a deep navy blue -- the darkest, most saturated color in the collection, and a genuine color statement rather than a black or a neutral. It's a deliberate choice for a kitchen where the cabinetry is meant to be a focal point rather than a backdrop.", 'zeus-core' ),
+					__( "Because Midnight is a true color rather than a neutral, it pairs especially well with warm metals: brass or gold hardware stands out clearly against the blue, and light countertops (white quartz, light marble) keep the room from feeling closed in. Light or mid-tone wood floors help balance the depth of the cabinetry.", 'zeus-core' ),
 				),
 				'hero_id'         => 114,
 				'hero_alt'        => __( 'Brooklyn Midnight kitchen cabinets', 'zeus-core' ),

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# ZEUS controlled production deploy — 2026-09-18 (rev. 2, hardened)
+# ZEUS controlled production deploy — 2026-09-18 (rev. 3, seo.php split)
 # Deploys ONLY the reviewed Cabinet Style -> Color -> Gallery feature
 # (Brooklyn White/Pearl/Fawn/Gray/Slate/Midnight detail pages).
 # Source is pinned to one reviewed commit so later branch changes cannot
@@ -15,6 +15,21 @@ set -Eeuo pipefail
 #   - live verification that never rolls back already-installed,
 #     already-validated files just because an HTTP check has a hiccup.
 #
+# IMPORTANT, EXPLICIT SPECIAL CASE -- theme/zeus/inc/seo.php:
+# A forensic hash/history investigation this session found that
+# production's live seo.php does NOT match the SOURCE_REF/BASELINE_REF
+# lineage -- it is running commit cad233d5828b80d417663a021426fc25a742037b
+# byte-for-byte (verified via SHA-256), one commit behind BASELINE_REF.
+# The one commit in between (9652e75, "add project structured data")
+# adds an unrelated CreativeWork schema for Portfolio pages that was
+# never asked for in this deploy. So seo.php is NOT downloaded from
+# SOURCE_REF like the other 9 files -- it is downloaded from a separate,
+# purpose-built artifact (SEO_ADAPTED_REF, below) that starts from the
+# exact verified live content and adds ONLY the three Brooklyn additions
+# on top, with the CreativeWork addition deliberately left out. See
+# tools/deploy-assets/cabinet-color-seo-production.php's own commit
+# message for the full derivation, and docs/DECISIONS.md.
+#
 # Does NOT touch: wp-config.php, .env, uploads, the database, any other
 # plugin/theme, or any collection besides Brooklyn. Shaker/Oslo/Euro are
 # intentionally left exactly as they are in production today.
@@ -24,13 +39,29 @@ SOURCE_REF="2a7f46f7c9394bdd84febe5c4b78520497b76ee1"
 BASELINE_REF="80ae8a81503bd68308ca9566f2175b14ccd848a8"
 RAW_BASE="https://raw.githubusercontent.com/Aleksei-rich/Zeus/${SOURCE_REF}"
 BASELINE_RAW_BASE="https://raw.githubusercontent.com/Aleksei-rich/Zeus/${BASELINE_REF}"
+
+# theme/zeus/inc/seo.php's own, separate, audited source -- see the
+# header comment above. SEO_LIVE_REF is the commit verified (by hash) to
+# be exactly what production runs today; SEO_ADAPTED_REF is the ops
+# commit containing the production-safe adaptation (live content +
+# Brooklyn additions only, no CreativeWork schema) that actually gets
+# installed.
+SEO_DEST_FILE="wp-content/themes/zeus/inc/seo.php"
+SEO_LIVE_REF="cad233d5828b80d417663a021426fc25a742037b"
+SEO_LIVE_RAW_BASE="https://raw.githubusercontent.com/Aleksei-rich/Zeus/${SEO_LIVE_REF}"
+SEO_LIVE_EXPECTED_SHA256="701efcd07398a3233fb0997f2f4acb71920a5e8f68d5350225c6738ad658b1c4"
+SEO_ADAPTED_REF="f8c9d5437e220fb81da86a453103ba405ca58082"
+SEO_ADAPTED_REPO_PATH="tools/deploy-assets/cabinet-color-seo-production.php"
+SEO_ADAPTED_RAW_BASE="https://raw.githubusercontent.com/Aleksei-rich/Zeus/${SEO_ADAPTED_REF}"
+SEO_ADAPTED_EXPECTED_SHA256="3c434dbdefeeb3270ff5e6a10a8e0fb1650d943e818192e2b388150e7f647366"
+
 STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP="$HOME/zeus-deploy-backups/$STAMP"
 TMP="$(mktemp -d)"
 
-# Files this feature actually changed. Modified files carry a known
-# BASELINE_REF version (production is expected to already be running
-# that exact content); new files must not already exist on production.
+# The 9 files sourced normally from SOURCE_REF. seo.php is deliberately
+# excluded here -- see SEO_* above and the "Download the production-
+# adapted seo.php" step.
 REPO_FILES=(
   "plugins/zeus-core/inc/cabinet-colors.php"
   "plugins/zeus-core/zeus-core.php"
@@ -38,12 +69,29 @@ REPO_FILES=(
   "theme/zeus/functions.php"
   "theme/zeus/inc/breadcrumbs.php"
   "theme/zeus/inc/cabinet-colors.php"
-  "theme/zeus/inc/seo.php"
   "theme/zeus/single-cabinet-color.php"
   "theme/zeus/single-cabinet_collection.php"
   "theme/zeus/template-parts/cabinet-color-swatches.php"
 )
 
+# Destinations for the 9 REPO_FILES above, same order.
+STANDARD_DEST_FILES=(
+  "wp-content/plugins/zeus-core/inc/cabinet-colors.php"
+  "wp-content/plugins/zeus-core/zeus-core.php"
+  "wp-content/themes/zeus/assets/css/style.css"
+  "wp-content/themes/zeus/functions.php"
+  "wp-content/themes/zeus/inc/breadcrumbs.php"
+  "wp-content/themes/zeus/inc/cabinet-colors.php"
+  "wp-content/themes/zeus/single-cabinet-color.php"
+  "wp-content/themes/zeus/single-cabinet_collection.php"
+  "wp-content/themes/zeus/template-parts/cabinet-color-swatches.php"
+)
+
+# All 10 production destinations this deploy touches, used for backup,
+# rollback, and the new-file-collision check -- unchanged in count and
+# content from the previous revision. seo.php is included here even
+# though it's sourced specially: it still gets backed up, restored on
+# rollback, and syntax-validated exactly like the other 9.
 DEST_FILES=(
   "wp-content/plugins/zeus-core/inc/cabinet-colors.php"
   "wp-content/plugins/zeus-core/zeus-core.php"
@@ -58,15 +106,15 @@ DEST_FILES=(
 )
 
 # Files this feature MODIFIED (not created) -- must match BASELINE_REF
-# exactly on production before we touch them. If production drifted from
-# what git recorded (an uncommitted hotfix, a manual edit), overwriting
-# blind would silently discard it -- so this is a hard stop, not a warning.
+# exactly on production before we touch them. seo.php is deliberately
+# NOT in this list -- it has its own dedicated check against SEO_LIVE_REF
+# instead, since production is known (by hash) to be one commit behind
+# BASELINE_REF for this one file specifically.
 BASELINE_CHECK_FILES=(
   "plugins/zeus-core/zeus-core.php"
   "theme/zeus/assets/css/style.css"
   "theme/zeus/functions.php"
   "theme/zeus/inc/breadcrumbs.php"
-  "theme/zeus/inc/seo.php"
   "theme/zeus/single-cabinet_collection.php"
 )
 
@@ -207,11 +255,11 @@ echo "ZEUS Core confirmed active"
 echo "Pinned source commit: $SOURCE_REF"
 echo "Expected pre-deploy baseline commit: $BASELINE_REF"
 
-# Map each repo-relative path to its production destination (arrays share
-# index order).
+# Map each of the 9 standard repo-relative paths to its production
+# destination (REPO_FILES and STANDARD_DEST_FILES share index order).
 declare -A REPO_TO_DEST
 for i in "${!REPO_FILES[@]}"; do
-  REPO_TO_DEST["${REPO_FILES[$i]}"]="${DEST_FILES[$i]}"
+  REPO_TO_DEST["${REPO_FILES[$i]}"]="${STANDARD_DEST_FILES[$i]}"
 done
 
 is_baseline_check_file() {
@@ -240,6 +288,29 @@ for repo_rel in "${REPO_FILES[@]}"; do
   fi
   echo "Baseline confirmed: $dest_rel"
 done
+
+log "Confirm production seo.php matches the exact known-live commit ($SEO_LIVE_REF)"
+# seo.php is checked separately from BASELINE_CHECK_FILES/BASELINE_REF --
+# see the header comment. This also self-checks the reference commit's
+# own content against the hash recorded during this session's forensic
+# analysis, so a compromised/wrong URL would be caught too, not just a
+# production mismatch.
+seo_target="$ROOT/$SEO_DEST_FILE"
+[[ -f "$seo_target" ]] || die "Expected existing file missing on production: $SEO_DEST_FILE (unexpected state, stopping)"
+
+seo_live_baseline_tmp="$TMP/seo-live-baseline.php"
+curl -fsSL --retry 3 --connect-timeout 15 "$SEO_LIVE_RAW_BASE/theme/zeus/inc/seo.php" -o "$seo_live_baseline_tmp" \
+  || die "Could not fetch the known-live reference for seo.php from commit $SEO_LIVE_REF"
+
+seo_live_baseline_hash="$(sha256sum "$seo_live_baseline_tmp" | awk '{print $1}')"
+[[ "$seo_live_baseline_hash" == "$SEO_LIVE_EXPECTED_SHA256" ]] \
+  || die "Internal check failed: commit $SEO_LIVE_REF's seo.php hashes to $seo_live_baseline_hash, not the expected $SEO_LIVE_EXPECTED_SHA256. Do not trust this reference -- stopping."
+
+seo_live_hash="$(sha256sum "$seo_target" | awk '{print $1}')"
+if [[ "$seo_live_hash" != "$SEO_LIVE_EXPECTED_SHA256" ]]; then
+  die "Production copy of $SEO_DEST_FILE ($seo_live_hash) does not match the known-live commit $SEO_LIVE_REF ($SEO_LIVE_EXPECTED_SHA256). It has drifted further since this was last verified (an uncommitted hotfix, a manual edit, OR this script already ran successfully once) -- stopping without changing anything. Compare $seo_target against $SEO_LIVE_RAW_BASE/theme/zeus/inc/seo.php manually before re-running."
+fi
+echo "Baseline confirmed: $SEO_DEST_FILE matches known-live commit $SEO_LIVE_REF exactly."
 
 log "Confirm new feature files do not already exist on production"
 for dest_rel in "${NEW_FILES[@]}"; do
@@ -285,7 +356,7 @@ for i in "${!COLOR_SLUGS[@]}"; do
   echo "Hero image for $slug: ${HERO_IMAGE_URL[$slug]}"
 done
 
-log "Download and validate approved files before touching production"
+log "Download and validate the 9 standard files (source: $SOURCE_REF)"
 for i in "${!REPO_FILES[@]}"; do
   repo="${REPO_FILES[$i]}"
   tmp="$TMP/new/$repo"
@@ -295,13 +366,28 @@ for i in "${!REPO_FILES[@]}"; do
   [[ -s "$tmp" ]] || die "Downloaded file is empty: $repo"
   validate_source_file "$tmp" || die "Syntax validation failed BEFORE deploy: $repo"
 done
-echo "All approved source files downloaded and validated."
+echo "All ${#REPO_FILES[@]} standard source files downloaded and validated."
+
+log "Download and validate the production-adapted seo.php (separate, audited source)"
+echo "NOT sourced from $SOURCE_REF -- see the header comment for why."
+echo "Source: $SEO_ADAPTED_RAW_BASE/$SEO_ADAPTED_REPO_PATH"
+seo_new_tmp="$TMP/new/$SEO_DEST_FILE"
+mkdir -p "$(dirname "$seo_new_tmp")"
+curl -fsSL --retry 3 --connect-timeout 15 "$SEO_ADAPTED_RAW_BASE/$SEO_ADAPTED_REPO_PATH" -o "$seo_new_tmp"
+[[ -s "$seo_new_tmp" ]] || die "Downloaded production-adapted seo.php is empty"
+validate_source_file "$seo_new_tmp" || die "Syntax validation failed BEFORE deploy: production-adapted seo.php"
+seo_new_hash="$(sha256sum "$seo_new_tmp" | awk '{print $1}')"
+[[ "$seo_new_hash" == "$SEO_ADAPTED_EXPECTED_SHA256" ]] \
+  || die "Downloaded production-adapted seo.php hash ($seo_new_hash) does not match the expected, reviewed hash ($SEO_ADAPTED_EXPECTED_SHA256). Stopping -- refusing to install an unverified file."
+echo "Production-adapted seo.php downloaded and hash-verified against the reviewed value."
 
 log "Create timestamped production backup"
 mkdir -p "$BACKUP/files"
 {
   printf 'source_ref=%s\n' "$SOURCE_REF"
   printf 'baseline_ref=%s\n' "$BASELINE_REF"
+  printf 'seo_live_ref=%s\n' "$SEO_LIVE_REF"
+  printf 'seo_adapted_ref=%s\n' "$SEO_ADAPTED_REF"
   printf 'created=%s\n' "$(date -Is)"
 } > "$BACKUP/manifest.txt"
 for dest_rel in "${DEST_FILES[@]}"; do
@@ -353,14 +439,20 @@ echo "(This path is valid even if the session dies before the deploy finishes.)"
 # failure, disk full, permissions error, etc.).
 ROLLBACK_ARMED=1
 
-log "Install approved files"
+log "Install the 9 standard files"
 for i in "${!REPO_FILES[@]}"; do
   repo="${REPO_FILES[$i]}"
-  dest_rel="${DEST_FILES[$i]}"
+  dest_rel="${STANDARD_DEST_FILES[$i]}"
   target="$ROOT/$dest_rel"
   mkdir -p "$(dirname "$target")"
   cp "$TMP/new/$repo" "$target"
 done
+
+log "Install production-adapted seo.php"
+seo_install_target="$ROOT/$SEO_DEST_FILE"
+mkdir -p "$(dirname "$seo_install_target")"
+cp "$TMP/new/$SEO_DEST_FILE" "$seo_install_target"
+echo "Installed: $SEO_DEST_FILE (from $SEO_ADAPTED_REF -- NOT from $SOURCE_REF)"
 
 log "Validate exact production copies"
 for dest_rel in "${DEST_FILES[@]}"; do
@@ -448,8 +540,8 @@ done
 check_status 'https://zeuscabinetsflorida.com/cabinet-styles/brooklyn/not-a-real-color/' '404' 'Invalid color returns 404'
 check_status 'https://zeuscabinetsflorida.com/cabinet-styles/shaker/white/' '404' 'Unpublished Shaker/White combination returns 404'
 
-printf '\nFiles installed and passed syntax validation.\nBackup: %s\nPinned source: %s\nBaseline: %s\nRollback script: %s\n' \
-  "$BACKUP" "$SOURCE_REF" "$BASELINE_REF" "$BACKUP/ROLLBACK.sh"
+printf '\nFiles installed and passed syntax validation.\nBackup: %s\nPinned source (9 standard files): %s\nBaseline (9 standard files): %s\nseo.php live baseline: %s\nseo.php installed from (production-adapted, no CreativeWork schema): %s\nRollback script: %s\n' \
+  "$BACKUP" "$SOURCE_REF" "$BASELINE_REF" "$SEO_LIVE_REF" "$SEO_ADAPTED_REF" "$BACKUP/ROLLBACK.sh"
 
 if (( FAILS > 0 )); then
   echo ""

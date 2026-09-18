@@ -42,6 +42,8 @@ while ( have_posts() ) :
 	// changes beyond adding their own order here.
 	$zeus_finish_order  = array(
 		'brooklyn' => array( 'White', 'Pearl', 'Fawn', 'Gray', 'Slate', 'Midnight' ),
+		'shaker'   => array( 'White', 'Sand', 'Kodiak', 'Moss' ),
+		'oslo'     => array( 'White', 'Oak', 'Walnut' ),
 	);
 	$zeus_ordered_names = $zeus_finish_order[ $zeus_style_slug ] ?? array();
 
@@ -118,7 +120,7 @@ while ( have_posts() ) :
 			array(
 				'variant' => 'stone',
 				'eyebrow' => __( 'Gallery', 'zeus' ),
-				'heading' => sprintf(
+				'heading' => $zeus_color['gallery_heading'] ?? sprintf(
 					/* translators: 1: collection title, 2: color name */
 					__( '%1$s %2$s in Kitchens & Baths', 'zeus' ),
 					$zeus_collection_title,

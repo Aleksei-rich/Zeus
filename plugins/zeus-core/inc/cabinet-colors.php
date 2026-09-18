@@ -11,11 +11,13 @@
  *
  * A color page exists only when it has an entry in
  * zeus_get_cabinet_color_content_map() below -- that entry's presence
- * IS the publish flag, so an unmapped combination (e.g. any Shaker/Oslo/
- * Euro color right now) 404s instead of silently re-rendering the parent
- * collection page at a second URL. Adding a color or a whole new style
- * later means adding data here (copy + verified image IDs), never a new
- * template -- see theme/zeus/single-cabinet-color.php.
+ * IS the publish flag, so an unmapped combination 404s instead of silently
+ * re-rendering the parent collection page at a second URL. Brooklyn,
+ * Shaker, and Oslo have curated child pages; Euro / Flat Panel does not,
+ * because a fixed finish catalog with exact finish-specific imagery has
+ * not been verified. Adding a color later means adding data here (copy +
+ * verified image IDs), never a new template -- see
+ * theme/zeus/single-cabinet-color.php.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,11 +28,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Curated content map: [ style_slug => [ color_slug => [...] ] ].
  *
  * Every image ID below is verified against docs/ASSET-PROVENANCE.csv
- * (cross-checked live against postmeta/attachment titles during this
- * feature's build) as a real, dealer-provided photo of Brooklyn in that
- * exact finish -- never another collection's imagery, never a stock or
- * generated substitute. Brooklyn is the only style populated here for
- * now; see docs/DECISIONS.md.
+ * (cross-checked against the catalog/media inventory) as dealer-provided
+ * lifestyle/product media for that exact collection and finish -- never
+ * another collection's imagery, never a generated substitute. See
+ * docs/DECISIONS.md for the publish policy.
  */
 function zeus_get_cabinet_color_content_map() {
 	return array(

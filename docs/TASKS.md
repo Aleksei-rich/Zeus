@@ -899,6 +899,29 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       Oslo, and Euro/Flat Panel color pages. The architecture supports
       them; they need their own curated copy + verified image mapping
       and a review pass before publishing.
+- [x] **Production-readiness review (2026-09-18, commit a9acad1):**
+      every hero/gallery image re-verified visually against its official
+      door-sample swatch (not just metadata) — found and fixed one
+      defect (Brooklyn Midnight described as "near-black," but is
+      verifiably a deep navy blue; commit 586a20e). Re-tested URL
+      routing/canonical for valid colors, invalid colors, invalid style/
+      color combinations, query-string passthrough, mixed-case slugs,
+      and a double-slash URL — all correct. Confirmed via `wp rewrite
+      list` that no existing page/CPT/taxonomy/blog route collides with
+      the new rewrite rule; documented one dormant, currently-inert edge
+      case (the rule also shadows WordPress's native attachment-
+      permalink pattern under `cabinet-styles/{collection}/`, relevant
+      only if an editor ever attaches media directly to a
+      `cabinet_collection` post, which nothing in this project's
+      workflow does) — see 2026-09-18 DECISIONS.md entry. Verified the
+      auto-flush mechanism self-heals on the very first cold HTTP
+      request after both `rewrite_rules` and the version-marker option
+      are completely wiped (simulating a fresh deploy), with no wp-admin
+      visit. Confirmed all 4 existing Cabinet Styles URLs (title,
+      canonical, H1) are byte-for-byte unchanged. Full site regression
+      sweep re-run post-fix: all 200, zero new `debug.log` entries.
+      **Verdict: READY FOR PRODUCTION DEPLOYMENT** (still not deployed —
+      awaiting explicit owner go-ahead per production-safety rules).
 
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 

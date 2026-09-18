@@ -6,6 +6,47 @@ owner-directed one.
 
 ---
 
+## 2026-09-18 — Production-readiness review of the Cabinet Color pages (commit a9acad1): one content fix, one dormant edge case documented
+
+**Reviewed:** every Brooklyn hero/gallery image and its official door-
+sample swatch, viewed directly (not just trusted via title/alt
+metadata), against its color-detail-page description; full rewrite-rule
+ordering (`wp rewrite list`) for collisions; canonical/404 behavior for
+valid colors, invalid colors, and invalid style/color combinations
+(including query-string passthrough, mixed-case slugs, and a double-
+slash URL); and the auto-flush mechanism under a fully wiped
+`rewrite_rules`/version-marker state (simulating a fresh deploy with no
+manual wp-admin permalink save).
+
+**Fixed:** Brooklyn Midnight's copy called it "near-black." Its door-
+sample swatch (`brooklyn-midnight.webp`) and both gallery photos are
+unambiguously a deep navy blue, not black — corrected in
+`plugins/zeus-core/inc/cabinet-colors.php` (see that commit). The other
+five colors' copy matched their verified swatches exactly; no other
+changes made.
+
+**Documented, not fixed (dormant, out of scope for a code change today):**
+the color-page rewrite rule is registered at `'top'` priority, so it
+also intercepts WordPress's own native attachment-permalink pattern for
+the same URL shape (`cabinet-styles/{collection}/{attachment-slug}/` —
+see `wp rewrite list` rule matching `index.php?attachment=$matches[1]`
+against `post_type=cabinet_collection`). Today this is inert: zero
+attachments have `post_parent` set to any `cabinet_collection` post (all
+media on these pages is referenced by ID via `zeus_gallery`/
+`zeus_finish_swatches`/`hero_id` postmeta, never via WordPress's
+"attach media to this post" flow), and nothing in this project's
+editorial workflow does that. If an editor ever inserts an image
+directly into a `cabinet_collection` post's content via the classic
+media flow (setting `post_parent`), that image's own permalink would
+404 instead of resolving, unless its slug happened to match a curated
+color. Flagged for whoever expands this system to Shaker/Oslo/Euu —
+worth hardening (check for a matching attachment child before 404'ing)
+only if that editorial pattern is ever actually used.
+**Type:** Autonomous professional default (review requested by the
+owner; found-and-fixed the one real defect per that request's own
+instruction to fix defects found, documented the one non-blocking risk
+rather than making a speculative change for it).
+
 ## 2026-09-18 — Cabinet Style → Color → Gallery pages built for Brooklyn; supersedes "finishes are not separate URLs"
 
 **Decision:** Each Brooklyn color (White, Pearl, Fawn, Gray, Slate,

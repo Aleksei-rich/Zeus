@@ -21,7 +21,15 @@ function zeus_get_breadcrumb_trail() {
 
 	if ( is_singular( 'cabinet_collection' ) ) {
 		$trail[] = array( 'label' => __( 'Cabinet Styles', 'zeus' ), 'url' => get_post_type_archive_link( 'cabinet_collection' ) );
-		$trail[] = array( 'label' => get_the_title(), 'url' => null );
+
+		$zeus_color_data = zeus_get_current_cabinet_color_content();
+		if ( $zeus_color_data ) {
+			$trail[]          = array( 'label' => get_the_title(), 'url' => get_permalink() );
+			$zeus_finish_term = get_term_by( 'slug', get_query_var( 'zeus_cabinet_color' ), 'finish' );
+			$trail[]          = array( 'label' => $zeus_finish_term ? $zeus_finish_term->name : get_query_var( 'zeus_cabinet_color' ), 'url' => null );
+		} else {
+			$trail[] = array( 'label' => get_the_title(), 'url' => null );
+		}
 	} elseif ( is_post_type_archive( 'cabinet_collection' ) ) {
 		$trail[] = array( 'label' => __( 'Cabinet Styles', 'zeus' ), 'url' => null );
 	} elseif ( is_singular( 'project' ) ) {

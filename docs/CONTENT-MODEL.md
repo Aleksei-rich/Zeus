@@ -66,6 +66,38 @@ Taxonomies:
 Related services/collections and CTA render from the taxonomy
 relationships above — no separate manual "related" field needed.
 
+## Cabinet Color Pages (2026-09-18)
+
+**Not a CPT.** A dedicated detail page per collection+color
+(`/cabinet-styles/{collection-slug}/{color-slug}/`, e.g.
+`/cabinet-styles/brooklyn/white/`) is a virtual page over the existing
+`cabinet_collection` CPT and `finish` taxonomy, not new content-model
+surface — see `DECISIONS.md`, 2026-09-18.
+
+- **Routing:** `plugins/zeus-core/inc/cabinet-colors.php` adds a rewrite
+  rule nesting a `finish` term slug one level under a `cabinet_collection`
+  post's own URL, reusing that post's normal singular query (the
+  `zeus_cabinet_color` query var rides alongside it).
+- **Content/publish gate:** `zeus_get_cabinet_color_content_map()` in
+  that same file is the single source of truth — a
+  `[style_slug][color_slug]` entry (SEO title/description, H1, intro
+  copy, verified hero + gallery attachment IDs) is what makes a color
+  page exist at all. No entry → the URL 404s, even if the underlying
+  collection+finish relationship is real. This is deliberate: it's how
+  Shaker/Oslo/Euro colors stay unpublished until their own content is
+  curated and reviewed, without needing a separate "is this published"
+  flag.
+- **Template:** `theme/zeus/single-cabinet-color.php`, one reusable
+  template for every current and future style/color, selected via
+  `template_include` in `theme/zeus/inc/cabinet-colors.php`.
+- **Adding a color or a new style later** is purely a data change (a new
+  entry in the content map, with verified image IDs) — never a new
+  template or a new rewrite rule.
+- Every image referenced from that map must be verified against
+  `docs/ASSET-PROVENANCE.csv` as belonging to the exact style+color
+  claimed — never substituted from another collection/finish, never
+  stock/generated imagery standing in for a missing real photo.
+
 ## Countertop Materials — decision: Pages, not a CPT
 
 Only four materials (Quartz, Granite, Porcelain, Marble), each needs rich,

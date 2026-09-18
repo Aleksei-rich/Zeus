@@ -794,6 +794,112 @@ approved — this phase corrects both. See `docs/DECISIONS.md`,
       only (never in this repo), (4) add a conditional `require` for
       that path in production's own `wp-config.php`.
 
+## Phase 5M — Cabinet Style → Color → Gallery pages, Brooklyn (2026-09-18, done)
+
+- [x] **Root cause:** Brooklyn's six color swatches on
+      `/cabinet-styles/brooklyn/` were static, non-interactive `<div>`s
+      (`single-cabinet_collection.php`) — a visual dead end with no
+      linked destination, and the `finish` taxonomy has no public
+      archive/URL of its own (`public => false`, no rewrite), so there
+      was nowhere for a click to go without new routing.
+- [x] Built a reusable virtual-page system — no new CPT/taxonomy, no
+      Brooklyn-only hardcoding: `plugins/zeus-core/inc/cabinet-colors.php`
+      (rewrite rule + query var + curated content map + 404 gate for
+      unpublished combinations) and `theme/zeus/single-cabinet-color.php`
+      (one template for every current/future style+color). See
+      `docs/DECISIONS.md` (2026-09-18) and `docs/CONTENT-MODEL.md`
+      ("Cabinet Color Pages") for the full architecture and the explicit
+      supersession of the earlier "finishes are not separate URLs" note
+      in `SITE-ARCHITECTURE.md`.
+- [x] Swatch-grid markup extracted from `single-cabinet_collection.php`
+      into `template-parts/cabinet-color-swatches.php` (shared by the
+      collection page's "Colors" section and a color page's "Other
+      Colors" section) — only renders a swatch as a real `<a>` when a
+      published color page exists, so Shaker/Oslo/Euro swatches are
+      unchanged (still static, per the explicit "do not mass-publish
+      other styles yet" instruction).
+- [x] Six Brooklyn color pages live: White, Pearl, Fawn, Gray, Slate,
+      Midnight — each with a unique H1/SEO title/meta description,
+      3-level breadcrumb ("Cabinet Styles → Brooklyn → {Color}", which
+      also feeds the existing `BreadcrumbList` JSON-LD automatically), a
+      verified hero + gallery, non-templated design-character copy
+      distinct per color, a link back to the collection, an "Other
+      Colors" nav with the current color indicated (non-link, `aria-
+      current="page"`), and the standard consultation CTA.
+- [x] **Images — all verified, none guessed/substituted/stock:**
+      White (hero 116, gallery 116/117), Pearl (hero 118, gallery
+      118/119/120), Fawn (hero 110, gallery 110/111), Gray (hero 113,
+      gallery 113/112 — no verified Gray *kitchen* photo exists, so its
+      H1/title say "Kitchen & Bath" rather than implying one), Slate
+      (hero 122, gallery 122/121), Midnight (hero 114, gallery 114/115).
+      Cross-checked against `docs/ASSET-PROVENANCE.csv` and re-verified
+      live against running-site postmeta/attachment titles before use.
+- [x] **A WordPress-core interaction found+fixed during testing:**
+      `WP_Query::set_404()` called from `pre_get_posts` pre-empts
+      `WP::handle_404()`'s own status-header call (it bails early because
+      `is_404()` is already true), so an invalid combination would
+      otherwise silently respond HTTP 200; and core's `redirect_canonical()`
+      separately 301-redirects a 404'd two-segment URL back to the
+      collection page it partially matched, masking it as if it worked.
+      Fixed with an explicit `status_header(404)`/`nocache_headers()` in
+      the gate and a narrowly-scoped `redirect_canonical` suppression —
+      confirmed via curl that unrelated 404s elsewhere are unaffected.
+- [x] Verified locally (`http://localhost:8890`):
+      - All 6 Brooklyn color URLs return HTTP 200; `/cabinet-styles/
+        brooklyn/walnut/`, `/cabinet-styles/shaker/white/`, `/cabinet-
+        styles/oslo/oak/` (real finishes, not yet published) return a
+        genuine HTTP 404; an unrelated nonexistent URL still 404s
+        normally.
+      - Title, canonical `<link>`, meta description, `og:url`, H1, and
+        the `BreadcrumbList` JSON-LD all checked directly in the
+        rendered HTML for the White page and matched expectations.
+      - Brooklyn's 6 swatch cards render as real `<a href>` elements
+        pointing at the correct URLs; Shaker and Oslo swatch grids
+        re-checked and are still plain `<div>`s (including the "OSLO
+        Classic Walnut" label override, still correct after the shared-
+        template-part refactor) — zero regression.
+      - Direct URL access, and browser Back after clicking a swatch,
+        both confirmed in the browser pane (real navigation, not JS
+        routing).
+      - Keyboard: swatch links are real, focusable `<a>` elements (not
+        `div`+`onclick`); focus produces a visible gold outline via the
+        sitewide `:focus-visible` rule plus a dedicated
+        `a.zeus-swatch:focus-visible` rule.
+      - Responsive: checked 375px, 430px, and 768px (in addition to
+        desktop) via the browser pane's viewport emulation —
+        `document.documentElement.scrollWidth` never exceeds
+        `window.innerWidth` at any of them (no horizontal overflow); the
+        swatch grid reflows 3 → 4 → 6 columns per the existing
+        `.zeus-swatch-grid` breakpoints, unchanged.
+      - Full regression sweep: homepage, Cabinet Styles archive, all 4
+        collection pages, Cabinets hub + Kitchen/Bathroom, Countertops
+        hub, Custom Spaces hub, Portfolio, Blog, About, Contact,
+        Consultation — all HTTP 200, zero console errors, zero new
+        entries in `wp-content/debug.log` across the entire sweep.
+      - Consultation form reused unmodified inside the new template;
+        confirmed its redirect-back hidden field
+        (`zeus_redirect_to`) correctly points at the color page's own
+        URL (e.g. `.../cabinet-styles/brooklyn/white`), not the parent
+        collection page, so a validation error would return the visitor
+        to the right page.
+      - PHP lint clean on every new/changed file.
+- [x] Files changed: `plugins/zeus-core/inc/cabinet-colors.php` (new),
+      `plugins/zeus-core/zeus-core.php`, `theme/zeus/inc/cabinet-colors.php`
+      (new), `theme/zeus/functions.php`,
+      `theme/zeus/template-parts/cabinet-color-swatches.php` (new),
+      `theme/zeus/single-cabinet-color.php` (new),
+      `theme/zeus/single-cabinet_collection.php`,
+      `theme/zeus/inc/breadcrumbs.php`, `theme/zeus/inc/seo.php`,
+      `theme/zeus/assets/css/style.css`, plus this file,
+      `docs/DECISIONS.md`, `docs/SITE-ARCHITECTURE.md`,
+      `docs/CONTENT-MODEL.md`.
+- [ ] **Not committed/pushed yet** — on branch
+      `feature/cabinet-style-color-pages`, awaiting review.
+- [ ] Deliberately not done this phase, per the explicit brief: Shaker,
+      Oslo, and Euro/Flat Panel color pages. The architecture supports
+      them; they need their own curated copy + verified image mapping
+      and a review pass before publishing.
+
 ## Phase 6 — Staging (not started, blocked on hosting access; renumbered from "Phase 4" now that Phase 4 covers real content/design)
 
 - [ ] Confirm hosting/DNS access path

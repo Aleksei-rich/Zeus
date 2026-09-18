@@ -166,6 +166,28 @@ a:hover { text-decoration: underline; }
 .zeus-swatch--featured .zeus-swatch__img { box-shadow: 0 0 0 3px var(--wp--preset--color--gold), var(--wp--custom--shadow--card); }
 .zeus-swatch--featured .zeus-swatch__label { color: var(--wp--preset--color--navy); }
 
+/* ---- Clickable swatch (Cabinet Style -> Color pages) -- entire card is
+   the link; hover/focus states give tasteful feedback without changing
+   the swatch's approved proportions/spacing. --------------------------- */
+a.zeus-swatch:hover { text-decoration: none; }
+a.zeus-swatch:hover .zeus-swatch__img,
+a.zeus-swatch:focus-visible .zeus-swatch__img {
+	box-shadow: 0 0 0 3px var(--wp--preset--color--gold-dark), var(--wp--custom--shadow--card);
+}
+a.zeus-swatch:focus-visible {
+	outline: 3px solid var(--wp--preset--color--gold-dark);
+	outline-offset: 4px;
+	border-radius: var(--wp--custom--radius--medium);
+}
+@media (prefers-reduced-motion: no-preference) {
+	.zeus-swatch__img { transition: box-shadow 0.15s ease; }
+}
+/* Current color, on its own detail page's "Other Colors" list -- takes
+   precedence over --featured when White is also the current color
+   (source order: this rule comes after --featured above). */
+.zeus-swatch--current .zeus-swatch__img { box-shadow: 0 0 0 3px var(--wp--preset--color--navy), var(--wp--custom--shadow--card); }
+.zeus-swatch__current-tag { display: block; font-weight: 400; color: var(--wp--preset--color--stone-600); }
+
 .zeus-inline-gallery {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);

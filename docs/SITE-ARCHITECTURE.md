@@ -34,8 +34,16 @@ Contact
 - **Shaker:** White, Sand, Kodiak, Moss
 - **Oslo:** White, Oak, Walnut
 
-Finishes render as a swatch/selection UI on each collection page, not as
-separate URLs, to avoid thin/duplicate pages (see `SEO-STRATEGY.md`).
+Finishes render as a swatch/selection UI on each collection page. As of
+2026-09-18 (see `DECISIONS.md`), a collection with curated per-color
+content also gets a dedicated, indexable detail page per color at
+`/cabinet-styles/{collection}/{color}/` — the swatch cards link there.
+Brooklyn is the only collection with that curated content today; a color
+without it (currently every Shaker/Oslo/Euro finish) has no separate URL
+and 404s if requested directly, so it stays exactly the swatch-only
+"content detail, not a separate page" pattern the original version of
+this note described. See `CONTENT-MODEL.md` ("Cabinet Color Pages") for
+the mechanism and how a color/style gets added to that curated set.
 
 ### Important SEO/product concept — "Slim Shaker"
 
@@ -72,6 +80,7 @@ Walnut finish page are the primary target for this term.
 | Bathroom Cabinets & Vanities | Page | Service page, targets "bathroom cabinets Orlando" |
 | Cabinet Styles (hub) | Page | Archive-style hub linking to 4 collections |
 | Brooklyn / Shaker / Oslo / Euro-Flat Panel | `cabinet_collection` CPT | See `CONTENT-MODEL.md` |
+| Brooklyn color pages (White/Pearl/Fawn/Gray/Slate/Midnight) | Virtual page over `cabinet_collection` + `finish` (no new CPT) | See `CONTENT-MODEL.md`, "Cabinet Color Pages" |
 | Countertops (hub) | Page | Links to 4 materials |
 | Quartz / Granite / Porcelain / Marble | Page | See `CONTENT-MODEL.md` for why these are Pages, not a CPT |
 | Custom Spaces (hub) | Page | Links to Closets, Laundry & Pantry, Home Office |
@@ -107,6 +116,12 @@ Walnut finish page are the primary target for this term.
 /cabinet-styles/                           cabinet_collection archive — hub
 /cabinet-styles/brooklyn/                  cabinet_collection single
 /cabinet-styles/shaker/                    cabinet_collection single
+/cabinet-styles/brooklyn/white/            Cabinet color page (see CONTENT-MODEL.md)
+/cabinet-styles/brooklyn/pearl/            Cabinet color page
+/cabinet-styles/brooklyn/fawn/             Cabinet color page
+/cabinet-styles/brooklyn/gray/             Cabinet color page
+/cabinet-styles/brooklyn/slate/            Cabinet color page
+/cabinet-styles/brooklyn/midnight/         Cabinet color page
 /cabinet-styles/oslo/                      cabinet_collection single (incl. Walnut "Slim Shaker")
 /cabinet-styles/euro-flat-panel/           cabinet_collection single
 /countertops/                              Page — hub

@@ -136,24 +136,18 @@ while ( have_posts() ) :
 		)
 	);
 	?>
-		<div class="zeus-swatch-grid">
-			<?php foreach ( $zeus_ordered_finishes as $zeus_finish ) : ?>
-				<div class="zeus-swatch<?php echo 'White' === $zeus_finish->name ? ' zeus-swatch--featured' : ''; ?>">
-					<?php if ( ! empty( $zeus_swatches[ $zeus_finish->term_id ] ) ) : ?>
-						<?php echo wp_get_attachment_image( $zeus_swatches[ $zeus_finish->term_id ], 'zeus-square', false, array( 'class' => 'zeus-swatch__img' ) ); ?>
-					<?php endif; ?>
-					<span class="zeus-swatch__label">
-						<?php
-						if ( 'oslo' === $zeus_slug && 'Walnut' === $zeus_finish->name ) {
-							esc_html_e( 'OSLO Classic Walnut', 'zeus' );
-						} else {
-							echo esc_html( $zeus_finish->name );
-						}
-						?>
-					</span>
-				</div>
-			<?php endforeach; ?>
-		</div>
+		<?php
+		get_template_part(
+			'template-parts/cabinet-color-swatches',
+			null,
+			array(
+				'style_slug' => $zeus_slug,
+				'finishes'   => $zeus_ordered_finishes,
+				'swatches'   => $zeus_swatches,
+				'current'    => '',
+			)
+		);
+		?>
 	<?php zeus_section_end(); ?>
 	<?php endif; ?>
 

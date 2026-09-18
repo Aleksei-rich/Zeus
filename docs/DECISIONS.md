@@ -6,6 +6,109 @@ owner-directed one.
 
 ---
 
+## 2026-09-18 — Cabinet Style → Color → Gallery pages built for Brooklyn; supersedes "finishes are not separate URLs"
+
+**Decision:** Each Brooklyn color (White, Pearl, Fawn, Gray, Slate,
+Midnight) now has its own indexable, server-rendered detail page nested
+under the collection's own URL — `/cabinet-styles/brooklyn/{color}/` —
+with a unique H1/title/meta description, a verified hero + gallery for
+that exact style+color, a short design-character writeup specific to
+that color, a link back to the collection, an "Other Colors" nav with
+the current color indicated, and the standard consultation CTA. The
+color swatch cards on `/cabinet-styles/brooklyn/` (and, mechanically, on
+any collection) are now real, fully-clickable `<a>` elements instead of
+inert `<div>`s.
+
+**This explicitly supersedes** the `SITE-ARCHITECTURE.md` line "Finishes
+render as a swatch/selection UI on each collection page, not as separate
+URLs, to avoid thin/duplicate pages" for whichever collections get
+curated per-color content (Brooklyn now; others later, on review) —
+`SITE-ARCHITECTURE.md` has been updated accordingly, per the "never
+silently change an approved decision" rule. That original decision's
+concern (thin/duplicate pages) is addressed differently now: each color
+page has genuinely distinct, verified imagery and non-templated copy per
+color (not the same paragraph with the color name swapped), so it earns
+its own URL rather than being a thin duplicate of the collection page.
+
+**Why now:** direct, explicit business requirement — the owner wants a
+real "Cabinet Styles → Brooklyn → choose a color → dedicated color page"
+conversion path (matching how e.g. KCD structures cabinet-style/color
+taxonomy), instead of the color swatches being a visual dead end.
+
+**Architecture chosen (reusable, not Brooklyn-only):**
+- **No new CPT/taxonomy.** The existing `cabinet_collection` CPT and
+  shared `finish` taxonomy already model "which colors belong to which
+  collection" — a color page is a virtual page over that same data, not
+  new content-model surface. The `finish` taxonomy itself stays
+  `public => false` / no term archive, exactly as before — this is a
+  bespoke composite URL, not a taxonomy archive, so the earlier taxonomy-
+  publicness decision is untouched.
+- **Routing:** `plugins/zeus-core/inc/cabinet-colors.php` adds one custom
+  rewrite rule, `^cabinet-styles/([^/]+)/([^/]+)/?$` →
+  `index.php?cabinet_collection=$matches[1]&zeus_cabinet_color=$matches[2]`.
+  This reuses WordPress's own `cabinet_collection` singular query (the
+  collection's real post, `is_singular('cabinet_collection')` stays
+  true), with the color carried alongside as an extra query var.
+- **Publish gate = content presence.** A curated PHP content map
+  (`zeus_get_cabinet_color_content_map()`, one array per style → per
+  color: SEO title/description, H1, intro paragraphs, verified hero +
+  gallery image IDs) is the single source of truth for which color pages
+  exist. A `pre_get_posts` hook 404s any style+color combination absent
+  from that map — so `/cabinet-styles/shaker/white/` (a real Shaker
+  finish, but not yet curated) 404s instead of silently re-rendering the
+  Shaker collection page a second time at a different URL. Adding a
+  color later, or a whole new style, is a data change in that one file —
+  never a new template. Per the brief's explicit instruction, only
+  Brooklyn is populated for now; Shaker/Oslo/Euro are deliberately left
+  unpublished pending review.
+- **Template:** one new virtual template,
+  `theme/zeus/single-cabinet-color.php`, selected via a `template_include`
+  filter (`theme/zeus/inc/cabinet-colors.php`) whenever the validated
+  color query var is present. Reused across every color/style.
+- **Shared swatch UI:** the swatch-grid markup that used to be inlined in
+  `single-cabinet_collection.php` moved to
+  `template-parts/cabinet-color-swatches.php`, used by both the
+  collection page's own "Colors" section and a color page's "Other
+  Colors" section. It only renders a swatch as a link when
+  `zeus_get_cabinet_color_content()` has an entry — so Shaker/Oslo/Euro
+  swatches remain exactly as inert as before, zero visual/behavioral
+  change there.
+- **SEO:** `theme/zeus/inc/seo.php` gained three narrow, additive
+  branches (title, meta description/OG/JSON-LD source data, and a
+  `get_canonical_url` filter) that only activate when
+  `zeus_get_current_cabinet_color_content()` returns non-null — every
+  other page type's SEO output is provably unchanged (see TASKS.md
+  regression notes). `theme/zeus/inc/breadcrumbs.php` gained one
+  additive branch producing "Cabinet Styles → Brooklyn → White" (also
+  feeds the existing `BreadcrumbList` JSON-LD automatically, no separate
+  change needed there).
+- **A WordPress-core interaction found and fixed during testing:**
+  `WP_Query::set_404()` inside `pre_get_posts` flips `is_404()` to true
+  *before* `WP::handle_404()` runs, so `handle_404()`'s own "if we've
+  already issued a 404, bail" check skips ever calling
+  `status_header(404)` — the response would otherwise silently stay HTTP
+  200 on an invalid combination. Separately, core's `redirect_canonical()`
+  "corrects" that same 404 by 301-redirecting to the collection post it
+  matched (e.g. `/cabinet-styles/shaker/white/` → `/cabinet-styles/shaker/`),
+  which would mask an unpublished color as if it worked. Fixed by calling
+  `status_header(404)`/`nocache_headers()` directly in the gate and
+  disabling `redirect_canonical` narrowly for that one request — verified
+  with curl that unrelated 404s elsewhere on the site are unaffected.
+
+**Images:** every hero/gallery image ID was cross-checked against
+`docs/ASSET-PROVENANCE.csv` and re-verified live against the running
+site's postmeta/attachment titles before use (see 2026-09-18 TASKS.md
+entry for the full per-color mapping) — no stock photography, no
+cross-style/cross-color substitution, nothing renamed or moved. Brooklyn
+Gray has no verified kitchen photo (only a bathroom vanity and a home-
+office shot exist) — its H1/title say "Kitchen & Bath" instead of
+"Kitchen" rather than implying a kitchen photo that doesn't exist; noted
+inline in the content map for whoever adds a Gray kitchen photo later.
+
+**Type:** Owner-directed (explicit brief), implemented via autonomous
+professional defaults for the specific architecture, gating mechanism,
+and image selection.
+
 ## 2026-09-03 — Automated Google Reviews implemented via Google Business Profile API (not Places API)
 
 **Correction from the same day's earlier plan:** the previously proposed

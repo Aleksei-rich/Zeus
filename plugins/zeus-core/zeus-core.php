@@ -33,6 +33,7 @@ $zeus_core_includes = array(
 	'inc/post-types.php',
 	'inc/taxonomies.php',
 	'inc/meta-fields.php',
+	'inc/cabinet-colors.php',
 	'inc/admin-media.php',
 	'inc/seed-registry.php',
 	'inc/seeding.php',

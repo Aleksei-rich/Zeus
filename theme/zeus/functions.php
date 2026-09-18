@@ -23,6 +23,7 @@ $zeus_includes = array(
 	'inc/enqueue.php',
 	'inc/template-tags.php',
 	'inc/breadcrumbs.php',
+	'inc/cabinet-colors.php',
 	'inc/seo.php',
 	'inc/category-seo.php',
 	'inc/robots.php',

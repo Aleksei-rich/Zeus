@@ -7,6 +7,10 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 function zeus_filter_document_title_parts( $parts ) {
+	$zeus_color = zeus_get_current_cabinet_color_content();
+	if ( $zeus_color ) {
+		return array( 'title' => $zeus_color['seo_title'] );
+	}
 	if ( is_singular() ) {
 		$override = get_post_meta( get_the_ID(), 'zeus_seo_title', true );
 		if ( $override ) { $parts = array( 'title' => $override ); }
@@ -40,7 +44,12 @@ add_filter( 'wp_sitemaps_posts_query_args', 'zeus_filter_sitemap_post_args', 10,
 
 function zeus_output_head_meta() {
 	$description=''; $image_url=''; $url=''; $title=wp_get_document_title();
-	if ( is_singular() ) {
+	$zeus_color = zeus_get_current_cabinet_color_content();
+	if ( $zeus_color ) {
+		$description = $zeus_color['seo_description'];
+		$url         = zeus_cabinet_color_url( get_post_field( 'post_name' ), get_query_var( 'zeus_cabinet_color' ) );
+		$image_url   = wp_get_attachment_image_url( $zeus_color['hero_id'], 'zeus-hero' );
+	} elseif ( is_singular() ) {
 		$post_id=get_the_ID(); $description=zeus_get_seo_description($post_id); $url=get_permalink($post_id);
 		if ( has_post_thumbnail($post_id) ) { $image_url=get_the_post_thumbnail_url($post_id,'zeus-hero'); }
 	} elseif ( is_front_page() ) { $description=get_bloginfo('description'); $url=home_url('/');
@@ -57,6 +66,24 @@ function zeus_output_head_meta() {
 	if(is_singular('project')){zeus_output_project_schema();}
 }
 add_action('wp_head','zeus_output_head_meta');
+
+/**
+ * WordPress core's own rel_canonical() only knows about the underlying
+ * cabinet_collection post's own URL -- a color page reuses that post's
+ * query (see theme/zeus/inc/cabinet-colors.php) but lives at its own
+ * nested URL, so this points the canonical there instead. No-op for
+ * every other page type, including the archive/home canonical links
+ * zeus_output_head_meta() prints manually above (those never go through
+ * core's rel_canonical()/this filter at all).
+ */
+function zeus_filter_canonical_url( $canonical_url ) {
+	$zeus_color = zeus_get_current_cabinet_color_content();
+	if ( $zeus_color ) {
+		return zeus_cabinet_color_url( get_post_field( 'post_name' ), get_query_var( 'zeus_cabinet_color' ) );
+	}
+	return $canonical_url;
+}
+add_filter( 'get_canonical_url', 'zeus_filter_canonical_url' );
 
 function zeus_output_organization_schema(){
 	$areas=array('Orlando','Windermere','Winter Garden','Horizon West','Clermont','Dr. Phillips');
